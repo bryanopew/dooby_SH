@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     color: 'purple'
   },
   button: {
-    marginTop: 70,
+    marginTop: 50,
     alignItems: "center",
     backgroundColor: 'purple',
     padding: 20
@@ -34,10 +34,13 @@ const Basic1 = () => {
     const [items, setItems] = useState([
       {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
       {label: '체중 증량', value: '증가', },
-      {label: '체중 유지', value: '유지', }
+      {label: '체중 유지', value: '유지', },
+      {label: '체중 ', value: '1', },
+      {label: '체중 유지', value: '2', }
     ]);
     return (
       <SafeAreaView>
+      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>기본 정보를 {"\n"}입력해주세요</Text>
         <View style={styles.header}>
           <Text style={styles.headerText}>성별</Text>
         </View>

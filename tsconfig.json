@@ -7,7 +7,12 @@
       "isolatedModules": true,
       "lib": ["es6"],
       "strict": true,
-      "target": "esnext"
+      "target": "esnext",
+      "moduleResolution": "node",
+      "baseUrl": "./src",
+      "paths": {
+        "~/*": ["*"]
+      }
     },
     "exclude": [
       "node_modules",
