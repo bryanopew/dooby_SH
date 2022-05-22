@@ -7,7 +7,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {UserContext} from '~/Context/User';
 import Loading from '../Components/Loading';
 import Basic1 from '../Components/Basic1'
+import Basic2 from '../Components/Basic2'
+import Basic3 from '../Components/Basic3'
 import Login from './Login';
+import Home from '../Components/Home';
+import Profile from '../Components/Profile';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -17,6 +21,9 @@ const LoginNavigator = () => {
         <Stack.Navigator screenOptions = {{headerShown: false}}>
             <Stack.Screen name="로그인" component={Login}/>
             <Stack.Screen name="Basic1" component={Basic1}/>
+            <Stack.Screen name="Basic2" component={Basic2}/>
+            <Stack.Screen name="Basic3" component={Basic3}/>
+            <Stack.Screen name="MainTabs" component={MainTabs}/>
         </Stack.Navigator>
     );
 };
@@ -35,21 +42,20 @@ const BasketTab = () => {
 
 const MainTabs = () => {
     return(
-        <BottomTab.Navigator
-            tabBarOptions={{showLabel: false}}>
+        <BottomTab.Navigator>
             <BottomTab.Screen 
                 name="Home"
                 component={Home}
                 options={{
-                    tabBarIcon: ({color, focused}) => {
+                    tabBarIcon: ({color, focused}) => (
                         <Image
                           source={
                               focused
-                                ? require('../Assets/Images/Tabs/ic_home.png')
-                                : require('../Assets/Images/Tabs/ic_home.png')  
+                                ? require('~/Assets/Images/36_icon=home_check.png')
+                                : require('~/Assets/Images/36_icon=home.png')  
                           }
                         />
-                    }
+                     )
                 }}
             />
        
@@ -57,15 +63,15 @@ const MainTabs = () => {
                 name="Profile"
                 component={Profile}
                 options={{
-                    tabBarIcon: ({color, focused}) => {
+                    tabBarIcon: ({color, focused}) => (
                         <Image
                           source={
                               focused
-                                ? require('../Assets/Images/Tabs/ic_profile.png')
-                                : require('../Assets/Images/Tabs/ic_profile.png')  
+                                ? require('~/Assets/Images/36_icon=profile_check.png')
+                                : require('~/Assets/Images/36_icon=profile.png')  
                           }
                         />
-                    }
+                    )
                 }}
             />
         </BottomTab.Navigator>

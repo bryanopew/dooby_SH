@@ -44,18 +44,25 @@ const styles = StyleSheet.create({
 
 
 
-const Basic2 = ({navigation}) => {
+const Basic3 = ({navigation}) => {
     const [base, setBase] = useState("");
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
-    const [wtime, setWtime] = useState([
+    const [auto, setAuto] = useState([
       {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
       {label: '체중 증량', value: '증가', },
       {label: '체중 유지', value: '유지', },
       {label: '체중 ', value: '1', },
       {label: '체중 유지', value: '2', }
     ]);
-    const [atime, setAtime] = useState([
+    const [cal, setCal] = useState([
+      {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
+      {label: '체중 증량', value: '증가', },
+      {label: '체중 유지', value: '유지', },
+      {label: '체중 ', value: '1', },
+      {label: '체중 유지', value: '2', }
+    ]);
+    const [man, setMan] = useState([
       {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
       {label: '체중 증량', value: '증가', },
       {label: '체중 유지', value: '유지', },
@@ -64,30 +71,21 @@ const Basic2 = ({navigation}) => {
     ]);
     return (
       <SafeAreaView>
-      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요</Text>
-       
-        <TextInput style={styles.header} 
-          placeholder="기초대사량을 알고 있다면 적어주세요(kcal)" 
-          onChangeText={setBase} 
-          value={base} 
-          keyboardType="numeric"  
-          onSubmitEditing={()=>console.log(base)}
-          />  
-      
+      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>목표 섭취량을 {"\n"}입력해주세요</Text>
         <DropDownPicker
          style={{
           borderColor: '#f0f8ff',
           borderBottomWidth: 1,
         }}
-          placeholder="웨이트 운동시간"
+          placeholder="귀찮다 두비가 알아서 다 해줘!"
           open={open}
           setOpen={setOpen}
           value={value}
-          items={wtime}
+          items={auto}
           setValue={setValue}
-          setItems={setWtime}
+          setItems={setAuto}
           textStyle={{ fontSize: 15}}
-          onPress={() => console.log('웨이트', value)}
+          onPress={() => console.log('두비가 알아서', value)}
         />
 
         <DropDownPicker
@@ -95,21 +93,36 @@ const Basic2 = ({navigation}) => {
           borderColor: '#f0f8ff',
           borderBottomWidth: 1,
         }}
-          placeholder="유산소 운동시간"
+          placeholder="탄:단:지 비율로 계산하기"
           open={open}
           setOpen={setOpen}
           value={value}
-          items={atime}
+          items={cal}
           setValue={setValue}
-          setItems={setAtime}
+          setItems={setCal}
           textStyle={{ fontSize: 15}}
-          onPress={() => console.log('유산소', value)}
+          onPress={() => console.log('비율로 계산', value)}
+        />
+        <DropDownPicker
+         style={{
+          borderColor: '#f0f8ff',
+          borderBottomWidth: 1,
+        }}
+          placeholder="각 영양 성분 직접 입력(고수용)"
+          open={open}
+          setOpen={setOpen}
+          value={value}
+          items={man}
+          setValue={setValue}
+          setItems={setMan}
+          textStyle={{ fontSize: 15}}
+          onPress={() => console.log('고수용', value)}
         />
         
          
         <Pressable
         style={styles.button}
-        onPress={()=>navigation.navigate('Basic3')}
+        onPress={()=> navigation.navigate('MainTabs')}
         >
         <Text style={{color: 'white'}}>다음</Text>
       </Pressable>
@@ -117,4 +130,4 @@ const Basic2 = ({navigation}) => {
     );
   };
 
-export default Basic2;
+export default Basic3;
