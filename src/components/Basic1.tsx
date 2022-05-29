@@ -38,10 +38,28 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: '#590DE1',
+    color: 'grey',
     paddingRight: 50,
     paddingLeft: 50,
   },
+  clicked: {
+    borderRadius: 10,
+    alignItems: "center",
+    borderColor: '#590DE1',
+    borderWidth: 2,
+    padding: 10,
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  unClicked: {
+    borderRadius: 10,
+    alignItems: "center",
+    borderColor: 'grey',
+    borderWidth: 2,
+    padding: 10,
+    marginLeft: 30,
+    marginRight: 30,
+  }
 });
 
 
@@ -52,29 +70,43 @@ const Basic1 = ({navigation}) => {
     const [weight, setWeight] = useState("");
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
+    const [click, setClick] = useState(false);
     const [items, setItems] = useState([
-      {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
-      {label: '체중 증량', value: '증가', },
-      {label: '체중 유지', value: '유지', },
-      {label: '체중 ', value: '1', },
-      {label: '체중 유지', value: '2', }
+      {label: '다이어트(한 달 1~2kg감량)', value: '12감량', },
+      {label: '다이어트(한 달 3~4kg감량)', value: '34감량', },
+      {label: '체중유지', value: '유지', },
+      {label: '체중증가(한 달 1~2kg증량) ', value: '12증량', },
+      {label: '체중증가(한 달 3~4kg증량)', value: '34증량', }
     ]);
+    const basicInformation = {
+      age,
+      height,
+      weight,
+      value
+    }
+
+    console.log(basicInformation);
+
     return (
       <SafeAreaView>
-      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>기본 정보를 {"\n"}입력해주세요</Text>
-        <View style={styles.header}>
+      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>기본 정보를 {"\n"}입력해주세요.</Text>
+        <View>
           <Text style={styles.headerText}>성별</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center',margin: 10, padding: 20,}}>        
         <Pressable
-         style={({pressed}) => [
-          styles.box,
-        ]} 
-         onPress={()=>console.log('여성')}>
+         style={({pressed}) => pressed ? 
+          styles.clicked : styles.unClicked
+        } 
+         onPress={()=>{console.log(click)
+                       setClick(!click);
+         }}>
          <Text style={styles.text}>여성</Text>
        </Pressable>
        <Pressable
-         style={styles.box} 
+          style={({pressed}) => pressed ? 
+          styles.clicked : styles.unClicked
+        } 
          onPress={()=>console.log('남성')}>
          <Text style={styles.text}>남성</Text>
        </Pressable>
@@ -87,8 +119,8 @@ const Basic1 = ({navigation}) => {
           onSubmitEditing={()=>console.log(age)}
           />  
       
-        <TextInput style={styles.header} placeholder="신장을 입력해주세요" onChangeText={setHeight} value={height} keyboardType="numeric"></TextInput>
-        <TextInput style={styles.header} placeholder="몸무게를 입력해주세요" onChangeText={setWeight} value={weight} keyboardType="numeric" ></TextInput>
+        <TextInput style={styles.header} placeholder="신장을 입력해주세요" onChangeText={setHeight} value={height} keyboardType="numeric" onSubmitEditing={()=>console.log(height)} ></TextInput>
+        <TextInput style={styles.header} placeholder="몸무게를 입력해주세요" onChangeText={setWeight} value={weight} keyboardType="numeric" onSubmitEditing={()=>console.log(weight)}></TextInput>
         <Text style={{fontSize: 15, fontWeight: 'bold', color: '#590DE1', marginTop: 20}}>식단의 목적</Text>
         <DropDownPicker
          style={{
@@ -103,14 +135,12 @@ const Basic1 = ({navigation}) => {
           setValue={setValue}
           setItems={setItems}
           textStyle={{ fontSize: 15}}
-          onPress={() => console.log('was the picker open?', value)}
         />
-         
         <Pressable
         style={styles.button}
-        onPress={()=> navigation.navigate('Basic2')}
+        onPress={()=> navigation.navigate('Basic2',{basicInformation})}
         >
-        <Text style={{color: 'white'}}>다음</Text>
+        <Text style={{color: 'white'}}>다음</Text> 
       </Pressable>
       </SafeAreaView>
     );

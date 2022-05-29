@@ -19,7 +19,7 @@ const BottomTab = createBottomTabNavigator();
 const LoginNavigator = () => {
     return(
         <Stack.Navigator screenOptions = {{headerShown: false}}>
-            <Stack.Screen name="로그인" component={Login}/>
+            {/* <Stack.Screen name="로그인" component={Login}/> */}
             <Stack.Screen name="Basic1" component={Basic1}/>
             <Stack.Screen name="Basic2" component={Basic2}/>
             <Stack.Screen name="Basic3" component={Basic3}/>
@@ -42,11 +42,14 @@ const BasketTab = () => {
 
 const MainTabs = () => {
     return(
-        <BottomTab.Navigator>
+        <BottomTab.Navigator >
             <BottomTab.Screen 
+               
                 name="Home"
                 component={Home}
                 options={{
+                    headerShown: false,
+                    tabBarShowLabel: false,
                     tabBarIcon: ({color, focused}) => (
                         <Image
                           source={
@@ -62,7 +65,8 @@ const MainTabs = () => {
             <BottomTab.Screen
                 name="Profile"
                 component={Profile}
-                options={{
+                options={{                    
+                    headerShown: false,
                     tabBarIcon: ({color, focused}) => (
                         <Image
                           source={

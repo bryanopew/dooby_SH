@@ -1,6 +1,6 @@
 
 import React, { Component, useState } from 'react';
-import { StyleSheet, SafeAreaView, View, Text, Button, Alert, TextInput, Pressable } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Button, Alert, TextInput, Pressable, BackHandler } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const styles = StyleSheet.create({
@@ -43,28 +43,21 @@ const styles = StyleSheet.create({
 });
 
 
+const Basic2 = ({navigation, basicInformation}) => {
+    console.log(basicInformation);
 
-const Basic2 = ({navigation}) => {
     const [base, setBase] = useState("");
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
     const [wtime, setWtime] = useState([
-      {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
-      {label: '체중 증량', value: '증가', },
-      {label: '체중 유지', value: '유지', },
-      {label: '체중 ', value: '1', },
-      {label: '체중 유지', value: '2', }
+      {label: '하루 30분 이하', value: '1', },
     ]);
     const [atime, setAtime] = useState([
-      {label: '다이어트(한달에 3~4Kg 감량)', value: '감량', },
-      {label: '체중 증량', value: '증가', },
-      {label: '체중 유지', value: '유지', },
-      {label: '체중 ', value: '1', },
-      {label: '체중 유지', value: '2', }
+      {label: '하루 30분~1시간 이하', value: '2', },
     ]);
     return (
       <SafeAreaView>
-      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요</Text>
+      <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요.</Text>
        
         <TextInput style={styles.header} 
           placeholder="기초대사량을 알고 있다면 적어주세요(kcal)" 
