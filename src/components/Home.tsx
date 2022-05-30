@@ -10,17 +10,10 @@ import {
     View,
     Button
   } from 'react-native';
-import * as Progress from 'react-native-progress';
 
-import Header from '../Components/HomeCompo/Header';
- 
 
-  const Nutrient = () => {
-    return(
-    <>
-    <Progress.Bar progress={0.3} width={200} />
-    </>)
-  }
+import Header from '../Components/HomeCompo/Header'; 
+import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar'
 
   const Category = () => {
     return(<Text>카테고리</Text>)
@@ -36,7 +29,7 @@ import Header from '../Components/HomeCompo/Header';
       return(
         <>
         <Header />
-        <Nutrient />
+        <NutrientsBar />
         <Category />
         <Menus />
         </>
