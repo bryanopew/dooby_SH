@@ -19,7 +19,7 @@ import {
   Button
 } from 'react-native';
 
-import Basic1 from './Components/Basic1';
+import Basic1 from './Components/InputInformation/Basic1';
 import Navigator from './Screens/Navigator';
 import Login from './Screens/Login';
 

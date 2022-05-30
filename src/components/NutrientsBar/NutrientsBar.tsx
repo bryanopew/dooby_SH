@@ -18,19 +18,18 @@ import Carbon from './Nutrients/Carbon';
 import Protein from './Nutrients/Protein';
 import Fat from './Nutrients/Fat';
 
-const BarView =styled.View`
-  flex: 1;
-  alignItems
-`;
-
+const Container = styled.View`
+  background-color: papayawhip;
+  flex-direction: row;
+`
 const NutrientsBar = () => {
     return(
-        <BarView>
+        <Container>
         <Cal />
         <Carbon />
         <Protein />
         <Fat />
-        </BarView>
+        </Container>
     )
 }
 

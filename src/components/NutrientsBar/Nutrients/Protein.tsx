@@ -12,27 +12,8 @@ import {
   } from 'react-native';
 import * as Progress from 'react-native-progress';
 import styled from "styled-components/native";
+import {nutrientStyle} from '~/Components/NutrientsBar/Nutrients/nutrientStyle';
 
-
-
-const BarView = styled.View`
-width: 40%;
-padding: 0 15px;
-  flex-direction: row;
-  margin-top: 20px;
-`;
- 
-const Bar = styled.View`
-  margin: 10px 0;
-  flex: 1;
-`;
- 
-const BarText = styled.Text`
-  width: 40px;
-  text-align: center;
-  font-size: 15px;
-  padding: 3px 0 0 5px;
-`;
 
 const Protein = () => {
   
@@ -51,22 +32,22 @@ const Protein = () => {
     const length = tasksValue.length;
     const completed = tasksValue.filter((task) => task.boolean === true).length;
     return (
-      <BarView>
-          <BarText>
+      <nutrientStyle.BarView>
+          <nutrientStyle.BarText>
           단백질(g)
-        </BarText>
-        <Bar>
+        </nutrientStyle.BarText>
+        <nutrientStyle.Bar>
           <Progress.Bar
             progress={completed / length}
             width={null}
-            height={8}
+            height={10}
             color={"rgba(51, 65, 159, 0.8)"}
           />
-        </Bar>
-        <BarText>
+        </nutrientStyle.Bar>
+        <nutrientStyle.BarNumber>
           {completed}/{length}
-        </BarText>
-      </BarView>
+        </nutrientStyle.BarNumber>
+      </nutrientStyle.BarView>
     );
   };
 

@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import {Text, View, TextInput,Button, StyleSheet, TouchableOpacity } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-import Basic1 from '~/Components/Basic1';
+import Basic1 from '~/Components/InputInformation/Basic1';
 
 const styles = StyleSheet.create({
     button: {

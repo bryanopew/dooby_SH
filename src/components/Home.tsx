@@ -14,11 +14,8 @@ import {
 
 import Header from '../Components/HomeCompo/Header'; 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar'
-
-  const Category = () => {
-    return(<Text>카테고리</Text>)
-  }
-
+import CategoryBar from '~/Components/HomeCompo/CategoryBar';
+ 
   const Menus =() => {
       return(
         <Text>식단 1</Text>
@@ -30,7 +27,7 @@ import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar'
         <>
         <Header />
         <NutrientsBar />
-        <Category />
+        <CategoryBar />
         <Menus />
         </>
       )
