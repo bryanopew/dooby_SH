@@ -49,7 +49,6 @@ interface Props {
       return(
         <>
         <NutrientsBar />
-        <Category />
         <Menus />
         </>
       )

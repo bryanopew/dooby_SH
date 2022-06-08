@@ -129,11 +129,12 @@ const Basic1 = ({navigation}) => {
     function okNext (){
       if(gender !== 'not' && age !== "" && height !== "" && weight !== ""){
        return setIsDisabled(false)
+      } else {
+        return setIsDisabled(true)
       }
     }
     useEffect(()=>{
       okNext();
-      console.log(isDisabled)
     },[])
 
     return (
@@ -172,7 +173,7 @@ const Basic1 = ({navigation}) => {
           onChangeText={setAge} 
           value={age} 
           keyboardType="numeric"  
-          onSubmitEditing={()=>checkAge()}
+          onSubmitEditing={()=>setAge(age)}
           />  
         <Text style={styles.headerText}>신장(cm) </Text>
         <TextInput style={styles.textInput} 
@@ -190,7 +191,7 @@ const Basic1 = ({navigation}) => {
           maxLength={3}
           value={weight} 
           keyboardType="numeric" 
-          onSubmitEditing={()=>setWeight(weight)} >
+          onSubmitEditing={()=>okNext()} >
         </TextInput>
         <Text style={styles.headerText}>식단의 목적</Text>
         <DropDownPicker
@@ -210,7 +211,7 @@ const Basic1 = ({navigation}) => {
       <Pressable
         disabled={isDisabled}
         style={isDisabled ? styles.disabledButton : styles.button}
-        onPress={()=> navigation.navigate('Basic2',{basicInformation})}
+        onPress={()=> navigation.navigate('Basic2',{item : BMR})}
         >
         <Text style={{color: 'white'}}>다음</Text> 
       </Pressable>

@@ -43,22 +43,31 @@ const styles = StyleSheet.create({
 });
 
 
-const Basic2 = ({navigation, basicInformation}) => {
-    console.log(basicInformation);
+const Basic2 = ({route, navigation}) => {
+   const {item} = route.params
+   console.log(item)
 
     const [base, setBase] = useState("");
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
     const [wtime, setWtime] = useState([
       {label: '하루 30분 이하', value: '1', },
+      {label: '하루 30분~1시간 이하', value: '2', },
+      {label: '하루 1시간~1시간30분이하', value: '3', },
+      {label: '하루 1시간30분~2시간 이하', value: '4', },
+      {label: '하루 2시간 이상', value: '5', },
     ]);
     const [atime, setAtime] = useState([
+      {label: '하루 30분 이하', value: '1', },
       {label: '하루 30분~1시간 이하', value: '2', },
+      {label: '하루 1시간~1시간30분이하', value: '3', },
+      {label: '하루 1시간30분~2시간 이하', value: '4', },
+      {label: '하루 2시간 이상', value: '5', },
     ]);
     return (
       <SafeAreaView>
       <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요.</Text>
-       
+       <Text>유저의 기초대사량: {JSON.stringify(item)} </Text>
         <TextInput style={styles.header} 
           placeholder="기초대사량을 알고 있다면 적어주세요(kcal)" 
           onChangeText={setBase} 
