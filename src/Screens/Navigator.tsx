@@ -6,12 +6,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {UserContext} from '~/Context/User';
 import Loading from '../Components/Loading';
-import Basic1 from '../Components/Basic1'
-import Basic2 from '../Components/Basic2'
-import Basic3 from '../Components/Basic3'
+import Basic1 from '~/Components/BasicInput/Basic1'
+import Basic2 from '~/Components/BasicInput/Basic2'
+import Basic3 from '~/Components/BasicInput/Basic3'
 import Login from './Login';
 import Home from '../Components/Home';
 import Profile from '../Components/Profile';
+import Basket from '../Components/HomeCompo/Basket';
+import Search from '../Components/HomeCompo/Search'
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -34,19 +36,59 @@ const BasketTab = () => {
             <Stack.Screen
                 name="Basket"
                 component={Basket}
-                options={{title: "장바구니"}}
+                options={{
+                  headerShown: false,  
+                  title: "장바구니"}}
             />
         </Stack.Navigator>
     );
 };
 
+const SearchTab = () => {
+    return(
+        <Stack.Navigator>
+          <Stack.Screen 
+            name="Search"
+            component={Search}
+            options={{
+                headerShown: false,  
+            }}
+          />
+        </Stack.Navigator>
+    )
+}
+
+const HomeTab = () => {
+    return(
+        <Stack.Navigator>
+            <Stack.Screen
+              name="식단"
+              component={Home}
+            />
+        <Stack.Screen 
+          name="BasketTab" 
+          component={BasketTab}
+          options={{
+            title: "장바구니"}}
+          />
+        <Stack.Screen 
+          name="SearchTab" 
+          component={SearchTab}
+          options={{
+            title: "검색"}}
+          />
+        </Stack.Navigator>
+    )
+}
+
+
+
 const MainTabs = () => {
     return(
         <BottomTab.Navigator >
-            <BottomTab.Screen 
-               
+            <BottomTab.Screen                
                 name="Home"
-                component={Home}
+                component={HomeTab}
                 options={{
                     headerShown: false,
                     tabBarShowLabel: false,

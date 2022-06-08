@@ -19,7 +19,7 @@ import Protein from './Nutrients/Protein';
 import Fat from './Nutrients/Fat';
 
 const Container = styled.View`
-  background-color: papayawhip;
+  background-color: white;
   flex-direction: row;
 `
 const NutrientsBar = () => {

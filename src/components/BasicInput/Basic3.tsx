@@ -3,9 +3,9 @@ import React, { Component, useState } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Button, Switch, Alert, TextInput, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import AutoDo from './TargetCal/AutoDo';
-import Calcul from './TargetCal/Calcul';
-import Manual from './TargetCal/Manual';
+import AutoDo from '~/Components/TargetCal/AutoDo';
+import Calcul from '../TargetCal/Calcul';
+import Manual from '../TargetCal/Manual';
 
 const styles = StyleSheet.create({
   button: {
@@ -26,7 +26,7 @@ const Basic3 = ({navigation}) => {
       <Manual />
         <Pressable
         style={styles.button}
-        onPress={()=> navigation.navigate('MainTabs')}
+        onPress={()=> navigation.reset({routes: [{name: 'MainTabs'}]})}
         >
         <Text style={{color: 'white'}}>다음</Text>
       </Pressable>
