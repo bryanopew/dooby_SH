@@ -14,7 +14,7 @@ const CategoryName = Styled.Text`
   font-weight: bold;
 `;
 
-const item =["도시락", "닭가슴살", "다양하게", "테스트","해봅시다", "어디까지","움직이는지"]
+const item =["전체","도시락", "샐러드", "고기", "바/과자","음료"]
 
 const CategoryList = () => {
   return (
@@ -27,7 +27,7 @@ const CategoryList = () => {
       }}
       renderItem={({ item, index }) => (
         <CategoryContainer>
-          <CategoryName style={{borderWidth: 0.2, borderRadius: 10, padding:5, width: 70,}} numberOfLines={1}>{item}</CategoryName>
+          <CategoryName numberOfLines={1}>{item}</CategoryName>
         </CategoryContainer>
       )}
     />

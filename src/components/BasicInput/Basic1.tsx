@@ -92,20 +92,12 @@ const Basic1 = ({navigation}) => {
       } 
     }
     const [items, setItems] = useState([
-      {label: '다이어트(한 달 1~2kg감량)', value: '12감량', },
-      {label: '다이어트(한 달 3~4kg감량)', value: '34감량', },
-      {label: '체중유지', value: '유지', },
-      {label: '체중증가(한 달 1~2kg증량) ', value: '12증량', },
-      {label: '체중증가(한 달 3~4kg증량)', value: '34증량', }
+      {label: '다이어트(한 달 1~2kg감량)', value: '1', },
+      {label: '다이어트(한 달 3~4kg감량)', value: '2', },
+      {label: '체중유지', value: '3', },
+      {label: '체중증가(한 달 1~2kg증량) ', value: '4', },
+      {label: '체중증가(한 달 3~4kg증량)', value: '5', }
     ]);
-
-    const basicInformation = {
-      age,
-      height,
-      weight,
-      value,
-    }
-    console.log(basicInformation)
     const genderSelect = () => {
       switch(true){
         case womanClick:
@@ -117,6 +109,15 @@ const Basic1 = ({navigation}) => {
       } 
     }
     const gender = genderSelect();
+    const basicInformation = {
+      age,
+      height,
+      weight,
+      value,
+      gender,
+    }
+    console.log(basicInformation)
+    
     const bmrCalcul = () => {
       if(gender === 'male') {
         return 10*weight + 6.25*height-(5*age)+5
@@ -214,7 +215,7 @@ const Basic1 = ({navigation}) => {
       <Pressable
         disabled={isDisabled}
         style={isDisabled ? styles.disabledButton : styles.button}
-        onPress={()=> navigation.navigate('Basic2',{item : BMR})}
+        onPress={()=> navigation.navigate('Basic2',{item : BMR, weight})}
         >
         <Text style={{color: 'white'}}>다음</Text> 
       </Pressable>
