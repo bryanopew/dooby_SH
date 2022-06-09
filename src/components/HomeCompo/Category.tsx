@@ -21,13 +21,13 @@ const CategoryList = () => {
     <FlatList
       data={item}
       horizontal={true}
-      showsHorizontalScrollIndicator={false}
+      showsHorizontalScrollIndicator={true}
       keyExtractor={(item, index) => {
         return `category-${index}`;
       }}
       renderItem={({ item, index }) => (
         <CategoryContainer>
-          <CategoryName numberOfLines={1}>{item}</CategoryName>
+          <CategoryName style={{borderWidth: 0.2, borderRadius: 10, padding:5, width: 70,}} numberOfLines={1}>{item}</CategoryName>
         </CategoryContainer>
       )}
     />

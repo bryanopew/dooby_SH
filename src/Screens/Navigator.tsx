@@ -20,12 +20,12 @@ const BottomTab = createBottomTabNavigator();
 
 const LoginNavigator = () => {
     return(
-        <Stack.Navigator screenOptions = {{headerShown: false}}>
+        <Stack.Navigator screenOptions = {{headerShown: true}}>
             {/* <Stack.Screen name="로그인" component={Login}/> */}
-            <Stack.Screen name="Basic1" component={Basic1}/>
-            <Stack.Screen name="Basic2" component={Basic2}/>
-            <Stack.Screen name="Basic3" component={Basic3}/>
-            <Stack.Screen name="MainTabs" component={MainTabs}/>
+            <Stack.Screen name="Basic1" component={Basic1} options={{ headerShown: false}}/>
+            <Stack.Screen name="Basic2" component={Basic2} options ={{title: ''}} />
+            <Stack.Screen name="Basic3" component={Basic3} options ={{title: ''}}/>
+            <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false}}/>
         </Stack.Navigator>
     );
 };

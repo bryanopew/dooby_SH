@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Button, Alert, TextInput, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const styles = StyleSheet.create({
@@ -138,7 +139,8 @@ const Basic1 = ({navigation}) => {
     },[])
 
     return (
-      <SafeAreaView>
+      <SafeAreaView >
+      <ScrollView >
       <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 15}}>기본 정보를 {"\n"}입력해주세요.</Text>
         <View>
           <Text style={styles.headerText}>성별</Text>
@@ -207,6 +209,7 @@ const Basic1 = ({navigation}) => {
           setValue={setValue}
           setItems={setItems}
           textStyle={{ fontSize: 15}}
+          listMode="SCROLLVIEW" 
         />
       <Pressable
         disabled={isDisabled}
@@ -215,6 +218,7 @@ const Basic1 = ({navigation}) => {
         >
         <Text style={{color: 'white'}}>다음</Text> 
       </Pressable>
+      </ScrollView>
       </SafeAreaView>
     );
   };

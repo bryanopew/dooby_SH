@@ -13,7 +13,7 @@ import {
 
   const Menu =() => {
       return(
-        <Text>식단</Text>
+        <Text>프로필탭</Text>
       )
   }
   

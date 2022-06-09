@@ -1,0 +1,3 @@
+type MenuTabList = {
+    Menu: undefined;
+  };

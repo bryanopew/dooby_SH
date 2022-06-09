@@ -1,7 +1,8 @@
 
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Button, Alert, TextInput, Pressable, BackHandler } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+
 
 const styles = StyleSheet.create({
  
@@ -64,6 +65,7 @@ const Basic2 = ({route, navigation}) => {
       {label: '하루 1시간30분~2시간 이하', value: '4', },
       {label: '하루 2시간 이상', value: '5', },
     ]);
+    
     return (
       <SafeAreaView>
       <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요.</Text>
