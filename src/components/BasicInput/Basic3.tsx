@@ -2,6 +2,8 @@
 import React, { Component, useState } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Button, Switch, Alert, TextInput, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { ScrollView } from 'react-native-gesture-handler';
+
 
 import AutoDo from '~/Components/TargetCal/AutoDo';
 import Calcul from '../TargetCal/Calcul';
@@ -20,12 +22,15 @@ const styles = StyleSheet.create({
 
 });
 
-const Basic3 = ({navigation}) => {
+const Basic3 = ({route, navigation}) => {
+  const {info, target, conTarget} = route.params
+  console.log(target)
     return (
       <SafeAreaView>
+      <ScrollView>
       <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 10}}>목표 섭취량을 {"\n"}입력해주세요</Text>
       <View style={styles.box}>
-      <AutoDo />       
+      <AutoDo info={info} target={target} conTarget={conTarget}/>       
       </View>  
       <View style={styles.box}>
       <Calcul />
@@ -37,6 +42,7 @@ const Basic3 = ({navigation}) => {
         >
       <Text style={{color: 'white'}}>다음</Text>
       </Pressable>
+      </ScrollView>
       </SafeAreaView>
     );
   };

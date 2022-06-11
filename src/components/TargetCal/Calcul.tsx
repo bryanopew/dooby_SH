@@ -2,7 +2,30 @@ import React, { Component, useState } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, Button, Switch, Alert, TextInput, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const Calcul = () => {
+const styles = StyleSheet.create({
+  button: {
+      marginTop: 10,
+      marginBottom: 10,
+      alignItems: "center",
+      backgroundColor: 'white',
+      padding: 20,
+      color: 'grey'
+    },
+  contents: {
+      marginTop: 10,
+      marginBottom: 10,
+  },
+  text: {
+      color: '#590DE1',
+      marginLeft: 10,
+  },
+  emph: {
+      color: 'blue'
+  }
+})
+
+
+const Portion = () => {
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
     const [cal, setCal] = useState([
@@ -30,5 +53,21 @@ const Calcul = () => {
    </>
    )
 }
+const Calcul = (props) => {
+  const [open, setOpen] = useState(false);
+  const handleClick = () =>setOpen(!open);
+  return(
+      <>
+      <Pressable style={styles.button} onPress={handleClick}><Text>탄:단:지 비율로 계산하기</Text></Pressable>
+     {open &&
+      <View>
+      <Text style={styles.text}>탄수화물:단백질:지방 비율</Text>
+      <Portion />
+      <Text style={styles.text}>한 끼 칼로리(kcal)입력(추천:data)</Text>
+      <TextInput placeholder="0kcal"/>
+      </View> }
+      </>
+  )
+}
 
-export default Calcul;
+export default Calcul

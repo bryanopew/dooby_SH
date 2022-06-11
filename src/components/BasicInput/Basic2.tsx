@@ -47,9 +47,8 @@ const styles = StyleSheet.create({
 
 
 const Basic2 = ({route, navigation}) => {
-   const {item, weight} = route.params
-   console.log(item)
-   console.log(weight)
+   const {item, weight, target, conTarget} = route.params
+   console.log(item, target)
     const [base, setBase] = useState("");
     const [wValue, setWvalue] = useState();
     const [aValue, setAvalue] = useState();
@@ -92,10 +91,7 @@ const Basic2 = ({route, navigation}) => {
     // if(value = w5) => 120
     const wcal = 0.0175*6*weight*JSON.stringify(wValue)
     const acal = 0.0175*7*weight*JSON.stringify(aValue)
-    console.log(wcal, '웨이트 대사량')
-    console.log(acal, '유산소 대사량')
     const AMR = wcal + acal + item*0.2
-    console.log(AMR);
     return (
       <SafeAreaView>
       <Text style={{fontSize: 30, fontWeight: 'bold', color: 'black', marginBottom: 20}}>선택 정보를 {"\n"}입력해주세요.</Text>
@@ -146,7 +142,7 @@ const Basic2 = ({route, navigation}) => {
          
         <Pressable
         style={styles.button}
-        onPress={()=>navigation.navigate('Basic3')}
+        onPress={()=>navigation.navigate('Basic3', {info: Math.round(AMR)+item, target, conTarget})}
         >
         <Text style={{color: 'white'}}>다음</Text>
       </Pressable>

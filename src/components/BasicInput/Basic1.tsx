@@ -92,11 +92,11 @@ const Basic1 = ({navigation}) => {
       } 
     }
     const [items, setItems] = useState([
-      {label: '다이어트(한 달 1~2kg감량)', value: '1', },
-      {label: '다이어트(한 달 3~4kg감량)', value: '2', },
-      {label: '체중유지', value: '3', },
-      {label: '체중증가(한 달 1~2kg증량) ', value: '4', },
-      {label: '체중증가(한 달 3~4kg증량)', value: '5', }
+      {label: '다이어트(한 달 1~2kg감량)', value: '12dec', },
+      {label: '다이어트(한 달 3~4kg감량)', value: '34dec', },
+      {label: '체중유지', value: 'main', },
+      {label: '체중증가(한 달 1~2kg증량) ', value: '12inc', },
+      {label: '체중증가(한 달 3~4kg증량)', value: '34inc', }
     ]);
     const genderSelect = () => {
       switch(true){
@@ -109,15 +109,31 @@ const Basic1 = ({navigation}) => {
       } 
     }
     const gender = genderSelect();
+      let target;
+      let conTarget;
+      switch (value){
+        case '12dec' : target="한달 1~2kg감량"; conTarget="500kcal"
+        break;
+        case '34dec' : target="한달 3~4kg감량"; conTarget="700kcal"
+        break;
+        case 'main' : target="유지"; conTarget="0kcal"
+        break;
+        case '12inc' : target="한달 1~2kg증량"; conTarget="500kcal"
+        break;
+        case '34inc' : target="한달 3~4kg증량"; conTarget="700kcal"
+        break;
+        default: 
+      }
+      console.log(target)
     const basicInformation = {
       age,
       height,
       weight,
-      value,
+      target,
+      conTarget,
       gender,
     }
-    console.log(basicInformation)
-    
+    // console.log(basicInformation)
     const bmrCalcul = () => {
       if(gender === 'male') {
         return 10*weight + 6.25*height-(5*age)+5
@@ -210,12 +226,12 @@ const Basic1 = ({navigation}) => {
           setValue={setValue}
           setItems={setItems}
           textStyle={{ fontSize: 15}}
-          listMode="SCROLLVIEW" 
+          listMode="SCROLLVIEW"    
         />
       <Pressable
         disabled={isDisabled}
         style={isDisabled ? styles.disabledButton : styles.button}
-        onPress={()=> navigation.navigate('Basic2',{item : BMR, weight})}
+        onPress={()=> navigation.navigate('Basic2',{item : BMR, weight, target, conTarget})}
         >
         <Text style={{color: 'white'}}>다음</Text> 
       </Pressable>
