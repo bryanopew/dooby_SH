@@ -1,26 +1,22 @@
 import React from 'react';
 import {
-    FlatList,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
-    Button
-  } from 'react-native';
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Button,
+} from 'react-native';
 
-  const Menu =() => {
-      return(
-        <Text>프로필탭</Text>
-      )
-  }
-  
-  const Profile = () => {
-      return(
-        <Menu />
-      )
-  }
+const Menu = () => {
+  return <Text>프로필탭</Text>;
+};
 
-  export default Profile;
+const Profile = () => {
+  return <Menu />;
+};
+
+export default Profile;

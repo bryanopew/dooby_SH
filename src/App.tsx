@@ -7,27 +7,18 @@
  */
 
 import React from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button
-} from 'react-native';
 
+import {Provider} from 'react-redux';
+import store from './stores/store/store';
 import Navigator from './Screens/Navigator';
 import Login from './Screens/Login';
 
-
 const App: () => Node = () => {
   return (
-    <Navigator />
-    );
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
+  );
 };
-
 
 export default App;

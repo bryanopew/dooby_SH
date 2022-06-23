@@ -1,4 +1,4 @@
-import { keysToCamel } from '~utils/converter';
+import { keysToCamel } from '~/utils/converter';
 import { CLEAR_ERRORS, GET_ERRORS } from './errorTypes';
 
 export const returnErrors = (

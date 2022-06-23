@@ -19,10 +19,12 @@
     "@react-navigation/stack": "^6.2.1",
     "@types/react": "^18.0.9",
     "@types/react-native": "^0.67.7",
+    "axios": "^0.27.2",
     "babel-plugin-root-import": "^6.6.0",
     "jshint": "^2.13.4",
     "react": "17.0.2",
     "react-native": "0.67.4",
+    "react-native-config": "^1.4.6",
     "react-native-dropdown-picker": "^5.4.2",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-progress": "^5.0.0",
@@ -32,6 +34,7 @@
     "react-native-svg": "^12.3.0",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
+    "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
@@ -45,6 +48,14 @@
     "react-test-renderer": "17.0.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
