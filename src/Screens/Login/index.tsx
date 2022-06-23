@@ -14,8 +14,6 @@ import {loginWithKaKaoTalk} from '~/stores/actions/auth/authActions';
 
 import MySpinner from '~/Components/my-spinner';
 
-const edges: Edge[] = ['right', 'left', 'top', 'bottom'];
-
 const styles = StyleSheet.create({
   button: {
     borderRadius: 8,
@@ -33,7 +31,6 @@ const styles = StyleSheet.create({
 
 const Login = () => {
   const [result, setResult] = useState<string>('');
-  const dispatch = useDispatch();
 
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
