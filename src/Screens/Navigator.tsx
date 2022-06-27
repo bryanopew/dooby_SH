@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
+import * as React from 'react';
 import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {UserContext} from '~/Context/User';
 import Loading from '../Components/Loading';
 import Basic1 from '~/Components/BasicInput/Basic1';
 import Basic2 from '~/Components/BasicInput/Basic2';
@@ -135,13 +134,9 @@ const MainNavigator = () => {
 };
 
 export default () => {
-  const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
-  if (isLoading === true) {
-    return <Loading />;
-  }
   return (
     <NavigationContainer>
-      {userInfo ? <MainNavigator /> : <LoginNavigator />}
+      <Login />
     </NavigationContainer>
   );
 };
