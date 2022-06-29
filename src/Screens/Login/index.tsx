@@ -1,4 +1,4 @@
-import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+import {KakaoOAuthToken, login, logout} from '@react-native-seoul/kakao-login';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Text,
@@ -11,8 +11,6 @@ import {
 import {useDispatch} from 'react-redux';
 import {Edge, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {loginWithKakaoTalk} from '~/stores/actions/auth/authActions';
-
-import MySpinner from '~/Components/my-spinner';
 
 const styles = StyleSheet.create({
   button: {
@@ -30,45 +28,47 @@ const styles = StyleSheet.create({
 });
 
 const Login = props => {
-  const [result, setResult] = useState<string>('');
+  //   const [result, setResult] = useState<string>('');
 
-  const signInWithKakao = async (): Promise<void> => {
-    try {
-      const token: KakaoOAuthToken = await login();
-
-      setResult(JSON.stringify(token));
-      console.log(token);
-    } catch (e) {
-      throw e;
-    }
-  };
-  //   const dispatch = useDispatch();
-  //   const {navigation} = props;
-
-  //   const onHandleLoginWithKakaoTalk = useCallback(async (): Promise<void> => {
+  //   const signInWithKakao = async (): Promise<void> => {
   //     try {
   //       const token: KakaoOAuthToken = await login();
-  //       const kakaotalkToken = token.accessToken;
-  //       requestAnimationFrame(() => {
-  //         dispatch(
-  //           loginWithKakaoTalk({kakaotalkToken}, (isSuccess, errMessage) => {
-  //             if (isSuccess) {
-  //               onMovePage();
-  //             } else {
-  //               console.log('error');
-  //             }
-  //           }),
-  //         );
-  //       });
-  //       const onMovePage = useCallback(() => {
-  //         navigation.navigate('Basic1');
-  //       }, []);
-  //     } catch (error) {
-  //       if (error) {
-  //         console.log('error: ', error);
-  //       }
+
+  //       setResult(JSON.stringify(token));
+  //       console.log(token);
+  //     } catch (e) {
+  //       throw e;
   //     }
-  //   }, []);
+  //   };
+  const dispatch = useDispatch();
+  const {navigation} = props;
+
+  const onHandleLoginWithKakaoTalk = useCallback(async (): Promise<void> => {
+    try {
+      const token: KakaoOAuthToken = await login();
+      const kakaotalkToken = token.accessToken;
+      requestAnimationFrame(() => {
+        dispatch(
+          loginWithKakaoTalk({kakaotalkToken}, (isSuccess, errMessage) => {
+            try {
+              logout();
+            } catch (error) {}
+            if (isSuccess) {
+              onMovePage();
+            }
+            console.log(token);
+          }),
+        );
+      });
+    } catch (error) {
+      if (error) {
+        console.log('error: ', error);
+      }
+    }
+  }, []);
+  const onMovePage = useCallback(() => {
+    navigation.navigate('Basic1');
+  }, []);
   return (
     <View>
       <Text
@@ -80,7 +80,7 @@ const Login = props => {
         }}>
         식단 조절은 {'\n'} 두비에게
       </Text>
-      <TouchableOpacity onPress={() => signInWithKakao()}>
+      <TouchableOpacity onPress={() => onHandleLoginWithKakaoTalk()}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>카카오 로그인</Text>
         </View>

@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
     },
     authReducer,
   ),
+  basicInfoReducer,
 });
 
 export default rootReducer;

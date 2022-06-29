@@ -4,10 +4,22 @@ import {keysToCamel, keysToSnake, wasFailed} from '~/utils/converter';
 import {UserType} from '~/stores/actions/user/userTypes';
 import {returnErrors} from '~/stores/actions/error/errorActions';
 
-const STATUS_ENUM = {
-  SUCCESS: 1,
-  FAILED: 0,
-  LOADING: -1,
+const initializeAxios = () => {
+  // const accessToken = localStorage.getItem('accessToken')
+  const headers: any = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
+  // if (accessToken) {
+  //   headers['Authorization'] = `Bearer ${accessToken}`
+  // }
+
+  return axios.create({
+    baseURL: BASE_URL + '/api/' + version,
+    timeout: 60000,
+    headers,
+    validateStatus: () => true,
+  });
 };
 
 export const onLoginSuccess =
@@ -23,13 +35,12 @@ export const onLoginSuccess =
         id: result?.id,
         accessToken: token,
       });
-      const user: UserType = keysToCamel(result);
       dispatch({
         type: LOGIN_USER,
         payload: auth,
       });
     } catch (error: any) {
-      console.log('error', error);
+      console.log('errorAuthActions', error);
       onDoneFunc(false, error?.response?.message);
     }
   };
@@ -41,7 +52,10 @@ export const loginWithKakaoTalk =
   ) =>
   async (dispatch: any) => {
     try {
-      const res = await axios.post('auth/login_with_kakaotalk', body);
+      const res = await axios.post(
+        'http://61.100.16.155:8080/api/every/oauth/get-kakao-token/',
+        body,
+      );
       if (res?.data?.code === 200) {
         const token = res?.data?.results?.token;
         dispatch(onLoginSuccess(res?.data?.results?.object, token, onDoneFunc));

@@ -21,7 +21,7 @@ const BottomTab = createBottomTabNavigator();
 const LoginNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: true}}>
-      <Stack.Screen name="로그인" component={Login} />
+      {/* <Stack.Screen name="로그인" component={Login} /> */}
       <Stack.Screen
         name="Basic1"
         component={Basic1}
@@ -141,7 +141,7 @@ export default () => {
   }
   return (
     <NavigationContainer>
-      {userInfo ? <MainNavigator /> : <Login />}
+      {userInfo ? <MainNavigator /> : <LoginNavigator />}
     </NavigationContainer>
   );
 };
