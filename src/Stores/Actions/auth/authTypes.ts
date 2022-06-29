@@ -18,4 +18,3 @@ export interface RegisterUser {
 }
 
 export type AuthDispatchTypes = LoginUser | RegisterUser;
-

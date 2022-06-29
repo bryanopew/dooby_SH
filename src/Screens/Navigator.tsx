@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext} from 'react';
 import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import Home from '../Components/Home';
 import Profile from '../Components/Profile';
 import Basket from '../Components/HomeCompo/Basket';
 import Search from '../Components/HomeCompo/Search';
+import {UserContext} from '~/Context/User';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -20,7 +21,7 @@ const BottomTab = createBottomTabNavigator();
 const LoginNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: true}}>
-      {/* <Stack.Screen name="로그인" component={Login}/> */}
+      <Stack.Screen name="로그인" component={Login} />
       <Stack.Screen
         name="Basic1"
         component={Basic1}
@@ -134,9 +135,13 @@ const MainNavigator = () => {
 };
 
 export default () => {
+  const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
+  if (isLoading === true) {
+    return <Loading />;
+  }
   return (
     <NavigationContainer>
-      <Login />
+      {userInfo ? <MainNavigator /> : <Login />}
     </NavigationContainer>
   );
 };

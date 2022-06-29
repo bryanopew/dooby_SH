@@ -30,45 +30,45 @@ const styles = StyleSheet.create({
 });
 
 const Login = props => {
-  // const [result, setResult] = useState<string>('');
+  const [result, setResult] = useState<string>('');
 
-  // const signInWithKakao = async (): Promise<void> => {
-  //   try {
-  //     const token: KakaoOAuthToken = await login();
-
-  //     setResult(JSON.stringify(token));
-  //     console.log(token);
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // };
-  const dispatch = useDispatch();
-  const {navigation} = props;
-
-  const onHandleLoginWithKakaoTalk = useCallback(async (): Promise<void> => {
+  const signInWithKakao = async (): Promise<void> => {
     try {
       const token: KakaoOAuthToken = await login();
-      const kakaotalkToken = token.accessToken;
-      requestAnimationFrame(() => {
-        dispatch(
-          loginWithKakaoTalk({kakaotalkToken}, (isSuccess, errMessage) => {
-            if (isSuccess) {
-              onMovePage();
-            } else {
-              console.log('error');
-            }
-          }),
-        );
-      });
-      const onMovePage = useCallback(() => {
-        navigation.navigate('Basic1');
-      }, []);
-    } catch (error) {
-      if (error) {
-        console.log('error: ', error);
-      }
+
+      setResult(JSON.stringify(token));
+      console.log(token);
+    } catch (e) {
+      throw e;
     }
-  }, []);
+  };
+  //   const dispatch = useDispatch();
+  //   const {navigation} = props;
+
+  //   const onHandleLoginWithKakaoTalk = useCallback(async (): Promise<void> => {
+  //     try {
+  //       const token: KakaoOAuthToken = await login();
+  //       const kakaotalkToken = token.accessToken;
+  //       requestAnimationFrame(() => {
+  //         dispatch(
+  //           loginWithKakaoTalk({kakaotalkToken}, (isSuccess, errMessage) => {
+  //             if (isSuccess) {
+  //               onMovePage();
+  //             } else {
+  //               console.log('error');
+  //             }
+  //           }),
+  //         );
+  //       });
+  //       const onMovePage = useCallback(() => {
+  //         navigation.navigate('Basic1');
+  //       }, []);
+  //     } catch (error) {
+  //       if (error) {
+  //         console.log('error: ', error);
+  //       }
+  //     }
+  //   }, []);
   return (
     <View>
       <Text
@@ -80,7 +80,7 @@ const Login = props => {
         }}>
         식단 조절은 {'\n'} 두비에게
       </Text>
-      <TouchableOpacity onPress={() => onHandleLoginWithKakaoTalk()}>
+      <TouchableOpacity onPress={() => signInWithKakao()}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>카카오 로그인</Text>
         </View>
