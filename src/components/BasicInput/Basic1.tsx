@@ -99,11 +99,11 @@ const Basic1 = ({navigation}) => {
     }
   };
   const [items, setItems] = useState([
-    {label: '다이어트(한 달 1~2kg감량)', value: '12dec'},
-    {label: '다이어트(한 달 3~4kg감량)', value: '34dec'},
-    {label: '체중유지', value: 'main'},
-    {label: '체중증가(한 달 1~2kg증량) ', value: '12inc'},
-    {label: '체중증가(한 달 3~4kg증량)', value: '34inc'},
+    {label: '다이어트(한 달 1~2kg감량)', value: 'SP002001'},
+    {label: '다이어트(한 달 3~4kg감량)', value: 'SP002002'},
+    {label: '체중유지', value: 'SP002003'},
+    {label: '체중증가(한 달 1~2kg증량) ', value: 'SP002004'},
+    {label: '체중증가(한 달 3~4kg증량)', value: 'SP002005'},
   ]);
   const genderSelect = () => {
     switch (true) {
@@ -119,23 +119,23 @@ const Basic1 = ({navigation}) => {
   let target;
   let conTarget;
   switch (value) {
-    case '12dec':
+    case 'SP002001':
       target = '한달 1~2kg감량';
       conTarget = '500kcal';
       break;
-    case '34dec':
+    case 'SP002002':
       target = '한달 3~4kg감량';
       conTarget = '700kcal';
       break;
-    case 'main':
+    case 'SP002003':
       target = '유지';
       conTarget = '0kcal';
       break;
-    case '12inc':
+    case 'SP002004':
       target = '한달 1~2kg증량';
       conTarget = '500kcal';
       break;
-    case '34inc':
+    case 'SP002005':
       target = '한달 3~4kg증량';
       conTarget = '700kcal';
       break;
@@ -150,6 +150,22 @@ const Basic1 = ({navigation}) => {
     conTarget,
     gender,
   };
+  // const basicInformation2 = {
+  //   companyCd,
+  //   userId,
+  //   gender,
+  //   age,
+  //   height,
+  //   weight,
+  //   dietPurposeCd,
+  //   weightTimeCd,
+  //   aerobicTimeCd,
+  //   tandanjiRateCd,
+  //   calorie,
+  //   carb,
+  //   protein,
+  //   fat,
+  // };
   console.log(basicInformation);
   const bmrCalcul = () => {
     if (gender === 'male') {
@@ -241,8 +257,11 @@ const Basic1 = ({navigation}) => {
           onSubmitEditing={() => okNext()}></TextInput>
         <Text style={styles.headerText}>식단의 목적</Text>
         <DropDownPicker
+          dropDownContainerStyle={{
+            backgroundColor: '#dfdfdf',
+          }}
           style={{
-            borderColor: '#f0f8ff',
+            borderColor: '#dfdfdf',
             marginTop: 10,
           }}
           placeholder="식단의 목적"
@@ -254,6 +273,7 @@ const Basic1 = ({navigation}) => {
           setItems={setItems}
           textStyle={{fontSize: 15}}
           listMode="SCROLLVIEW"
+          dropDownDirection="BOTTOM"
         />
         <Pressable
           disabled={isDisabled}
