@@ -12,6 +12,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
 
+import NextButton from '~/Button/NextButton';
 const styles = StyleSheet.create({
   textInput: {
     borderBottomWidth: 0.2,
@@ -43,6 +44,16 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
+    color: '#590DE1',
+    paddingRight: 50,
+    paddingLeft: 50,
+    marginLeft: 10,
+  },
+  unClickText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
     color: 'grey',
     paddingRight: 50,
     paddingLeft: 50,
@@ -69,14 +80,19 @@ const styles = StyleSheet.create({
 });
 
 export interface Props {
-  age: number;
-  height: number;
-  weight: number;
-  value: string;
-  open: boolean;
-  womanClick: boolean;
-  manClick: boolean;
-  target: any;
+  companyCd: string;
+  userId: string;
+  gender: string;
+  age: string;
+  height: string;
+  weight: string;
+  dietPurposeCd: string;
+  weightTimeCd: string;
+  aerobicTimeCd: string;
+  calorie: string;
+  carb: string;
+  protein: string;
+  fat: string;
 }
 
 const Basic1 = ({navigation}) => {
@@ -88,6 +104,22 @@ const Basic1 = ({navigation}) => {
   const [womanClick, setWomanClick] = useState(false);
   const [manClick, setManClick] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [basicInformation, setBasicInformation] = useState({
+    companyCd: '',
+    userId: '',
+    gender: '',
+    age: '',
+    height: '',
+    weight: '',
+    dietPurposeCd: '',
+    weightPurposeCd: '',
+    aerobicTimeCd: '',
+    calorie: '',
+    carb: '',
+    protein: '',
+    fat: '',
+  });
+
   const genderClick1 = womanClick => {
     if (!womanClick) {
       setManClick(false);
@@ -116,8 +148,8 @@ const Basic1 = ({navigation}) => {
     }
   };
   const gender = genderSelect();
-  let target;
-  let conTarget;
+  let target: string;
+  let conTarget: any;
   switch (value) {
     case 'SP002001':
       target = '한달 1~2kg감량';
@@ -141,8 +173,7 @@ const Basic1 = ({navigation}) => {
       break;
     default:
   }
-  console.log(target);
-  const basicInformation = {
+  const basicInformation2 = {
     age,
     height,
     weight,
@@ -150,23 +181,7 @@ const Basic1 = ({navigation}) => {
     conTarget,
     gender,
   };
-  // const basicInformation2 = {
-  //   companyCd,
-  //   userId,
-  //   gender,
-  //   age,
-  //   height,
-  //   weight,
-  //   dietPurposeCd,
-  //   weightTimeCd,
-  //   aerobicTimeCd,
-  //   tandanjiRateCd,
-  //   calorie,
-  //   carb,
-  //   protein,
-  //   fat,
-  // };
-  console.log(basicInformation);
+  console.log(basicInformation2);
   const bmrCalcul = () => {
     if (gender === 'male') {
       return 10 * weight + 6.25 * height - 5 * age + 5;
@@ -177,7 +192,13 @@ const Basic1 = ({navigation}) => {
   const BMR = bmrCalcul();
 
   function okNext() {
-    if (gender !== 'not' && age !== '' && height !== '' && weight !== '') {
+    if (
+      gender !== 'not' &&
+      age !== '' &&
+      height !== '' &&
+      weight !== '' &&
+      target !== ''
+    ) {
       return setIsDisabled(false);
     } else {
       return setIsDisabled(true);
@@ -186,7 +207,9 @@ const Basic1 = ({navigation}) => {
   useEffect(() => {
     okNext();
   }, []);
-
+  const goNext = () => {
+    navigation.navigate('Basic2');
+  };
   return (
     <SafeAreaView>
       <ScrollView>
@@ -216,7 +239,9 @@ const Basic1 = ({navigation}) => {
               genderClick1(womanClick);
               setWomanClick(!womanClick);
             }}>
-            <Text style={styles.text}>여성</Text>
+            <Text style={womanClick ? styles.text : styles.unClickText}>
+              여성
+            </Text>
           </Pressable>
           <Pressable
             style={manClick ? styles.clicked : styles.unClicked}
@@ -224,7 +249,9 @@ const Basic1 = ({navigation}) => {
               genderClick2(manClick);
               setManClick(!manClick);
             }}>
-            <Text style={styles.text}>남성</Text>
+            <Text style={manClick ? styles.text : styles.unClickText}>
+              남성
+            </Text>
           </Pressable>
         </View>
         <Text style={styles.headerText}>만 나이</Text>
@@ -253,8 +280,7 @@ const Basic1 = ({navigation}) => {
           onChangeText={setWeight}
           maxLength={3}
           value={weight}
-          keyboardType="numeric"
-          onSubmitEditing={() => okNext()}></TextInput>
+          keyboardType="numeric"></TextInput>
         <Text style={styles.headerText}>식단의 목적</Text>
         <DropDownPicker
           dropDownContainerStyle={{
@@ -274,6 +300,7 @@ const Basic1 = ({navigation}) => {
           textStyle={{fontSize: 15}}
           listMode="SCROLLVIEW"
           dropDownDirection="BOTTOM"
+          onChangeValue={okNext}
         />
         <Pressable
           disabled={isDisabled}
@@ -288,6 +315,7 @@ const Basic1 = ({navigation}) => {
           }>
           <Text style={{color: 'white'}}>다음</Text>
         </Pressable>
+        {/* <NextButton isDisabled={isDisabled} goNext={goNext} /> */}
       </ScrollView>
     </SafeAreaView>
   );

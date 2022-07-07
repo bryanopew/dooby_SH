@@ -39,7 +39,7 @@ const Login = props => {
       console.log(token.accessToken);
       try {
         console.log('try 블록 시작');
-        const res = await axios.post(
+        const res = await axios.get(
           `http://61.100.16.155:8080/api/every/token/get-token/${token.accessToken}`,
         );
         console.log('res error');

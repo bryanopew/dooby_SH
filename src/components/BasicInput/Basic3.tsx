@@ -31,6 +31,12 @@ const styles = StyleSheet.create({
 
 const Basic3 = ({route, navigation}) => {
   const {info, target, conTarget} = route.params;
+  const [open, setOpen] = useState({
+    autoOpen: false,
+    calOpen: false,
+    manual: false,
+  });
+
   console.log(target);
   return (
     <SafeAreaView>
@@ -50,7 +56,9 @@ const Basic3 = ({route, navigation}) => {
         <View style={styles.box}>
           <Calcul />
         </View>
-        <Manual />
+        <View style={styles.box}>
+          <Manual />
+        </View>
         <Pressable
           style={styles.button}
           onPress={() => navigation.reset({routes: [{name: 'MainTabs'}]})}>

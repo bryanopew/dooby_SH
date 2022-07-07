@@ -22,6 +22,7 @@ import Styled from 'styled-components/native';
 
 const HeaderRightContainer = Styled.View`
   flex-direction: row;
+  justify-content: flex-start;
 `;
 
 type NavigationProp = StackNavigationProp<HeaderTab, 'Header'>;
@@ -37,11 +38,6 @@ const Home = ({navigation}: Props) => {
           <IconButton
             iconName="search"
             onPress={() => navigation.navigate('SearchTab')}
-          />
-          <IconButton iconName="filter" />
-          <IconButton
-            iconName="basket"
-            onPress={() => navigation.navigate('BasketTab')}
           />
         </HeaderRightContainer>
       ),

@@ -115,12 +115,47 @@ const MainTabs = () => {
         component={Profile}
         options={{
           headerShown: false,
+          tabBarShowLabel: false,
           tabBarIcon: ({color, focused}) => (
             <Image
               source={
                 focused
                   ? require('~/Assets/Images/36_icon=profile_check.png')
                   : require('~/Assets/Images/36_icon=profile.png')
+              }
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="BasketTab"
+        component={Basket}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({color, focused}) => (
+            <Image
+              source={
+                focused
+                  ? require('~/Assets/Images/36_icon=basket.png')
+                  : require('~/Assets/Images/36_icon=basket.png')
+              }
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="search"
+        component={Search}
+        options={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({color, focused}) => (
+            <Image
+              source={
+                focused
+                  ? require('~/Assets/Images/36_icon=basket.png')
+                  : require('~/Assets/Images/36_icon=basket.png')
               }
             />
           ),

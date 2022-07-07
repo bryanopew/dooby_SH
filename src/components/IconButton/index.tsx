@@ -8,14 +8,11 @@ const Icon = Styled.Image`
 `;
 
 interface Props {
-  iconName:
-    | 'search'
-    | 'filter'
-    | 'basket'
+  iconName: 'search' | 'filter' | 'basket';
   style?: object;
   onPress?: () => void;
 }
-const IconButton = ({ iconName, style, onPress }: Props) => {
+const IconButton = ({iconName, style, onPress}: Props) => {
   const imageSource = {
     search: require('~/Assets/Images/36_icon=search.png'),
     filter: require('~/Assets/Images/36_icon=filter.png'),

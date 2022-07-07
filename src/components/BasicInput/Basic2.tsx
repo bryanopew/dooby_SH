@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useCallback} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -11,6 +11,9 @@ import {
   BackHandler,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+
+import WTimePicker from '~/Components/BasicInput/WTimePicker';
+import ATimePicker from '~/Components/BasicInput/ATimePicker';
 
 const styles = StyleSheet.create({
   header: {
@@ -29,6 +32,12 @@ const styles = StyleSheet.create({
     marginTop: 50,
     alignItems: 'center',
     backgroundColor: '#590DE1',
+    padding: 20,
+  },
+  disabledButton: {
+    marginTop: 80,
+    alignItems: 'center',
+    backgroundColor: 'grey',
     padding: 20,
   },
   box: {
@@ -54,28 +63,12 @@ const styles = StyleSheet.create({
 const Basic2 = ({route, navigation}) => {
   const {item, weight, target, conTarget} = route.params;
   console.log(item, target);
+  const [data, setData] = useState('');
+  const [aData, setAData] = useState('');
   const [base, setBase] = useState('');
-  const [wValue, setWvalue] = useState();
-  const [aValue, setAvalue] = useState();
-  const [wOpen, setWopen] = useState(false);
-  const [aOpen, setAopen] = useState(false);
-  const [wtime, setWtime] = useState([
-    {label: '안함', value: 'SP003001'},
-    {label: '하루 30분 이하', value: 'SP003002'},
-    {label: '하루 30분~1시간 이하', value: 'SP003003'},
-    {label: '하루 1시간~1시간30분이하', value: 'SP003004'},
-    {label: '하루 1시간30분~2시간 이하', value: 'SP003005'},
-    {label: '하루 2시간 이상', value: 'SP003006'},
-  ]);
-  const [atime, setAtime] = useState([
-    {label: '안함', value: 'SP004001'},
-    {label: '하루 30분 이하', value: 'SP004002'},
-    {label: '하루 30분~1시간 이하', value: 'SP004003'},
-    {label: '하루 1시간~1시간30분이하', value: 'SP004004'},
-    {label: '하루 1시간30분~2시간 이하', value: 'SP004005'},
-    {label: '하루 2시간 이상', value: 'SP004006'},
-  ]);
-
+  const [isDisabled, setIsDisabled] = useState(true);
+  const wValue = data;
+  const aValue = aData;
   // 1. (활동대사량 = 0.0175 * Mets * 몸무게 * 운동시간(분))
   //  웨이트 운동 METs 값은 6으로 계산
   //  유산소 운동 METs 값은 7로 계산
@@ -99,6 +92,18 @@ const Basic2 = ({route, navigation}) => {
   const wcal = 0.0175 * 6 * weight * JSON.stringify(wValue);
   const acal = 0.0175 * 7 * weight * JSON.stringify(aValue);
   const AMR = wcal + acal + item * 0.2;
+  function okNext() {
+    if (wValue === '' || aValue === '') {
+      return setIsDisabled(true);
+    } else {
+      return setIsDisabled(false);
+    }
+  }
+  useEffect(() => {
+    okNext();
+  }, []);
+  console.log('wvalue:', wValue, 'aValue:', aValue);
+
   return (
     <SafeAreaView>
       <Text
@@ -120,43 +125,12 @@ const Basic2 = ({route, navigation}) => {
         onSubmitEditing={() => console.log(base)}
       />
       <Text style={styles.headerText}>웨이트 운동시간</Text>
-      <DropDownPicker
-        style={{
-          borderColor: '#f0f8ff',
-          borderBottomWidth: 1,
-          marginBottom: 10,
-        }}
-        placeholder="웨이트 운동시간"
-        open={wOpen}
-        setOpen={setWopen}
-        value={wValue}
-        items={wtime}
-        setValue={setWvalue}
-        setItems={setWtime}
-        textStyle={{fontSize: 15}}
-        onPress={() => console.log('웨이트', wValue)}
-      />
+      <WTimePicker setData={setData} />
       <Text style={styles.headerText}>유산소 운동시간</Text>
-      <DropDownPicker
-        style={{
-          borderColor: '#f0f8ff',
-          borderBottomWidth: 1,
-        }}
-        zIndex={3000}
-        zIndexInverse={1000}
-        placeholder="유산소 운동시간"
-        open={aOpen}
-        setOpen={setAopen}
-        value={aValue}
-        items={atime}
-        setValue={setAvalue}
-        setItems={setAtime}
-        textStyle={{fontSize: 15}}
-        onPress={() => console.log('유산소', aValue)}
-      />
-
+      <ATimePicker onChangeValue={okNext} setData={setAData} />
       <Pressable
-        style={styles.button}
+        disabled={isDisabled}
+        style={isDisabled ? styles.disabledButton : styles.button}
         onPress={() =>
           navigation.navigate('Basic3', {
             info: Math.round(AMR) + item,
