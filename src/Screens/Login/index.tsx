@@ -12,6 +12,7 @@ import {useDispatch} from 'react-redux';
 import {Edge, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {loginWithKakaoTalk} from '~/stores/actions/auth/authActions';
 import axios from 'axios';
+import {accessTokenConfig} from '~/utils/config';
 
 const styles = StyleSheet.create({
   button: {
@@ -28,33 +29,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = props => {
+const Login = ({navigation}) => {
   const [result, setResult] = useState<string>('');
 
   const signInWithKakao = async (): Promise<void> => {
-    try {
-      const token: KakaoOAuthToken = await login();
-      setResult(JSON.stringify(token));
-      console.log(token);
-      console.log(token.accessToken);
-      try {
-        console.log('try 블록 시작');
-        const res = await axios.get(
-          `http://61.100.16.155:8080/api/every/token/get-token/${token.accessToken}`,
-        );
-        console.log('res error');
-        if (res?.data?.code === 200) {
-          console.log('success');
-        } else {
-          console.log('fail');
-        }
-        console.log('try 블록 끝');
-      } catch (error) {
-        console.log('error');
-      }
-    } catch (e) {
-      console.log('error2');
-      throw e;
+    const token: KakaoOAuthToken = await login();
+    setResult(JSON.stringify(token));
+    console.log(token);
+    console.log(token.accessToken);
+    const res = await axios.get(
+      `http://61.100.16.155:8080/api/every/token/get-token/${token.accessToken}`,
+    );
+    const ACCESS_TOKEN = res.data.accessToken;
+    console.log(ACCESS_TOKEN);
+    if (res?.status === 200) {
+      console.log('success');
+      onMovePage();
+    } else {
+      console.log('fail');
     }
   };
   // const dispatch = useDispatch();
@@ -83,9 +75,9 @@ const Login = props => {
   //     }
   //   }
   // }, []);
-  // const onMovePage = useCallback(() => {
-  //   navigation.navigate('Basic1');
-  // }, []);
+  const onMovePage = useCallback(() => {
+    navigation.navigate('Basic1');
+  }, []);
   return (
     <View>
       <Text
