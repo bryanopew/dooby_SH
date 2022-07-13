@@ -13,6 +13,7 @@ import {Edge, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {loginWithKakaoTalk} from '~/stores/actions/auth/authActions';
 import axios from 'axios';
 import {accessTokenConfig} from '~/utils/config';
+import {KAKAO_TOKEN_CONTROLLER} from '~/constants/constants';
 
 const styles = StyleSheet.create({
   button: {
@@ -28,17 +29,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 const Login = ({navigation}) => {
   const [result, setResult] = useState<string>('');
 
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
     setResult(JSON.stringify(token));
-    console.log(token);
-    console.log(token.accessToken);
+
     const res = await axios.get(
-      `http://61.100.16.155:8080/api/every/token/get-token/${token.accessToken}`,
+      `${KAKAO_TOKEN_CONTROLLER}/${token.accessToken}`,
     );
     const ACCESS_TOKEN = res.data.accessToken;
     console.log(ACCESS_TOKEN);
@@ -48,7 +47,17 @@ const Login = ({navigation}) => {
     } else {
       console.log('fail');
     }
+
+    const getAuth = await axios.get(
+      'http://61.100.16.155:8080/api/member/auth/get-auth',
+      {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      },
+    );
   };
+
   // const dispatch = useDispatch();
   // const {navigation} = props;
 

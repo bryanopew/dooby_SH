@@ -11,7 +11,9 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
-
+import {accessTokenConfig} from '~/utils/config';
+import axios from 'axios';
+import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
 const styles = StyleSheet.create({
   textInput: {
@@ -96,6 +98,16 @@ export interface Props {
 }
 
 const Basic1 = ({navigation}) => {
+  // const getAuth = async (ACCESS_TOKEN) => {
+  //   const tokenInfo = await axios({
+  //     method:'get',
+  //     url:'http://61.100.16.155:8080/api/member/auth/get-auth',
+  //     headers:{
+  //         Authorization: `Bearer ${ACCESS_TOKEN}`
+  //     }
+  // })
+  // return tokenInfo}
+  // getAuth(ACCESS_TOKEN);
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');

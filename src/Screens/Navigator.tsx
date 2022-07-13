@@ -1,8 +1,13 @@
 import React, {useContext} from 'react';
-import {Image} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {Image, useColorScheme} from 'react-native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {ThemeProvider} from 'styled-components';
 
 import Loading from '../Components/Loading';
 import Basic1 from '~/Components/BasicInput/Basic1';
@@ -17,18 +22,26 @@ import {UserContext} from '~/Context/User';
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
-
+const light = {
+  color: {
+    main: 'white',
+    backgroundColor: 'white',
+  },
+};
 const LoginNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: true}}>
-      <Stack.Screen name="로그인" component={Login} />
-      <Stack.Screen
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+      }}>
+      {/* <Stack.Screen name="로그인" component={Login} /> */}
+      {/* <Stack.Screen
         name="Basic1"
         component={Basic1}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Basic2" component={Basic2} options={{title: ''}} />
-      <Stack.Screen name="Basic3" component={Basic3} options={{title: ''}} />
+      <Stack.Screen name="Basic3" component={Basic3} options={{title: ''}} /> */}
       <Stack.Screen
         name="MainTabs"
         component={MainTabs}
@@ -171,12 +184,15 @@ const MainNavigator = () => {
 
 export default () => {
   const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
+  useColorScheme();
   if (isLoading === true) {
     return <Loading />;
   }
   return (
-    <NavigationContainer>
-      {userInfo ? <MainNavigator /> : <LoginNavigator />}
-    </NavigationContainer>
+    <ThemeProvider theme={light}>
+      <NavigationContainer>
+        {userInfo ? <MainNavigator /> : <LoginNavigator />}
+      </NavigationContainer>
+    </ThemeProvider>
   );
 };
