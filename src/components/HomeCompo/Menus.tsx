@@ -10,15 +10,10 @@ import {
 } from 'react-native';
 import CategoryList from './Category';
 import Styled from 'styled-components/native';
+import {pFont, pText} from '~/styles/typography';
 
 const item = ['a', 'b', 'c', 'd', 'e', 'f'];
-const ImageContainer = Styled.TouchableHighlight`
-  background: #FEFFFF;
-  padding: 1px;
-`;
-const HeaderContainer = Styled.View`
 
-`;
 const FoodNoticeContainer = Styled.View`
   background: white;
   justify-content: center;
@@ -33,7 +28,7 @@ const FoodNoticeText = Styled.Text`
   font-size: 20px;
 `;
 const FilterMenuContainer = Styled.View`
-  background: white;
+  background: green;
   flex-direction: row;
   
 `;
@@ -42,9 +37,46 @@ const FilterText = Styled.Text`
   margin-left: 10px;
 `;
 
+const products = [
+  {
+    image: '사진',
+    name: '존맛식품',
+    description: '상세정보',
+    price: '가격',
+    nutrients: '칼로리, 탄수화물, 단백질, 지방',
+  },
+  {
+    image: '사진',
+    name: '존맛식품',
+    description: '상세정보',
+    price: '가격',
+    nutrients: '칼로리, 탄수화물, 단백질, 지방',
+  },
+  {
+    image: '사진',
+    name: '존맛식품',
+    description: '상세정보',
+    price: '가격',
+    nutrients: '칼로리, 탄수화물, 단백질, 지방',
+  },
+];
+
+const ProductContainer = Styled.View`
+background: red;
+`;
 const ShowMenuContainer = Styled.View`
+background: yellow;
+`;
+const ImageContainer = Styled.View`
 
 `;
+const ProductDetailContainer = Styled.View`
+//name, detail, price
+`;
+const ShowNutrientContainer = Styled.View` 
+
+`;
+
 interface Props {
   id?: number;
   bounces?: boolean;
@@ -55,6 +87,12 @@ interface Props {
   onScroll?: (event) => void;
   onPress?: () => void;
 }
+const filterMenus = [
+  {id: 1, text: '카테고리'},
+  {id: 2, text: '영양성분'},
+  {id: 3, text: '가격'},
+  {id: 4, text: '식단구성'},
+];
 
 const Menus = ({
   id,
@@ -75,37 +113,31 @@ const Menus = ({
         <FoodNoticeText>전체 식품</FoodNoticeText>
       </FoodNoticeContainer>
       <FilterMenuContainer>
-        <FilterText>카테고리</FilterText>
-        <FilterText>영양성분</FilterText>
-        <FilterText>가격</FilterText>
-        <FilterText>식단구성</FilterText>
+        {filterMenus.map(i => (
+          <FilterText key={i.id}>{i.text}</FilterText>
+        ))}
       </FilterMenuContainer>
       <FlatList
         data={item}
-        style={{width}}
+        // style={{width}}
         keyExtractor={(item, index) => {
           return `menus-${index}`;
         }}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={scrollEnabled}
-        bounces={bounces}
-        onRefresh={onRefresh}
-        onEndReached={onEndReached}
+        // showsVerticalScrollIndicator={false}
+        // scrollEnabled={scrollEnabled}
+        // bounces={bounces}
+        // onRefresh={onRefresh}
+        // onEndReached={onEndReached}
         // onEndReached={() => {
         //   setMenuList([...menuList, ...getmenuList()]);
         // }}
-        onEndReachedThreshold={0.5}
-        refreshing={loading}
+        // onEndReachedThreshold={0.5}
+        // refreshing={loading}
         // ListHeaderComponent={<CategoryList />}
         renderItem={({item, index}) => (
-          <ImageContainer
-            style={{
-              paddingLeft: index % 3 === 0 ? 0 : 1,
-              paddingRight: index % 3 === 2 ? 0 : 1,
-            }}
-            onPress={onPress}>
+          <ProductContainer>
             <Text>메인</Text>
-          </ImageContainer>
+          </ProductContainer>
         )}
       />
     </>

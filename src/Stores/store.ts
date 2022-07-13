@@ -1,4 +1,4 @@
-import basicInfoReducer from '~/stores/reducers/basicInfoReducer';
+import basicInfoInputReducer from '~/stores/reducers/basicInfoReducer';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
@@ -7,7 +7,7 @@ const rootReducer = combineReducers({
 });
 
 const store = configureStore({
-  reducer: {basicInfoReducer},
+  reducer: {basicInfoInputReducer},
 });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
