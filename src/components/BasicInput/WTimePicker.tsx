@@ -18,7 +18,7 @@ const WTimePicker = props => {
     <>
       <DropDownPicker
         style={{
-          borderColor: '#f0f8ff',
+          borderColor: '#white',
           borderBottomWidth: 1,
           marginBottom: 10,
           zIndex: -1,

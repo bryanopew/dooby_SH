@@ -16,6 +16,9 @@ import WTimePicker from '~/Components/BasicInput/WTimePicker';
 import ATimePicker from '~/Components/BasicInput/ATimePicker';
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+  },
   header: {
     borderBottomWidth: 1,
     justifyContent: 'center',
@@ -105,7 +108,7 @@ const Basic2 = ({route, navigation}) => {
   console.log('wvalue:', wValue, 'aValue:', aValue);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.wrapper}>
       <Text
         style={{
           fontSize: 30,

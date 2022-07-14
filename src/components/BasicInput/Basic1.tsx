@@ -16,6 +16,9 @@ import axios from 'axios';
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+  },
   textInput: {
     borderBottomWidth: 0.2,
     justifyContent: 'center',
@@ -224,7 +227,7 @@ const Basic1 = ({navigation}) => {
   };
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView style={styles.wrapper}>
         <Text
           style={{
             fontSize: 30,
@@ -295,11 +298,9 @@ const Basic1 = ({navigation}) => {
           keyboardType="numeric"></TextInput>
         <Text style={styles.headerText}>식단의 목적</Text>
         <DropDownPicker
-          dropDownContainerStyle={{
-            backgroundColor: '#dfdfdf',
-          }}
           style={{
-            borderColor: '#dfdfdf',
+            borderColor: 'white',
+
             marginTop: 10,
           }}
           placeholder="식단의 목적"

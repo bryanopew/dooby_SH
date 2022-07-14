@@ -42,7 +42,7 @@ const ImageContainer = Styled.View`
 const ProductDetailContainer =Styled.View`
 //name, detail, price
 `
-const ShowNutrientContainer = Styled.View`
+const ShowNutrientContainer = Styled.View` 
 
 `
 
