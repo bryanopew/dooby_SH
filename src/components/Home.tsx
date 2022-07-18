@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -11,6 +11,7 @@ import {
   Button,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import Styled from 'styled-components/native';
 
@@ -22,6 +23,49 @@ import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 import IconButton from '~/Components/IconButton';
+
+export class RoundButton extends Component {
+  render() {
+    return (
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.text}>+</Text>
+      </TouchableOpacity>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#590DE1',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: 25,
+    height: 25,
+    marginTop: 20,
+    marginLeft: 100,
+    borderRadius: 35,
+
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgba(0,0,0,0.2)',
+        shadowOpacity: 1,
+        shadowOffset: {height: 2, width: 2},
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 0,
+        marginHorizontal: 30,
+      },
+    }),
+  },
+
+  text: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: 'white',
+  },
+});
 
 const FoodNoticeContainer = Styled.View`
   background: white;
@@ -87,7 +131,6 @@ type NavigationProp = StackNavigationProp<HeaderTab, 'Header'>;
 interface Props {
   navigation: NavigationProp;
 }
-const item = ['a', 'b', 'c', 'd', 'e', 'f'];
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
 const imageWidth = dimensions.width / 3;
@@ -146,7 +189,9 @@ const Home = ({navigation}: Props) => {
       </FoodNoticeContainer>
       <FilterMenuContainer>
         {filterMenus.map(i => (
-          <BottomSheetTestScreen key={i.id}>{i.text}</BottomSheetTestScreen>
+          <BottomSheetTestScreen key={i.id} list={filterMenus}>
+            {i.text}
+          </BottomSheetTestScreen>
         ))}
       </FilterMenuContainer>
       <FlatList
@@ -184,6 +229,7 @@ const Home = ({navigation}: Props) => {
                 <ProductDetailText>{item.description}</ProductDetailText>
                 <ProductPriceText>{item.price}</ProductPriceText>
               </ColumnContainer>
+              <RoundButton />
             </RowContainer>
             <ProductNutrientContainer>
               <ProductNutrientText>

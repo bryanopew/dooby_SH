@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, Component} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,7 +9,9 @@ import {
   Dimensions,
   PanResponder,
   Button,
+  TouchableOpacity,
 } from 'react-native';
+
 const BottomSheet = props => {
   const {modalVisible, setModalVisible} = props;
   const screenHeight = Dimensions.get('screen').height;
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSheetContainer: {
-    height: 300,
+    height: 500,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -101,12 +103,27 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   rootContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  button: {
+    backgroundColor: 'white',
+    marginRight: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
-const BottomSheetTestScreen = props => {
+
+const FilterButton = (list, pressButton) => {
+  console.log(list);
+  return (
+    <TouchableOpacity style={styles.button} onPress={list.onPress}>
+      <Text>{list.list}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const BottomSheetTestScreen = filterMenus => {
   const [modalVisible, setModalVisible] = useState(false);
   const pressButton = () => {
     setModalVisible(true);
@@ -114,7 +131,8 @@ const BottomSheetTestScreen = props => {
 
   return (
     <View style={styles.rootContainer}>
-      <Button title={'필터'} onPress={pressButton} />
+      {/* <Button title={filterMenus.children} onPress={pressButton} /> */}
+      <FilterButton list={filterMenus.children} onPress={pressButton} />
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
