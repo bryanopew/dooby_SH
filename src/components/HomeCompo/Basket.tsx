@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, Component} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,118 +9,35 @@ import {
   Dimensions,
   PanResponder,
   Button,
+  TouchableOpacity,
 } from 'react-native';
-const BottomSheet = props => {
-  const {modalVisible, setModalVisible} = props;
-  const screenHeight = Dimensions.get('screen').height;
-  const panY = useRef(new Animated.Value(screenHeight)).current;
-  const translateY = panY.interpolate({
-    inputRange: [-1, 0, 1],
-    outputRange: [0, 0, 1],
-  });
+import Styled from 'styled-components/native';
 
-  const resetBottomSheet = Animated.timing(panY, {
-    toValue: 0,
-    duration: 300,
-    useNativeDriver: true,
-  });
+const CategoryListContainer = Styled.View`
+  flex-direction: column;
+`;
 
-  const closeBottomSheet = Animated.timing(panY, {
-    toValue: screenHeight,
-    duration: 300,
-    useNativeDriver: true,
-  });
-
-  const panResponders = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => false,
-      onPanResponderMove: (event, gestureState) => {
-        panY.setValue(gestureState.dy);
-      },
-      onPanResponderRelease: (event, gestureState) => {
-        if (gestureState.dy > 0 && gestureState.vy > 1.5) {
-          closeModal();
-        } else {
-          resetBottomSheet.start();
-        }
-      },
-    }),
-  ).current;
-
-  useEffect(() => {
-    if (props.modalVisible) {
-      resetBottomSheet.start();
-    }
-  }, [props.modalVisible]);
-
-  const closeModal = () => {
-    closeBottomSheet.start(() => {
-      setModalVisible(false);
-    });
-  };
-
+const CategoryFilter = (): JSX.Element => {
+  const [open, setOpen] = useState();
+  const category = [
+    {id: 1, text: '도시락'},
+    {id: 2, text: '닭가슴살'},
+    {id: 3, text: '샐러드'},
+    {id: 4, text: '영양간식'},
+    {id: 5, text: '과자'},
+    {id: 6, text: '음료'},
+    {id: 7, text: '음료'},
+    {id: 8, text: '음료'},
+  ];
   return (
-    <Modal
-      visible={modalVisible}
-      animationType={'fade'}
-      transparent
-      statusBarTranslucent>
-      <View style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.background} />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={{
-            ...styles.bottomSheetContainer,
-            transform: [{translateY: translateY}],
-          }}
-          {...panResponders.panHandlers}>
-          <Text>This is BottomSheet</Text>
-        </Animated.View>
-      </View>
-    </Modal>
+    <>
+      {category.map(i => (
+        <CategoryListContainer>
+          <Text>{i.text}</Text>
+        </CategoryListContainer>
+      ))}
+    </>
   );
 };
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  background: {
-    flex: 1,
-  },
-  bottomSheetContainer: {
-    height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  rootContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-const BottomSheetTestScreen = props => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const pressButton = () => {
-    setModalVisible(true);
-  };
-
-  return (
-    <View style={styles.rootContainer}>
-      <Button title={'Open BottomSheet!'} onPress={pressButton} />
-      <BottomSheet
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
-    </View>
-  );
-};
-
-export default BottomSheetTestScreen;
+export default CategoryFilter;

@@ -11,6 +11,22 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import Styled from 'styled-components/native';
+
+import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
+
+const FilterHeaderContainer = Styled.View`
+  flex-direction: row;
+  
+`;
+const FilterHeaderText = Styled.Text`
+  font-weight: bold;
+  font-size: 17px;
+  margin-right: 20px;
+  margin-left: 5px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+`;
 
 const BottomSheet = props => {
   const {modalVisible, setModalVisible} = props;
@@ -63,25 +79,33 @@ const BottomSheet = props => {
   };
 
   return (
-    <Modal
-      visible={modalVisible}
-      animationType={'fade'}
-      transparent
-      statusBarTranslucent>
-      <View style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={closeModal}>
-          <View style={styles.background} />
-        </TouchableWithoutFeedback>
-        <Animated.View
-          style={{
-            ...styles.bottomSheetContainer,
-            transform: [{translateY: translateY}],
-          }}
-          {...panResponders.panHandlers}>
-          <Text>필터</Text>
-        </Animated.View>
-      </View>
-    </Modal>
+    <>
+      <Modal
+        visible={modalVisible}
+        animationType={'fade'}
+        transparent
+        statusBarTranslucent>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.background} />
+          </TouchableWithoutFeedback>
+          <Animated.View
+            style={{
+              ...styles.bottomSheetContainer,
+              transform: [{translateY: translateY}],
+            }}
+            {...panResponders.panHandlers}>
+            <FilterHeaderContainer>
+              <FilterHeaderText>카테고리</FilterHeaderText>
+              <FilterHeaderText>영양성분</FilterHeaderText>
+              <FilterHeaderText>가격</FilterHeaderText>
+              <FilterHeaderText>식단구성</FilterHeaderText>
+            </FilterHeaderContainer>
+            <CategoryFilter />
+          </Animated.View>
+        </View>
+      </Modal>
+    </>
   );
 };
 
@@ -96,8 +120,6 @@ const styles = StyleSheet.create({
   },
   bottomSheetContainer: {
     height: 500,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -115,7 +137,7 @@ const styles = StyleSheet.create({
 });
 
 const FilterButton = (list, pressButton) => {
-  console.log(list);
+  // console.log(list);
   return (
     <TouchableOpacity style={styles.button} onPress={list.onPress}>
       <Text>{list.list}</Text>
