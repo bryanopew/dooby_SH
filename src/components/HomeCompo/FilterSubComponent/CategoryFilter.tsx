@@ -17,28 +17,46 @@ const CategoryListContainer = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   border-top-width: 0.5px;
   border-color: grey;
 `;
 
 const CategoryListText = styled.Text`
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 15px;
+  font-weight: bold;
 `;
 
 const FilterButtonContainer = styled.View`
   flex-direction: row;
   justify-content: center;
-  align-items: center;
 `;
-const StyledButton = styled.Button`
+
+// const ButtonContainer = styled.View`
+//   flex: 1;
+//   border: 0.5px grey;
+//   border-radius: 10px;
+//   align-items: center;
+//   margin: 10px;
+// `;
+const StyledButton = styled.TouchableOpacity`
   align-items: center;
-  height: 2.25rem;
-  font-size: 1rem;
-  background: red;
+  flex: 1;
+  padding: 15px;
+  background-color: white;
+  border-width: 1px;
+  border-radius: 5px;
+  margin: 10px;
+  margin-top: 20px;
+  border-color: #8f8f8f;
 `;
+const ButtonText = styled.Text`
+  font-weight: bold;
+  color: #8f8f8f;
+`;
+const CategoryListButton = styled.TouchableOpacity``;
 const CategoryFilter = (): JSX.Element => {
   const [click, setClick] = useState();
   const category = [
@@ -52,15 +70,19 @@ const CategoryFilter = (): JSX.Element => {
   return (
     <>
       {category.map((i, index) => (
-        <CategoryListContainer
-          key={i.id}
-          style={[index === 0 && {borderTopWidth: 0}]}>
-          <CategoryListText>{i.text}</CategoryListText>
-        </CategoryListContainer>
+        <CategoryListButton key={i.id}>
+          <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
+            <CategoryListText>{i.text}</CategoryListText>
+          </CategoryListContainer>
+        </CategoryListButton>
       ))}
       <FilterButtonContainer>
-        <StyledButton title="카테고리 초기화" />
-        <StyledButton title="확인" />
+        <StyledButton>
+          <ButtonText>카테고리 초기화</ButtonText>
+        </StyledButton>
+        <StyledButton>
+          <ButtonText>확인</ButtonText>
+        </StyledButton>
       </FilterButtonContainer>
     </>
   );

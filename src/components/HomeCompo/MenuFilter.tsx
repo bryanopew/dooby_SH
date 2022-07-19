@@ -11,15 +11,14 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-import Styled from 'styled-components/native';
+import styled from 'styled-components/native';
 
 import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
 
-const FilterHeaderContainer = Styled.View`
+const FilterHeaderContainer = styled.View`
   flex-direction: row;
-  
 `;
-const FilterHeaderText = Styled.Text`
+const FilterHeaderText = styled.Text`
   font-weight: bold;
   font-size: 17px;
   margin-right: 20px;
@@ -27,8 +26,8 @@ const FilterHeaderText = Styled.Text`
   margin-top: 20px;
   margin-bottom: 15px;
 `;
-
-const BottomSheet = props => {
+const FilterHeaderButton = styled.TouchableOpacity``;
+const BottomSheet = (props, {navigation}) => {
   const {modalVisible, setModalVisible} = props;
   const screenHeight = Dimensions.get('screen').height;
   const panY = useRef(new Animated.Value(screenHeight)).current;
@@ -77,7 +76,7 @@ const BottomSheet = props => {
       setModalVisible(false);
     });
   };
-
+  console.log(navigation);
   return (
     <>
       <Modal
@@ -96,10 +95,20 @@ const BottomSheet = props => {
             }}
             {...panResponders.panHandlers}>
             <FilterHeaderContainer>
-              <FilterHeaderText>카테고리</FilterHeaderText>
-              <FilterHeaderText>영양성분</FilterHeaderText>
-              <FilterHeaderText>가격</FilterHeaderText>
-              <FilterHeaderText>식단구성</FilterHeaderText>
+              <FilterHeaderButton
+                onPress={() => navigation.navigate('CategoryFilter')}>
+                <FilterHeaderText>카테고리</FilterHeaderText>
+              </FilterHeaderButton>
+              <FilterHeaderButton
+                onPress={() => navigation.navigate('NutrientFilter')}>
+                <FilterHeaderText>영양성분</FilterHeaderText>
+              </FilterHeaderButton>
+              <FilterHeaderButton>
+                <FilterHeaderText>가격</FilterHeaderText>
+              </FilterHeaderButton>
+              <FilterHeaderButton>
+                <FilterHeaderText>식단구성</FilterHeaderText>
+              </FilterHeaderButton>
             </FilterHeaderContainer>
             <CategoryFilter />
           </Animated.View>

@@ -19,9 +19,13 @@ import Profile from '../Components/Profile';
 import Basket from '../Components/HomeCompo/Basket';
 import Search from '../Components/HomeCompo/Search';
 import {UserContext} from '~/Context/User';
+import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
+import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
 
 const Stack = createStackNavigator();
+const FilterScreenStack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
 const light = {
   color: {
     main: 'white',
@@ -47,6 +51,10 @@ const LoginNavigator = () => {
         component={MainTabs}
         options={{headerShown: false}}
       />
+      <FilterScreenStack.Group>
+        <FilterScreenStack.Screen name="필터 1" component={CategoryFilter} />
+        <FilterScreenStack.Screen name="필터 2" component={NutrientFilter} />
+      </FilterScreenStack.Group>
     </Stack.Navigator>
   );
 };
@@ -182,6 +190,14 @@ const MainNavigator = () => {
   return <MainTabs />;
 };
 
+const FilterListNavigator = () => {
+  return (
+    <FilterScreenStack.Navigator>
+      <Stack.Screen name="CategoryFilter" component={CategoryFilter} />
+      <Stack.Screen name="NutrientFilter" component={NutrientFilter} />
+    </FilterScreenStack.Navigator>
+  );
+};
 export default () => {
   const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
   useColorScheme();
