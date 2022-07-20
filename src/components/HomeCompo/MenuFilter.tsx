@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 
-import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
+import MenuFilterScreenStack from '~/Screens/FilterScreenNavigator';
 
 const FilterHeaderContainer = styled.View`
   flex-direction: row;
@@ -27,7 +27,7 @@ const FilterHeaderText = styled.Text`
   margin-bottom: 15px;
 `;
 const FilterHeaderButton = styled.TouchableOpacity``;
-const BottomSheet = (props, {navigation}) => {
+const BottomSheet = props => {
   const {modalVisible, setModalVisible} = props;
   const screenHeight = Dimensions.get('screen').height;
   const panY = useRef(new Animated.Value(screenHeight)).current;
@@ -76,7 +76,7 @@ const BottomSheet = (props, {navigation}) => {
       setModalVisible(false);
     });
   };
-  console.log(navigation);
+
   return (
     <>
       <Modal
@@ -94,23 +94,7 @@ const BottomSheet = (props, {navigation}) => {
               transform: [{translateY: translateY}],
             }}
             {...panResponders.panHandlers}>
-            <FilterHeaderContainer>
-              <FilterHeaderButton
-                onPress={() => navigation.navigate('CategoryFilter')}>
-                <FilterHeaderText>카테고리</FilterHeaderText>
-              </FilterHeaderButton>
-              <FilterHeaderButton
-                onPress={() => navigation.navigate('NutrientFilter')}>
-                <FilterHeaderText>영양성분</FilterHeaderText>
-              </FilterHeaderButton>
-              <FilterHeaderButton>
-                <FilterHeaderText>가격</FilterHeaderText>
-              </FilterHeaderButton>
-              <FilterHeaderButton>
-                <FilterHeaderText>식단구성</FilterHeaderText>
-              </FilterHeaderButton>
-            </FilterHeaderContainer>
-            <CategoryFilter />
+            <MenuFilterScreenStack />
           </Animated.View>
         </View>
       </Modal>
@@ -136,6 +120,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   button: {
     backgroundColor: 'white',
@@ -154,12 +139,11 @@ const FilterButton = (list, pressButton) => {
   );
 };
 
-const BottomSheetTestScreen = filterMenus => {
+const MenuFilterModal = filterMenus => {
   const [modalVisible, setModalVisible] = useState(false);
   const pressButton = () => {
     setModalVisible(true);
   };
-
   return (
     <View style={styles.rootContainer}>
       {/* <Button title={filterMenus.children} onPress={pressButton} /> */}
@@ -172,4 +156,4 @@ const BottomSheetTestScreen = filterMenus => {
   );
 };
 
-export default BottomSheetTestScreen;
+export default MenuFilterModal;

@@ -24,7 +24,11 @@ const FilterScreenStack = createStackNavigator();
 
 const MenuFilterScreenStack = ({navigation}) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: [{fontSize: 15}, {fontWeight: 'bold'}],
+        tabBarIndicatorStyle: false,
+      }}>
       <Tab.Screen name="카테고리" component={CategoryFilter} />
       <Tab.Screen name="영양성분" component={NutrientFilter} />
       <Tab.Screen name="가격" component={NutrientFilter} />

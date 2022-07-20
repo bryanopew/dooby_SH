@@ -111,6 +111,7 @@ const Basic1 = ({navigation}) => {
   // })
   // return tokenInfo}
   // getAuth(ACCESS_TOKEN);
+  console.log('네비게이션 콘솔', navigation);
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');

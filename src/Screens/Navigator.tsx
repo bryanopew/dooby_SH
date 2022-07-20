@@ -21,25 +21,20 @@ import Search from '../Components/HomeCompo/Search';
 import {UserContext} from '~/Context/User';
 import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
 import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
+import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
 
 const Stack = createStackNavigator();
 const FilterScreenStack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-const light = {
-  color: {
-    main: 'white',
-    backgroundColor: 'white',
-  },
-};
 const LoginNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
       }}>
-      {/* <Stack.Screen name="로그인" component={Login} />
-      <Stack.Screen
+      {/* <Stack.Screen name="로그인" component={Login} /> */}
+      {/* <Stack.Screen
         name="Basic1"
         component={Basic1}
         options={{headerShown: false}}
@@ -51,39 +46,6 @@ const LoginNavigator = () => {
         component={MainTabs}
         options={{headerShown: false}}
       />
-      <FilterScreenStack.Group>
-        <FilterScreenStack.Screen name="필터 1" component={CategoryFilter} />
-        <FilterScreenStack.Screen name="필터 2" component={NutrientFilter} />
-      </FilterScreenStack.Group>
-    </Stack.Navigator>
-  );
-};
-
-const BasketTab = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Basket"
-        component={Basket}
-        options={{
-          headerShown: false,
-          title: '장바구니',
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const SearchTab = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Search"
-        component={Search}
-        options={{
-          headerShown: false,
-        }}
-      />
     </Stack.Navigator>
   );
 };
@@ -93,23 +55,36 @@ const HomeTab = () => {
     <Stack.Navigator>
       <Stack.Screen name="식단" component={Home} />
       <Stack.Screen
-        name="BasketTab"
-        component={BasketTab}
+        name="modal"
+        component={MenuFilterModal}
         options={{
-          title: '장바구니',
-        }}
-      />
-      <Stack.Screen
-        name="SearchTab"
-        component={SearchTab}
-        options={{
-          title: '검색',
+          presentation: 'modal',
         }}
       />
     </Stack.Navigator>
   );
 };
 
+//현재 4개로 이루어진 필터 스택 생성
+//MenuFilterScreenStack(카테고리,영양성분,가격,자동구성)
+//그런데 4개의  LIST가 현재 MODAL 컴포넌트인 MenuFilterModal 내부에 있어야함
+
+const MenuFilterScreenStack = () => {
+  return (
+    <FilterScreenStack.Navigator>
+      <FilterScreenStack.Screen
+        name="CategoryFilter"
+        component={CategoryFilter}
+      />
+      <FilterScreenStack.Screen
+        name="NutrientFilter"
+        component={NutrientFilter}
+      />
+      <FilterScreenStack.Screen name="PriceFilter" component={NutrientFilter} />
+      <FilterScreenStack.Screen name="DietFilter" component={NutrientFilter} />
+    </FilterScreenStack.Navigator>
+  );
+};
 const MainTabs = () => {
   return (
     <BottomTab.Navigator>
@@ -190,14 +165,6 @@ const MainNavigator = () => {
   return <MainTabs />;
 };
 
-const FilterListNavigator = () => {
-  return (
-    <FilterScreenStack.Navigator>
-      <Stack.Screen name="CategoryFilter" component={CategoryFilter} />
-      <Stack.Screen name="NutrientFilter" component={NutrientFilter} />
-    </FilterScreenStack.Navigator>
-  );
-};
 export default () => {
   const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
   useColorScheme();
@@ -205,10 +172,8 @@ export default () => {
     return <Loading />;
   }
   return (
-    <ThemeProvider theme={light}>
-      <NavigationContainer>
-        {userInfo ? <MainNavigator /> : <LoginNavigator />}
-      </NavigationContainer>
-    </ThemeProvider>
+    <NavigationContainer>
+      {userInfo ? <MainNavigator /> : <LoginNavigator />}
+    </NavigationContainer>
   );
 };

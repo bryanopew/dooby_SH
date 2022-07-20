@@ -10,9 +10,15 @@ import {
   PanResponder,
   Button,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import styled from 'styled-components/native';
 
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+  },
+});
 const CategoryListContainer = styled.View`
   flex-direction: column;
   justify-content: center;
@@ -57,7 +63,7 @@ const ButtonText = styled.Text`
   color: #8f8f8f;
 `;
 const CategoryListButton = styled.TouchableOpacity``;
-const CategoryFilter = (): JSX.Element => {
+const CategoryFilter = ({navigation}): JSX.Element => {
   const [click, setClick] = useState();
   const category = [
     {id: 1, text: '도시락'},
@@ -67,8 +73,9 @@ const CategoryFilter = (): JSX.Element => {
     {id: 5, text: '과자'},
     {id: 6, text: '음료'},
   ];
+
   return (
-    <>
+    <ScrollView style={styles.wrapper}>
       {category.map((i, index) => (
         <CategoryListButton key={i.id}>
           <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
@@ -84,7 +91,7 @@ const CategoryFilter = (): JSX.Element => {
           <ButtonText>확인</ButtonText>
         </StyledButton>
       </FilterButtonContainer>
-    </>
+    </ScrollView>
   );
 };
 
