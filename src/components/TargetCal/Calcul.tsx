@@ -67,14 +67,20 @@ const Portion = () => {
   );
 };
 const Calcul = props => {
-  const [open, setOpen] = useState(false);
-  const handleClick = () => setOpen(!open);
+  const {clicked, setClicked} = props;
+  const handleClick = () =>
+    setClicked(prevState => ({
+      ...prevState,
+      autoDoClicked: false,
+      calculClicked: !prevState.calculClicked,
+      manualClicked: false,
+    }));
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
         <Text>탄:단:지 비율로 계산하기</Text>
       </Pressable>
-      {open && (
+      {clicked.calculClicked && (
         <View>
           <Text style={styles.text}>탄수화물:단백질:지방 비율</Text>
           <Portion />

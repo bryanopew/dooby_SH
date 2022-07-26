@@ -19,9 +19,17 @@ const ATimePicker = props => {
       <DropDownPicker
         style={{
           borderColor: '#white',
+          borderWidth: 0,
           borderBottomWidth: 1,
           marginBottom: 10,
         }}
+        dropDownContainerStyle={{
+          borderWidth: 0,
+          width: '98%',
+          marginLeft: 5,
+        }}
+        zIndex={2000}
+        zIndexInverse={2000}
         placeholder="유산소 운동시간"
         open={aOpen}
         setOpen={setAopen}

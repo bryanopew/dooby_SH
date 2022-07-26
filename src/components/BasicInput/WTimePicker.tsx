@@ -17,11 +17,17 @@ const WTimePicker = props => {
   return (
     <>
       <DropDownPicker
+        zIndex={3000}
+        zIndexInverse={1000}
         style={{
-          borderColor: '#white',
+          borderWidth: 0,
           borderBottomWidth: 1,
           marginBottom: 10,
-          zIndex: -1,
+        }}
+        dropDownContainerStyle={{
+          borderWidth: 0,
+          width: '98%',
+          marginLeft: 5,
         }}
         placeholder="웨이트 운동시간"
         open={wOpen}

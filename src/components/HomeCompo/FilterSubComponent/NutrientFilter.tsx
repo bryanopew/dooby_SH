@@ -12,9 +12,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Styled from 'styled-components/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-const NutrientFilter = () => {
-  return <Text>영양성분 필터 창</Text>;
+import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
+import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
+
+const Tab = createMaterialTopTabNavigator();
+const FilterScreenStack = createStackNavigator();
+
+const NutrientFilter = ({navigation}) => {
+  return <Text>영양성분</Text>;
 };
 
 export default NutrientFilter;

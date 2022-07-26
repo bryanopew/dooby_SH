@@ -50,15 +50,21 @@ const Result = () => {
   return <Text style={styles.result}>계산된 결과 반영</Text>;
 };
 
-const Manual = () => {
-  const [open, setOpen] = useState(false);
-  const handleClick = () => setOpen(!open);
+const Manual = props => {
+  const {clicked, setClicked} = props;
+  const handleClick = () =>
+    setClicked(prevState => ({
+      ...prevState,
+      autoDoClicked: false,
+      calculClicked: false,
+      manualClicked: !prevState.manualClicked,
+    }));
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
         <Text>각 영양 성분 직접 입력(고수용)</Text>
       </Pressable>
-      {open && <Contents />}
+      {clicked.manualClicked && <Contents />}
     </>
   );
 };

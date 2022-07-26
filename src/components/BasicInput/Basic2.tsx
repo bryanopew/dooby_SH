@@ -65,11 +65,10 @@ const styles = StyleSheet.create({
 
 const Basic2 = ({route, navigation}) => {
   const {item, weight, target, conTarget} = route.params;
-  console.log(item, target);
   const [data, setData] = useState('');
   const [aData, setAData] = useState('');
   const [base, setBase] = useState('');
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(true);
   const wValue = data;
   const aValue = aData;
   // 1. (활동대사량 = 0.0175 * Mets * 몸무게 * 운동시간(분))
@@ -97,16 +96,16 @@ const Basic2 = ({route, navigation}) => {
   const AMR = wcal + acal + item * 0.2;
   function okNext() {
     if (wValue === '' || aValue === '') {
-      return setIsDisabled(true);
+      return setDisabled(true);
     } else {
-      return setIsDisabled(false);
+      return setDisabled(false);
     }
   }
   useEffect(() => {
     okNext();
-  }, []);
-  console.log('wvalue:', wValue, 'aValue:', aValue);
-
+  }, [aValue]);
+  console.log('비활성화', disabled);
+  console.log('웨이트:', data, '유산소:', aData);
   return (
     <SafeAreaView style={styles.wrapper}>
       <Text
@@ -125,15 +124,14 @@ const Basic2 = ({route, navigation}) => {
         onChangeText={setBase}
         value={base}
         keyboardType="numeric"
-        onSubmitEditing={() => console.log(base)}
       />
       <Text style={styles.headerText}>웨이트 운동시간</Text>
       <WTimePicker setData={setData} />
       <Text style={styles.headerText}>유산소 운동시간</Text>
       <ATimePicker onChangeValue={okNext} setData={setAData} />
       <Pressable
-        disabled={isDisabled}
-        style={isDisabled ? styles.disabledButton : styles.button}
+        disabled={disabled}
+        style={disabled ? styles.disabledButton : styles.button}
         onPress={() =>
           navigation.navigate('Basic3', {
             info: Math.round(AMR) + item,

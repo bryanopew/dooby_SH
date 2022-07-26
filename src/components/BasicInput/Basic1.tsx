@@ -9,12 +9,15 @@ import {
   TextInput,
   Pressable,
 } from 'react-native';
+import {useForm} from 'react-hook-form';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
 import {accessTokenConfig} from '~/utils/config';
 import axios from 'axios';
+
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
+
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
@@ -100,6 +103,13 @@ export interface Props {
   fat: string;
 }
 
+const Input = ({label, register, required}) => (
+  <>
+    <label>{label}</label>
+    <input {...register(label, {required})} />
+  </>
+);
+
 const Basic1 = ({navigation}) => {
   // const getAuth = async (ACCESS_TOKEN) => {
   //   const tokenInfo = await axios({
@@ -111,7 +121,6 @@ const Basic1 = ({navigation}) => {
   // })
   // return tokenInfo}
   // getAuth(ACCESS_TOKEN);
-  console.log('네비게이션 콘솔', navigation);
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -119,23 +128,22 @@ const Basic1 = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [womanClick, setWomanClick] = useState(false);
   const [manClick, setManClick] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [basicInformation, setBasicInformation] = useState({
-    companyCd: '',
-    userId: '',
-    gender: '',
-    age: '',
-    height: '',
-    weight: '',
-    dietPurposeCd: '',
-    weightPurposeCd: '',
-    aerobicTimeCd: '',
-    calorie: '',
-    carb: '',
-    protein: '',
-    fat: '',
+  const [disabled, setDisabled] = useState(true);
+  const [inputs, setInputs] = useState({
+    genders: '',
+    ages: '',
+    heights: '',
+    weights: '',
+    dietPurposeCds: '',
   });
-
+  const {genders, ages, heights, weights, dietPurposeCds} = inputs;
+  const onChange = e => {
+    const {value, genders} = e.target;
+    setInputs({
+      ...inputs,
+      [genders]: value,
+    });
+  };
   const genderClick1 = womanClick => {
     if (!womanClick) {
       setManClick(false);
@@ -207,6 +215,7 @@ const Basic1 = ({navigation}) => {
   };
   const BMR = bmrCalcul();
 
+  //다음버튼 활성화
   function okNext() {
     if (
       gender !== 'not' &&
@@ -215,14 +224,15 @@ const Basic1 = ({navigation}) => {
       weight !== '' &&
       target !== ''
     ) {
-      return setIsDisabled(false);
+      return setDisabled(false);
     } else {
-      return setIsDisabled(true);
+      return setDisabled(true);
     }
   }
   useEffect(() => {
     okNext();
   }, []);
+
   const goNext = () => {
     navigation.navigate('Basic2');
   };
@@ -299,10 +309,13 @@ const Basic1 = ({navigation}) => {
           keyboardType="numeric"></TextInput>
         <Text style={styles.headerText}>식단의 목적</Text>
         <DropDownPicker
+          dropDownContainerStyle={{
+            position: 'relative',
+            marginTop: -40,
+          }}
           style={{
             borderColor: 'white',
-
-            marginTop: 10,
+            marginTop: 7,
           }}
           placeholder="식단의 목적"
           open={open}
@@ -317,8 +330,8 @@ const Basic1 = ({navigation}) => {
           onChangeValue={okNext}
         />
         <Pressable
-          disabled={isDisabled}
-          style={isDisabled ? styles.disabledButton : styles.button}
+          disabled={disabled}
+          style={disabled ? styles.disabledButton : styles.button}
           onPress={() =>
             navigation.navigate('Basic2', {
               item: BMR,

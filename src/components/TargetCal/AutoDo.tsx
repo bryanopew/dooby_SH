@@ -1,5 +1,6 @@
 import React, {Component, useState} from 'react';
 import {Button, Text, StyleSheet, Pressable} from 'react-native';
+import Styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
   button: {
@@ -10,36 +11,66 @@ const styles = StyleSheet.create({
     padding: 20,
     color: 'grey',
   },
-  contents: {
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  text: {
-    fontWeight: 'bold',
-  },
-  emph: {
-    color: 'blue',
-  },
 });
+const HeaderText = Styled.Text`
+  font-weight: bold;
+`;
+const ContentsHeaderText = Styled.Text`
+  font-weight: bold;
+  font-size: 15px;
+`;
+const ContentsHeaderContiainer = Styled.View`
+border-width: 1px;
+border-color: #590DE1;
+border-radius: 10px;
+height: 60px;
+width: 112%
+padding: 15px;
+align-items: center;
+`;
+const ContentsContainer = Styled.View`
+border-width: 1px;
+border-color: #590DE1;
+border-radius: 10px;
+padding: 10px;
+
+
+`;
+const CompleteButton = Styled.Button`
+  margin-top:10,
+  margin-bottom:10,
+  align-items: 'center',
+  background-color: 'white',
+  padding: 20,
+  color: grey
+`;
 
 const Contents = props => {
   let meal = Math.round((parseInt(props.info) + parseInt(props.conTarget)) / 3);
   return (
-    <Text style={styles.text}>
-      고객님의 기초대사량과 활동대사량을 추정하여 하루 총 사용하는 칼로리를{' '}
-      <Text style={styles.emph}>{props.info}kcal</Text>로 계산.
-      <Text style={styles.emph}>{props.target}</Text>을 위해 하루에{' '}
-      <Text style={styles.emph}>{props.conTarget}</Text>를 제한하여 한 끼 기준
-      <Text style={styles.emph}>{meal}kcal</Text>를 추천드립니다. 탄수화물,
-      단백질, 지방 비율은 보건복지부 한국인 영양섭취기준(2020)에서 권장하는
-      비율로 설정했습니다.
-    </Text>
+    <ContentsContainer>
+      <HeaderText>
+        {`  칼로리:
+  탄수화물:
+  단백질:
+  지방: 
+      `}
+
+        {` 고객님의 기초대사량과 활동대사량을 추정하여 하루 총 사용하는 칼로리를${props.info}kcal로 계산. ${props.target}을 위해 하루에 ${props.conTarget}를 제한하여 한 끼기준${meal}kcal를 추천드립니다. 탄수화물, 단백질, 지방 비율 은 보건복지부 한국인 영양섭취기준(2020)에서 권장하는  비율로 설정했습니다.`}
+      </HeaderText>
+    </ContentsContainer>
   );
 };
 
 const AutoDo = props => {
-  const [open, setOpen] = useState(false);
-  const handleClick = () => setOpen(!open);
+  const {info, target, conTarget, clicked, setClicked} = props;
+  const handleClick = () =>
+    setClicked(prevState => ({
+      ...prevState,
+      autoDoClicked: !prevState.autoDoClicked,
+      calculClicked: false,
+      manualClicked: false,
+    }));
   return (
     <>
       <Pressable
@@ -47,14 +78,12 @@ const AutoDo = props => {
         onPress={() => {
           handleClick();
         }}>
-        <Text>귀찮다 두비가 알아서 다 해줘!</Text>
+        <ContentsHeaderContiainer>
+          <ContentsHeaderText>귀찮다 두비가 알아서 다 해줘!</ContentsHeaderText>
+        </ContentsHeaderContiainer>
       </Pressable>
-      {open && (
-        <Contents
-          info={props.info}
-          target={props.target}
-          conTarget={props.conTarget}
-        />
+      {clicked.autoDoClicked && (
+        <Contents info={info} target={target} conTarget={conTarget} />
       )}
     </>
   );
