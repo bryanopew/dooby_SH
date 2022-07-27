@@ -34,13 +34,13 @@ const LoginNavigator = () => {
         headerShown: true,
       }}>
       {/* <Stack.Screen name="로그인" component={Login} /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Basic1"
         component={Basic1}
         options={{headerShown: false}}
       />
       <Stack.Screen name="Basic2" component={Basic2} options={{title: ''}} />
-      <Stack.Screen name="Basic3" component={Basic3} options={{title: ''}} />
+      <Stack.Screen name="Basic3" component={Basic3} options={{title: ''}} /> */}
       <Stack.Screen
         name="MainTabs"
         component={MainTabs}
@@ -133,8 +133,8 @@ const MainTabs = () => {
             <Image
               source={
                 focused
-                  ? require('~/Assets/Images/36_icon=basket.png')
-                  : require('~/Assets/Images/36_icon=basket.png')
+                  ? require('~/Assets/Images/36_paymentPage_selected.png')
+                  : require('~/Assets/Images/24_paymentPage.png')
               }
             />
           ),

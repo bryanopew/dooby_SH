@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
   button: {
@@ -32,15 +33,43 @@ const styles = StyleSheet.create({
   },
 });
 
+const BorderLineContainer = Styled.View`
+  border-bottom-width: 1px;
+  border-color: grey;
+  margin-bottom:10px;
+`;
+const ContentsHeaderText = Styled.Text`
+  font-weight: bold;
+  font-size: 15px;
+`;
+const ContentsHeaderContiainer = Styled.View`
+border-width: 1px;
+border-color: grey;
+border-radius: 5px;
+height: 60px;
+width: 112%
+padding: 15px;
+align-items: center;
+margin-top: -30px;
+`;
+const TextInputContainer = Styled.View`
+border-color: #590DE1;
+border-radius: 5px;
+padding: 10px;
+`;
+
 const Contents = () => {
   return (
     <>
       <Text style={styles.text}>한끼 탄수화물(g)입력 (추천: 100g)</Text>
       <TextInput placeholder="0g" keyboardType="numeric" />
+      <BorderLineContainer />
       <Text style={styles.text}>한끼 단백질(g)입력 (추천: 43g)</Text>
       <TextInput placeholder="0g" keyboardType="numeric" />
+      <BorderLineContainer />
       <Text style={styles.text}>한끼 지방(g)입력 (추천: 16g)</Text>
       <TextInput placeholder="0g" keyboardType="numeric" />
+      <BorderLineContainer />
       <Result />
     </>
   );
@@ -62,7 +91,11 @@ const Manual = props => {
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
-        <Text>각 영양 성분 직접 입력(고수용)</Text>
+        <ContentsHeaderContiainer>
+          <ContentsHeaderText>
+            각 영양 성분 직접 입력(고수용)
+          </ContentsHeaderText>
+        </ContentsHeaderContiainer>
       </Pressable>
       {clicked.manualClicked && <Contents />}
     </>

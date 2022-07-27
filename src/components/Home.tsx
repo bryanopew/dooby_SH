@@ -35,6 +35,9 @@ export class RoundButton extends Component {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+  },
   button: {
     backgroundColor: '#590DE1',
     alignItems: 'center',
@@ -70,19 +73,20 @@ const styles = StyleSheet.create({
 const FoodNoticeContainer = Styled.View`
   background: white;
   justify-content: center;
-  margin-top:10px;
   border-bottom-width: 1px;
   border-bottom-color: grey;
 `;
 const FoodNoticeText = Styled.Text`
   margin-left: 10px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
+  margin-bottom: 10px;
 `;
 const FilterMenuContainer = Styled.View`
   background: white;
   flex-direction: row;
-  
+  margin-top: 10px;
+  margin-left: 10px;
 `;
 const FilterText = Styled.Text`
   margin-left: 10px;
@@ -106,7 +110,9 @@ height: 22px;
 padding-left: 5px;
 `;
 const ProductNutrientText = Styled.Text`
-  letter-spacing: 1px;
+  `;
+const ProductNutrientNumberText = Styled.Text`
+    font-weight: bold;
   `;
 const ProductNameText = Styled.Text`
   font-weight: bold;
@@ -119,6 +125,9 @@ const ProductDetailText = Styled.Text`
 const ProductPriceText = Styled.Text`
 padding: 20px;
 font-weight: bold;
+`;
+const Space = Styled.Text`
+
 `;
 const filterMenus = [
   {id: 1, text: '카테고리'},
@@ -139,31 +148,31 @@ const products = [
     name: '존맛식품1',
     description: '상세정보',
     price: '가격',
-    nutrients: '1',
+    nutrients: '100',
   },
   {
     name: '존맛식품2',
     description: '상세정보',
     price: '가격',
-    nutrients: '1',
+    nutrients: '100',
   },
   {
     name: '존맛식품3',
     description: '상세정보',
     price: '가격',
-    nutrients: '1',
+    nutrients: '100',
   },
   {
     name: '존맛식품4',
     description: '상세정보',
     price: '가격',
-    nutrients: '1',
+    nutrients: '100',
   },
   {
     name: '존맛식품5',
     description: '상세정보',
     price: '가격',
-    nutrients: '1',
+    nutrients: '100',
   },
 ];
 
@@ -181,7 +190,7 @@ const Home = ({navigation}: Props) => {
   //   });
   // }, []);
   return (
-    <>
+    <SafeAreaView style={styles.wrapper}>
       <NutrientsBar />
 
       <FoodNoticeContainer>
@@ -233,16 +242,31 @@ const Home = ({navigation}: Props) => {
             </RowContainer>
             <ProductNutrientContainer>
               <ProductNutrientText>
-                칼로리: {item.nutrients}
-                탄수화물 : {item.nutrients}
-                단백질: {item.nutrients}
-                지방: {item.nutrients}
+                칼로리
+                <ProductNutrientNumberText>
+                  {item.nutrients}
+                </ProductNutrientNumberText>
+                <Space>{'    '}</Space>
+                탄수화물{' '}
+                <ProductNutrientNumberText>
+                  {item.nutrients}
+                </ProductNutrientNumberText>
+                <Space>{'    '}</Space>
+                단백질{' '}
+                <ProductNutrientNumberText>
+                  {item.nutrients}
+                </ProductNutrientNumberText>
+                <Space>{'    '}</Space>
+                지방{' '}
+                <ProductNutrientNumberText>
+                  {item.nutrients}
+                </ProductNutrientNumberText>
               </ProductNutrientText>
             </ProductNutrientContainer>
           </ProductContainer>
         )}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

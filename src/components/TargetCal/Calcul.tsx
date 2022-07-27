@@ -11,6 +11,8 @@ import {
   Pressable,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Styled from 'styled-components/native';
+
 import {ScrollView} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
@@ -35,6 +37,29 @@ const styles = StyleSheet.create({
   },
 });
 
+const HeaderText = Styled.Text`
+  font-weight: bold;
+`;
+const ContentsHeaderText = Styled.Text`
+  font-weight: bold;
+  font-size: 15px;
+`;
+const ContentsHeaderContiainer = Styled.View`
+border-width: 1px;
+border-color: grey;
+border-radius: 5px;
+height: 60px;
+width: 112%
+padding: 15px;
+align-items: center;
+margin-top: -30px;
+`;
+const TextInputContainer = Styled.View`
+border-color: grey;
+border-radius: 5px;
+padding: 10px;
+`;
+
 const Portion = () => {
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
@@ -49,6 +74,10 @@ const Portion = () => {
         style={{
           borderColor: '#f0f8ff',
           borderBottomWidth: 1,
+        }}
+        dropDownContainerStyle={{
+          position: 'relative',
+          marginTop: -40,
         }}
         listMode="SCROLLVIEW"
         placeholder="탄:단:지 비율로 계산하기"
@@ -78,14 +107,17 @@ const Calcul = props => {
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
-        <Text>탄:단:지 비율로 계산하기</Text>
+        <ContentsHeaderContiainer>
+          <ContentsHeaderText>탄:단:지 비율로 계산하기</ContentsHeaderText>
+        </ContentsHeaderContiainer>
       </Pressable>
       {clicked.calculClicked && (
         <View>
-          <Text style={styles.text}>탄수화물:단백질:지방 비율</Text>
+          <Text style={styles.text}>탄:단:지 비율</Text>
           <Portion />
-          <Text style={styles.text}>한 끼 칼로리(kcal)입력(추천:data)</Text>
-          <TextInput placeholder="0kcal" />
+          <TextInputContainer>
+            <TextInput placeholder="한 끼 칼로리(kcal)입력(추천:data)" />
+          </TextInputContainer>
         </View>
       )}
     </>

@@ -30,14 +30,13 @@ const styles = StyleSheet.create({
     width: '90%',
     marginBottom: 5,
     marginLeft: 15,
-    borderColor: '#590DE1',
-    borderRadius: 10,
   },
   boxClicked: {
     width: '90%',
     marginBottom: 5,
     marginLeft: 15,
-    borderRadius: 30,
+    borderColor: '#590DE1',
+    borderRadius: 10,
   },
 });
 

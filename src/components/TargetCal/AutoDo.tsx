@@ -21,8 +21,8 @@ const ContentsHeaderText = Styled.Text`
 `;
 const ContentsHeaderContiainer = Styled.View`
 border-width: 1px;
-border-color: #590DE1;
-border-radius: 10px;
+border-color: grey;
+border-radius: 5px;
 height: 60px;
 width: 112%
 padding: 15px;
@@ -30,19 +30,10 @@ align-items: center;
 `;
 const ContentsContainer = Styled.View`
 border-width: 1px;
-border-color: #590DE1;
-border-radius: 10px;
+border-color: grey;
+border-radius: 5px;
 padding: 10px;
-
-
-`;
-const CompleteButton = Styled.Button`
-  margin-top:10,
-  margin-bottom:10,
-  align-items: 'center',
-  background-color: 'white',
-  padding: 20,
-  color: grey
+margin-top: -20px;
 `;
 
 const Contents = props => {
