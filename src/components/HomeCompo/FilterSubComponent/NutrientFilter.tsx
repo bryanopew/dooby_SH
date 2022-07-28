@@ -73,6 +73,16 @@ const renderBelowGram = (value: number, index: number) => {
   );
 };
 
+const start = () => {
+  console.log('성공');
+};
+const end = () => {
+  console.log('end');
+};
+const change = () => {
+  console.log('change');
+};
+//성공
 const NutrientFilter = ({}) => {
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -87,6 +97,9 @@ const NutrientFilter = ({}) => {
             thumbTintColor="white"
             renderBelowThumbComponent={renderBelowKcal}
             trackStyle={customTrackStyle.track}
+            onSlidingStart={start}
+            onSlidingComplete={end}
+            onValueChange={change}
           />
         </SliderContainer>
         <SliderContainer caption="탄수화물" sliderValue={[0, 100]}>

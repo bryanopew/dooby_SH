@@ -78,7 +78,7 @@ export const defaultStyles: {
     top: 0,
   },
   track: {
-    // borderRadius: TRACK_SIZE / 2, 스타일 적용?
+    // borderRadius: TRACK_SIZE / 2,
     height: TRACK_SIZE,
   },
 };
