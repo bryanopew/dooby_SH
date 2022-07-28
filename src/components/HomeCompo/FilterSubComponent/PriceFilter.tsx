@@ -13,23 +13,21 @@ const styles = StyleSheet.create({
 
 const PriceFilter = () => {
   return (
-    <>
-      <SafeAreaView style={styles.wrapper}>
-        <ScrollView>
-          <SliderContainer caption="가격" sliderValue={[0, 10000]}>
-            <Slider
-              animateTransitions
-              maximumTrackTintColor="#E5E5E5"
-              maximumValue={10000}
-              minimumTrackTintColor="#E5E5E5"
-              minimumValue={0}
-              step={50}
-              thumbTintColor="white"
-            />
-          </SliderContainer>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <SafeAreaView>
+      <SliderContainer
+        caption="<Slider/> 2 thumbs, min, max, and custom tint"
+        sliderValue={[6, 18]}>
+        <Slider
+          animateTransitions
+          maximumTrackTintColor="red"
+          maximumValue={20}
+          minimumTrackTintColor="#1fb28a"
+          minimumValue={4}
+          step={2}
+          thumbTintColor="#1a9274"
+        />
+      </SliderContainer>
+    </SafeAreaView>
   );
 };
 

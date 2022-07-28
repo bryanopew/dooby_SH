@@ -21,11 +21,15 @@ const trackMarkStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   titleContainer: {
-    alignItems: 'center',
+    marginLeft: 20,
     justifyContent: 'center',
   },
   sliderContainer: {
     paddingVertical: 16,
+  },
+  HeaderText: {
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
 export const SliderContainer = (props: {
@@ -67,8 +71,9 @@ export const SliderContainer = (props: {
   return (
     <View style={styles.sliderContainer}>
       <View style={styles.titleContainer}>
-        <Text>{caption}</Text>
-        <Text>{Array.isArray(value) ? value.join(' - ') : value}</Text>
+        <Text style={styles.HeaderText}>{caption}</Text>
+        {/* <Text>{Array.isArray(value) ? value.join(' - ') : value}</Text> 
+         범위 0-100 으로 headerText아래에 표시 */}
       </View>
       {renderChildren()}
     </View>

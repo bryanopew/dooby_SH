@@ -19,6 +19,8 @@ export const defaultStyles: {
     height: number;
     position: 'absolute';
     width: number;
+    borderColor: string;
+    borderWidth: number;
   };
   touchArea: {
     backgroundColor: string;
@@ -29,6 +31,7 @@ export const defaultStyles: {
     top: number;
   };
   track: {borderRadius: number; height: number};
+  thumbActivate: {};
 } = {
   aboveThumbComponentsContainer: {
     flexDirection: 'row',
@@ -39,6 +42,8 @@ export const defaultStyles: {
   container: {
     height: 40,
     justifyContent: 'center',
+    width: '90%',
+    marginLeft: 20,
   },
   debugThumbTouchArea: {
     backgroundColor: GREEN,
@@ -54,7 +59,15 @@ export const defaultStyles: {
     position: 'absolute',
     width: THUMB_SIZE,
     borderColor: '#E5E5E5',
-    borderWidth: 1,
+    borderWidth: 2,
+  },
+  thumbActivate: {
+    borderRadius: THUMB_SIZE / 2,
+    height: THUMB_SIZE,
+    position: 'absolute',
+    width: THUMB_SIZE,
+    borderColor: '#590DE1',
+    borderWidth: 2,
   },
   touchArea: {
     backgroundColor: TRANSPARENT,
@@ -65,7 +78,7 @@ export const defaultStyles: {
     top: 0,
   },
   track: {
-    borderRadius: TRACK_SIZE / 2,
+    // borderRadius: TRACK_SIZE / 2, 스타일 적용?
     height: TRACK_SIZE,
   },
 };

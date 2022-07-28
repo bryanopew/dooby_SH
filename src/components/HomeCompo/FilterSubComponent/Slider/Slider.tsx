@@ -734,7 +734,7 @@ export class Slider extends PureComponent<SliderProps, SliderState> {
             style={[
               styles.track,
               {
-                backgroundColor: maximumTrackTintColor,
+                backgroundColor: 'maximumTrackTintColor',
               },
               trackStyle,
             ]}
