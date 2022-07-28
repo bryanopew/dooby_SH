@@ -18,6 +18,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
 import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
 import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
+import PriceFilter from '~/Components/HomeCompo/FilterSubComponent/PriceFilter';
 
 const Tab = createMaterialTopTabNavigator();
 const FilterScreenStack = createStackNavigator();
@@ -31,8 +32,8 @@ const MenuFilterScreenStack = ({navigation}) => {
       }}>
       <Tab.Screen name="카테고리" component={CategoryFilter} />
       <Tab.Screen name="영양성분" component={NutrientFilter} />
-      <Tab.Screen name="가격" component={NutrientFilter} />
-      <Tab.Screen name="식단구성" component={NutrientFilter} />
+      <Tab.Screen name="가격" component={PriceFilter} />
+      <Tab.Screen name="식단구성" component={CategoryFilter} />
     </Tab.Navigator>
   );
 };
