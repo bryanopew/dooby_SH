@@ -14,6 +14,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
 import {accessTokenConfig} from '~/utils/config';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
@@ -111,16 +112,37 @@ const Input = ({label, register, required}) => (
 );
 
 const Basic1 = ({navigation}) => {
-  // const getAuth = async (ACCESS_TOKEN) => {
-  //   const tokenInfo = await axios({
-  //     method:'get',
-  //     url:'http://61.100.16.155:8080/api/member/auth/get-auth',
-  //     headers:{
-  //         Authorization: `Bearer ${ACCESS_TOKEN}`
-  //     }
-  // })
-  // return tokenInfo}
-  // getAuth(ACCESS_TOKEN);
+  const getToken = () => {
+    let token = AsyncStorage.getItem('ACCESS_TOKEN');
+    return token;
+  };
+
+  useEffect(() => {
+    getToken()
+      .then(token =>
+        axios.get(`http://61.100.16.155:8080/api/member/code/list-code/SP001`, {
+          headers: {
+            Authentication: `Bearer ${token}`,
+          },
+        }),
+      )
+      .then(res => console.log('SP001', res.data));
+  }, []);
+  // useEffect(() => {
+  //   getToken()
+  //     .then(token =>
+  //       axios.get(
+  //         'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort=Calorie,ASC',
+  //         {
+  //           headers: {
+  //             Authentication: `Bearer ${token}`,
+  //           },
+  //         },
+  //       ),
+  //     )
+  //     .then(res => console.log('CG:', res.data));
+  // }, []);
+
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -205,7 +227,7 @@ const Basic1 = ({navigation}) => {
     conTarget,
     gender,
   };
-  console.log(basicInformation2);
+  // console.log(basicInformation2);
   const bmrCalcul = () => {
     if (gender === 'male') {
       return 10 * weight + 6.25 * height - 5 * age + 5;

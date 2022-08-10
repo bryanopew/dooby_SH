@@ -13,7 +13,12 @@ import {Edge, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {loginWithKakaoTalk} from '~/stores/actions/auth/authActions';
 import axios from 'axios';
 import {accessTokenConfig} from '~/utils/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {KAKAO_TOKEN_CONTROLLER} from '~/constants/constants';
+import {GET_AUTH} from '~/constants/constants';
+import {GET_USER} from '~/constants/constants';
+import {RE_ISSUE_TOKEN} from '~/constants/constants';
 
 const styles = StyleSheet.create({
   button: {
@@ -40,7 +45,6 @@ const Login = ({navigation}) => {
       `${KAKAO_TOKEN_CONTROLLER}/${token.accessToken}`,
     );
     const ACCESS_TOKEN = res.data.accessToken;
-    console.log(ACCESS_TOKEN);
     if (res?.status === 200) {
       console.log('success');
       onMovePage();
@@ -48,16 +52,23 @@ const Login = ({navigation}) => {
       console.log('fail');
     }
 
-    const getAuth = await axios.get(
-      'http://61.100.16.155:8080/api/member/auth/get-auth',
+    const getAuth = await axios.get(`${GET_AUTH}`, {
+      headers: {
+        Authentication: `Bearer ${ACCESS_TOKEN}`,
+      },
+    });
+    const getUser = await axios.get(
+      'http://61.100.16.155:8080/api/member/user/get-user',
       {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authentication: `Bearer ${ACCESS_TOKEN}`,
         },
       },
     );
+    try {
+      await AsyncStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
+    } catch (e) {}
   };
-
   // const dispatch = useDispatch();
   // const {navigation} = props;
 

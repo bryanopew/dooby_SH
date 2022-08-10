@@ -10,27 +10,65 @@ import {
   PanResponder,
   Button,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import Styled from 'styled-components/native';
+import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
-import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
-import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
+import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 
-const Tab = createMaterialTopTabNavigator();
-const FilterScreenStack = createStackNavigator();
+const HeaderButtonContainer = styled.View`
+  background-color: red;
+`;
+const HeaderButtonText = styled.Text``;
+const DietContainer = styled.View`
+  background-color: green
+  padding: 10px
+`;
 
-const MenuFilterScreenStack = ({navigation}) => {
+const TotalContainer = styled.View`
+  background-color: yellow;
+`;
+
+const AddDietButton = styled.TouchableOpacity`
+  background-color: orange
+  align-items: center;
+`;
+const DietProductContainer = styled.View`
+  background-color: grey;
+`;
+
+const OrderButton = styled.TouchableOpacity`
+  background-color: orange
+  align-items: center;
+`;
+
+const Basket = ({navigation}) => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="카테고리" component={CategoryFilter} />
-      <Tab.Screen name="영양성분" component={NutrientFilter} />
-      <Tab.Screen name="가격" component={NutrientFilter} />
-      <Tab.Screen name="식단구성" component={NutrientFilter} />
-    </Tab.Navigator>
+    <>
+      <HeaderButtonContainer>
+        <HeaderButtonText>전체삭제</HeaderButtonText>
+      </HeaderButtonContainer>
+      <ScrollView>
+        <DietContainer>
+          <NutrientsBar />
+          <Text>식품을 추가해보세요</Text>
+          {/* 제품이 추가되지않았을경우에 노출되는 컴포넌트 => <AddDietButton ><Text>귀찮을 땐 자동구성</Text></AddDietButton> */}
+          <DietProductContainer>
+            <Text>제품들이들어가는 위치</Text>
+          </DietProductContainer>
+          <Text style={{textAlign: 'right'}}>합계: 00000원</Text>
+        </DietContainer>
+      </ScrollView>
+      <TotalContainer>
+        <Text>전체합계:</Text>
+      </TotalContainer>
+      <OrderButton>
+        <Text>주문하기</Text>
+      </OrderButton>
+    </>
   );
 };
 
-export default MenuFilterScreenStack;
+export default Basket;
