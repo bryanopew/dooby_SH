@@ -124,10 +124,10 @@ const MainTabs = () => {
         }}
       />
       <BottomTab.Screen
-        name="BasketTab"
+        name="장바구니"
         component={Basket}
         options={{
-          headerShown: false,
+          headerShown: true,
           tabBarShowLabel: false,
           tabBarIcon: ({color, focused}) => (
             <Image

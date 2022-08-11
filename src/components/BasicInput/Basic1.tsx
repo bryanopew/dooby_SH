@@ -117,31 +117,28 @@ const Basic1 = ({navigation}) => {
     return token;
   };
 
+  // useEffect(() => {
+  //   getToken()
+  //     .then(token =>
+  //       axios.get(`http://61.100.16.155:8080/api/member/code/list-code/SP001`, {
+  //         headers: {
+  //           Authentication: `Bearer ${token}`,
+  //         },
+  //       }),
+  //     )
+  //     .then(res => console.log('SP001', res.data));
+  // }, []);
   useEffect(() => {
     getToken()
       .then(token =>
-        axios.get(`http://61.100.16.155:8080/api/member/code/list-code/SP001`, {
+        axios.get('http://61.100.16.155:8080/api/member/auth/re-issue-token/', {
           headers: {
             Authentication: `Bearer ${token}`,
           },
         }),
       )
-      .then(res => console.log('SP001', res.data));
+      .then(res => console.log('reIssue:', res.data.refreshToken));
   }, []);
-  // useEffect(() => {
-  //   getToken()
-  //     .then(token =>
-  //       axios.get(
-  //         'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort=Calorie,ASC',
-  //         {
-  //           headers: {
-  //             Authentication: `Bearer ${token}`,
-  //           },
-  //         },
-  //       ),
-  //     )
-  //     .then(res => console.log('CG:', res.data));
-  // }, []);
 
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');

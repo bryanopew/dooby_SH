@@ -11,8 +11,6 @@ import {
 import CategoryList from './Category';
 import Styled from 'styled-components/native';
 import {pFont, pText} from '~/styles/typography';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 
 const item = ['a', 'b', 'c', 'd', 'e', 'f'];
 
@@ -108,28 +106,11 @@ const Menus = ({
 }: Props) => {
   const width = Dimensions.get('window').width;
   const imageWidth = width / 3;
-  // const getToken = () => {
-  //   let token = AsyncStorage.getItem('ACCESS_TOKEN');
-  //   return token;
-  // };
-  // useEffect(() => {
-  //   getToken()
-  //     .then(token =>
-  //       axios.get(
-  //         'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort=Calorie,ASC',
-  //         {
-  //           headers: {
-  //             Authentication: `Bearer ${token}`,
-  //           },
-  //         },
-  //       ),
-  //     )
-  //     .then(res => console.log('CG:', res.data));
-  // }, []);
+
   return (
     <>
       <FoodNoticeContainer>
-        <FoodNoticeText>전체 식품</FoodNoticeText>
+        <FoodNoticeText>전체 ?</FoodNoticeText>
       </FoodNoticeContainer>
       <FilterMenuContainer>
         {filterMenus.map(i => (

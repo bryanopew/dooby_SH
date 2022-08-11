@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -14,6 +14,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import Category from '~/Components/HomeCompo/Category';
@@ -39,13 +41,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   button: {
+    right: 10,
+    position: 'absolute',
     backgroundColor: '#590DE1',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
     width: 25,
     height: 25,
     marginTop: 20,
-    marginLeft: 100,
     borderRadius: 35,
 
     ...Platform.select({
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
 
       android: {
         elevation: 0,
-        marginHorizontal: 30,
       },
     }),
   },
@@ -143,58 +143,58 @@ interface Props {
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
 const imageWidth = dimensions.width / 3;
-const products = [
-  {
-    name: '존맛식품1',
-    description: '상세정보',
-    price: '가격',
-    nutrients: '100',
-  },
-  {
-    name: '존맛식품2',
-    description: '상세정보',
-    price: '가격',
-    nutrients: '100',
-  },
-  {
-    name: '존맛식품3',
-    description: '상세정보',
-    price: '가격',
-    nutrients: '100',
-  },
-  {
-    name: '존맛식품4',
-    description: '상세정보',
-    price: '가격',
-    nutrients: '100',
-  },
-  {
-    name: '존맛식품5',
-    description: '상세정보',
-    price: '가격',
-    nutrients: '100',
-  },
-];
 
 const Home = ({navigation}: Props) => {
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <HeaderRightContainer>
-  //         <IconButton
-  //           iconName="search"
-  //           onPress={() => navigation.navigate('SearchTab')}
-  //         />
-  //       </HeaderRightContainer>
-  //     ),
-  //   });
-  // }, []);
+  const [data, setData] = useState([]);
+
+  // 제품이름(productNm) res.data.productNm
+  // 플랫폼이름(platformNm) res.data.platformNm
+  // 가격(price) res.data.price
+  // 칼로리(calorie) res.data.calorie
+  // 탄수화물(carb) res.data.carb
+  // 단백질(protein) res.data.protein
+  // 지방(fat) res.data.fat
+  // 사진(mainAttUrl) res.data.mainAttUrl
+
+  const getToken = () => {
+    let token = AsyncStorage.getItem('ACCESS_TOKEN');
+    return token;
+  };
+  useEffect(() => {
+    getToken()
+      .then(token =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort=Calorie,ASC',
+          {
+            headers: {
+              Authentication: `Bearer ${token}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setData(res.data);
+      });
+  }, []);
+
+  const realProduct = data.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = value.calorie;
+    returnObj.carb = value.carb;
+    returnObj.protein = value.protein;
+    returnObj.fat = value.fat;
+    returnObj.att = value.mainAttUrl;
+    return returnObj;
+  });
   return (
     <SafeAreaView style={styles.wrapper}>
       <NutrientsBar />
 
       <FoodNoticeContainer>
-        <FoodNoticeText>전체 식품 {products.length}개</FoodNoticeText>
+        <FoodNoticeText>전체 식품 {realProduct.length}개</FoodNoticeText>
       </FoodNoticeContainer>
       <FilterMenuContainer>
         {filterMenus.map(i => (
@@ -205,22 +205,19 @@ const Home = ({navigation}: Props) => {
       </FilterMenuContainer>
       <FlatList
         style={{backgroundColor: 'white'}}
-        data={products}
+        data={realProduct}
         // style={{width}}
         keyExtractor={(products, index) => {
           return `menus-${index}`;
         }}
-        // showsVerticalScrollIndicator={false}
-        // scrollEnabled={scrollEnabled}
-        // bounces={bounces}
+        showsVerticalScrollIndicator={false}
+        bounces={true}
         // onRefresh={onRefresh}
-        // onEndReached={onEndReached}
         // onEndReached={() => {
         //   setMenuList([...menuList, ...getmenuList()]);
         // }}
-        // onEndReachedThreshold={0.5}
-        // refreshing={loading}
-        // ListHeaderComponent={<CategoryList />}
+        onEndReachedThreshold={0.5}
+        refreshing={true}
         renderItem={({item, index}) => (
           <ProductContainer>
             <RowContainer>
@@ -231,12 +228,14 @@ const Home = ({navigation}: Props) => {
                   marginLeft: 10,
                 }}
                 resizeMode={'contain'}
-                source={require('~/Assets/Images/testImage.jpg')}
+                source={{
+                  uri: `http://61.100.16.155:8080${item.att}`,
+                }}
               />
               <ColumnContainer>
                 <ProductNameText>{item.name}</ProductNameText>
                 <ProductDetailText>{item.description}</ProductDetailText>
-                <ProductPriceText>{item.price}</ProductPriceText>
+                <ProductPriceText>{item.price}원</ProductPriceText>
               </ColumnContainer>
               <RoundButton />
             </RowContainer>
@@ -244,22 +243,22 @@ const Home = ({navigation}: Props) => {
               <ProductNutrientText>
                 칼로리
                 <ProductNutrientNumberText>
-                  {item.nutrients}
+                  {item.calorie}kcal
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 탄수화물{' '}
                 <ProductNutrientNumberText>
-                  {item.nutrients}
+                  {item.carb}g
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 단백질{' '}
                 <ProductNutrientNumberText>
-                  {item.nutrients}
+                  {item.protein}g
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 지방{' '}
                 <ProductNutrientNumberText>
-                  {item.nutrients}
+                  {item.fat}g
                 </ProductNutrientNumberText>
               </ProductNutrientText>
             </ProductNutrientContainer>
