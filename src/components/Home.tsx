@@ -26,16 +26,6 @@ import {StackNavigationProp} from '@react-navigation/stack';
 
 import IconButton from '~/Components/IconButton';
 
-export class RoundButton extends Component {
-  render() {
-    return (
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.text}>+</Text>
-      </TouchableOpacity>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
@@ -140,9 +130,40 @@ type NavigationProp = StackNavigationProp<HeaderTab, 'Header'>;
 interface Props {
   navigation: NavigationProp;
 }
+
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
 const imageWidth = dimensions.width / 3;
+
+export const selectedProducts: Array<{}> = [];
+const AddProductButton = ({item}) => {
+  return (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        selectedProducts.push(item);
+        const newNumbers = selectedProducts.filter((number, index, target) => {
+          return target.indexOf(number) === index;
+        });
+        console.log(newNumbers);
+      }}>
+      <Text style={styles.text}>+</Text>
+    </TouchableOpacity>
+  );
+};
+// const MinusProductButton = ({item}) => {
+//   return (
+//     <TouchableOpacity
+//       style={styles.button}
+//       onPress={() => {
+//         selectedProducts.filter(list => list.toString() === item.toString());
+//         console.log(item);
+//         console.log(selectedProducts);
+//       }}>
+//       <Text style={styles.text}>-</Text>
+//     </TouchableOpacity>
+//   );
+// };
 
 const Home = ({navigation}: Props) => {
   const [data, setData] = useState([]);
@@ -176,7 +197,6 @@ const Home = ({navigation}: Props) => {
         setData(res.data);
       });
   }, []);
-
   const realProduct = data.map(value => {
     let returnObj = {};
     returnObj.name = value.platformNm;
@@ -187,8 +207,11 @@ const Home = ({navigation}: Props) => {
     returnObj.protein = value.protein;
     returnObj.fat = value.fat;
     returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
     return returnObj;
   });
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <NutrientsBar />
@@ -204,7 +227,7 @@ const Home = ({navigation}: Props) => {
         ))}
       </FilterMenuContainer>
       <FlatList
-        style={{backgroundColor: 'white'}}
+        style={{backgroundColor: 'white', marginTop: 20}}
         data={realProduct}
         // style={{width}}
         keyExtractor={(products, index) => {
@@ -212,6 +235,7 @@ const Home = ({navigation}: Props) => {
         }}
         showsVerticalScrollIndicator={false}
         bounces={true}
+        windowSize={2}
         // onRefresh={onRefresh}
         // onEndReached={() => {
         //   setMenuList([...menuList, ...getmenuList()]);
@@ -237,28 +261,40 @@ const Home = ({navigation}: Props) => {
                 <ProductDetailText>{item.description}</ProductDetailText>
                 <ProductPriceText>{item.price}원</ProductPriceText>
               </ColumnContainer>
-              <RoundButton />
+              <AddProductButton
+                item={[
+                  {
+                    name: item.name,
+                    price: item.price,
+                    description: item.description,
+                    calorie: item.calorie,
+                    carb: item.carb,
+                    protein: item.protein,
+                    fat: item.fat,
+                  },
+                ]}
+              />
             </RowContainer>
             <ProductNutrientContainer>
               <ProductNutrientText>
                 칼로리
                 <ProductNutrientNumberText>
-                  {item.calorie}kcal
+                  {Math.round(item.calorie)}kcal
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 탄수화물{' '}
                 <ProductNutrientNumberText>
-                  {item.carb}g
+                  {Math.round(item.carb)}g
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 단백질{' '}
                 <ProductNutrientNumberText>
-                  {item.protein}g
+                  {Math.round(item.protein)}g
                 </ProductNutrientNumberText>
                 <Space>{'    '}</Space>
                 지방{' '}
                 <ProductNutrientNumberText>
-                  {item.fat}g
+                  {Math.round(item.fat)}g
                 </ProductNutrientNumberText>
               </ProductNutrientText>
             </ProductNutrientContainer>

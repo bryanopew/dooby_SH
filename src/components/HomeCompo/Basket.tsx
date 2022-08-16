@@ -16,14 +16,18 @@ import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
+import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 
 const HeaderButtonContainer = styled.View`
   flex-direction: row;
 `;
-const HeaderButtonText = styled.Text``;
+const HeaderButtonText = styled.Text`
+  margin-left: 20px;
+  margin-top: 10px;
+`;
 const DietContainer = styled.View`
   padding: 10px;
+  background-color: white;
 `;
 
 const TotalContainer = styled.View`
@@ -40,7 +44,7 @@ const AddDietButton = styled.TouchableOpacity`
   border-color: #590de1;
 `;
 const DietProductContainer = styled.View`
-  background-color: grey;
+  background-color: red;
 `;
 
 const OrderButton = styled.TouchableOpacity`
@@ -54,8 +58,10 @@ const OrderButton = styled.TouchableOpacity`
   border-color: #590de1;
 `;
 const PickDelete = styled.TouchableOpacity`
+  margin-top: 10px;
   border-width: 1px;
-  left: 250px;
+  left: 220px;
+  padding: 5px;
 `;
 
 const Basket = ({navigation}) => {
@@ -69,14 +75,16 @@ const Basket = ({navigation}) => {
       </HeaderButtonContainer>
       <ScrollView>
         <DietContainer>
+          <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
+            식단
+          </Text>
+
           <NutrientsBar />
-          <Text>식품을 추가해보세요</Text>
+          <Text style={{marginTop: 30}}>식품을 추가해보세요</Text>
           <AddDietButton>
             <Text>귀찮을 땐 자동구성</Text>
           </AddDietButton>
-          {/* <DietProductContainer>
-            <Text>제품들이들어가는 위치</Text>
-          </DietProductContainer> */}
+
           <Text style={{textAlign: 'right'}}>합계: 00000원</Text>
         </DietContainer>
       </ScrollView>
