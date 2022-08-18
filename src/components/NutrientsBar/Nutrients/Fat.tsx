@@ -28,19 +28,21 @@ const Fat = () => {
   const tasksValue = Object.values(fat);
   const length = tasksValue.length;
   const completed = tasksValue.filter(task => task.boolean === true).length;
+  const totalCalories = 42;
+  const calories = 30;
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>지방(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={completed / length}
+          progress={calories / totalCalories}
           width={80}
           height={5}
           color="green"
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {completed}/{length}
+        {calories}/{totalCalories}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

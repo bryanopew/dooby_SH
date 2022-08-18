@@ -30,9 +30,7 @@ const DietContainer = styled.View`
   background-color: white;
 `;
 
-const TotalContainer = styled.View`
-  background-color: yellow;
-`;
+const TotalContainer = styled.View``;
 
 const AddDietButton = styled.TouchableOpacity`
   align-items: center;

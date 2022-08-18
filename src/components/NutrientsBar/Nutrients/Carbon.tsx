@@ -28,19 +28,21 @@ const Carbon = () => {
   const tasksValue = Object.values(carbon);
   const length = tasksValue.length;
   const completed = tasksValue.filter(task => task.boolean === true).length;
+  const totalCalories = 90;
+  const calories = 61;
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>탄수화물(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={completed / length}
+          progress={calories / totalCalories}
           width={80}
           height={5}
           color="orange"
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {completed}/{length}
+        {calories}/{totalCalories}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

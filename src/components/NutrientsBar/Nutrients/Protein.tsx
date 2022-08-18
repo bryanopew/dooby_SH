@@ -29,19 +29,21 @@ const Protein = () => {
   const tasksValue = Object.values(protein);
   const length = tasksValue.length;
   const completed = tasksValue.filter(task => task.boolean === true).length;
+  const totalCalories = 21;
+  const calories = 14;
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>단백질(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={completed / length}
+          progress={calories / totalCalories}
           width={80}
           height={5}
           color={'rgba(51, 65, 159, 0.8)'}
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {completed}/{length}
+        {calories}/{totalCalories}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

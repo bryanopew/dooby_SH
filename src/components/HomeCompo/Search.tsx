@@ -22,15 +22,16 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
 import {selectedProducts} from '~/Components/Home';
+import CheckBox from '@react-native-community/checkbox';
 
 const newNumbers = selectedProducts.filter((number, index, target) => {
   return target.indexOf(number) === index;
 });
 
-const basketProducts = newNumbers.map((numbers, index) => {
-  return {numbers};
+const basketProducts = newNumbers.map((product, index) => {
+  return {product};
 });
-console.log('장바구니담긴', basketProducts[2]);
+console.log('장바구니담긴', basketProducts[1]);
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
@@ -68,9 +69,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
+  textInput: {
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  container: {
+    alignItems: 'center',
+  },
 });
+
+const EachCheckBoxAndroid = () => {
+  const [state, setState] = useState(false);
+  return (
+    <View style={styles.container}>
+      <CheckBox
+        value={state}
+        onValueChange={value => setState(value)}
+        tintColors={{true: '#30D158'}}
+      />
+    </View>
+  );
+};
 const HeaderButtonContainer = styled.View`
   flex-direction: row;
+  background-color: #e5e5e5;
 `;
 const HeaderButtonText = styled.Text`
   margin-left: 5px;
@@ -108,8 +130,11 @@ const PickDelete = styled.TouchableOpacity`
   margin-top: 5px;
   margin-bottom: 5px;
   border-width: 1px;
+  border-radius: 5px;
+  border-color: #e5e5e5;
   left: 170px;
   padding: 5px;
+  background-color: white;
 `;
 
 const FoodNoticeContainer = styled.View`
@@ -166,22 +191,78 @@ const ProductDetailText = styled.Text`
   margin-left: 10px;
 `;
 const ProductPriceText = styled.Text`
-  padding: 10px;
+  margin-left: 150px;
+
   font-weight: bold;
 `;
 const Space = styled.Text``;
 
+const TotalText = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 20px;
+`;
+const TotalDetailText = styled.Text`
+  margin-top: 10px;
+  margin-left: 20px;
+  font-weight: bold;
+`;
+const ShippingText = styled.Text`
+  margin-left: 20px;
+  color: gray;
+`;
+
+const Item = () => {
+  return (
+    <>
+      <RowContainer>
+        <EachCheckBoxAndroid />
+
+        <Image
+          style={{
+            height: imageHeight,
+            width: imageWidth,
+            marginLeft: 10,
+          }}
+          resizeMode={'contain'}
+          source={require('~/Assets/Images/testImage.jpg')}
+        />
+        <ColumnContainer>
+          <ProductNameText>유통사 이름</ProductNameText>
+          <ProductDetailText>제품 이름</ProductDetailText>
+          <ProductNutrientContainer>
+            <ProductNutrientText>
+              칼로리
+              <ProductNutrientNumberText>00kcal</ProductNutrientNumberText>
+              <Space>{''}</Space>
+              탄수화물{' '}
+              <ProductNutrientNumberText>00g</ProductNutrientNumberText>
+              <Space>{''}</Space>
+              단백질{''}
+              <ProductNutrientNumberText>00g{''}</ProductNutrientNumberText>
+              <Space>{''}</Space>
+              지방{''}
+              <ProductNutrientNumberText>00g{''}</ProductNutrientNumberText>
+            </ProductNutrientText>
+          </ProductNutrientContainer>
+        </ColumnContainer>
+      </RowContainer>
+      <ProductPriceText>ㅇㅇㅇㅇ원</ProductPriceText>
+    </>
+  );
+};
+
 const OnBasket = ({navigation}) => {
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <HeaderButtonContainer>
-        <CheckBoxAndroid />
-        <HeaderButtonText>전체 선택</HeaderButtonText>
-        <PickDelete>
-          <Text>선택 삭제</Text>
-        </PickDelete>
-      </HeaderButtonContainer>
-      <ScrollView>
+    <ScrollView>
+      <SafeAreaView style={styles.wrapper}>
+        <HeaderButtonContainer>
+          <CheckBoxAndroid />
+          <HeaderButtonText>전체 선택</HeaderButtonText>
+          <PickDelete>
+            <Text>선택 삭제</Text>
+          </PickDelete>
+        </HeaderButtonContainer>
         <DietContainer>
           <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
             식단
@@ -190,56 +271,27 @@ const OnBasket = ({navigation}) => {
           <NutrientsBar />
           <ScrollView>
             <DietProductContainer>
-              <RowContainer>
-                <Image
-                  style={{
-                    height: imageHeight,
-                    width: imageWidth,
-                    marginLeft: 10,
-                  }}
-                  resizeMode={'contain'}
-                  source={require('~/Assets/Images/testImage.jpg')}
-                />
-                <ColumnContainer>
-                  <ProductNameText>유통사 이름</ProductNameText>
-                  <ProductDetailText>제품 이름</ProductDetailText>
-                  <ProductNutrientContainer>
-                    <ProductNutrientText>
-                      칼로리
-                      <ProductNutrientNumberText>
-                        00kcal
-                      </ProductNutrientNumberText>
-                      <Space>{''}</Space>
-                      탄수화물{' '}
-                      <ProductNutrientNumberText>00g</ProductNutrientNumberText>
-                      <Space>{''}</Space>
-                      단백질{''}
-                      <ProductNutrientNumberText>
-                        00g{''}
-                      </ProductNutrientNumberText>
-                      <Space>{''}</Space>
-                      지방{''}
-                      <ProductNutrientNumberText>
-                        00g{''}
-                      </ProductNutrientNumberText>
-                    </ProductNutrientText>
-                  </ProductNutrientContainer>
-                </ColumnContainer>
-              </RowContainer>
-
-              <ProductPriceText>ㅇㅇㅇㅇ원</ProductPriceText>
+              <Item />
+              <Item />
+              <Item />
+              <Item />
             </DietProductContainer>
           </ScrollView>
           <Text style={{textAlign: 'right'}}>합계: 00000원</Text>
         </DietContainer>
-      </ScrollView>
-      <TotalContainer>
-        <Text>전체합계:</Text>
-      </TotalContainer>
-      <OrderButton>
-        <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
-      </OrderButton>
-    </SafeAreaView>
+        <TotalContainer>
+          <TotalText>존맛식품</TotalText>
+          <TotalDetailText>식품: 8600원</TotalDetailText>
+          <ShippingText>배송비:3,000원(10,000원 이상 무료배송)</ShippingText>
+          <TotalText style={{marginTop: 20}}>맛있닭</TotalText>
+          <TotalDetailText>식품: 5,700원</TotalDetailText>
+          <ShippingText>배송비:2,500원(30,000원 이상 무료배송)</ShippingText>
+        </TotalContainer>
+        <OrderButton>
+          <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
+        </OrderButton>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
