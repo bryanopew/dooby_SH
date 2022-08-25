@@ -47,8 +47,7 @@ const Basic3 = ({route, navigation}) => {
     calculClicked: false,
     manualClicked: false,
   });
-  console.log('초기값', clicked);
-
+  console.log(info, target, conTarget);
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>

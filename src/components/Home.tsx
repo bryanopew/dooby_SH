@@ -185,7 +185,7 @@ const Home = ({navigation}: Props) => {
     getToken()
       .then(token =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort=Calorie,ASC',
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd',
           {
             headers: {
               Authentication: `Bearer ${token}`,
@@ -271,6 +271,7 @@ const Home = ({navigation}: Props) => {
                     carb: item.carb,
                     protein: item.protein,
                     fat: item.fat,
+                    att: item.att,
                   },
                 ]}
               />

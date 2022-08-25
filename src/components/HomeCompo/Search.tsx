@@ -18,6 +18,7 @@ import {
 import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {useIsFocused} from '@react-navigation/native';
 
 import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
@@ -28,10 +29,12 @@ const newNumbers = selectedProducts.filter((number, index, target) => {
   return target.indexOf(number) === index;
 });
 
-const basketProducts = newNumbers.map((product, index) => {
-  return {product};
-});
-console.log('장바구니담긴', basketProducts[1]);
+let basketProducts = [];
+if (newNumbers.length >= 1) {
+  basketProducts = newNumbers.reduce(function (acc, cur) {
+    return acc.concat(cur);
+  });
+}
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
@@ -74,7 +77,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   container: {
-    alignItems: 'center',
+    position: 'absolute',
+    marginLeft: 5,
+    marginTop: 15,
+    backgroundColor: 'white',
   },
 });
 
@@ -92,7 +98,7 @@ const EachCheckBoxAndroid = () => {
 };
 const HeaderButtonContainer = styled.View`
   flex-direction: row;
-  background-color: #e5e5e5;
+  background-color: #f8f8f8;
 `;
 const HeaderButtonText = styled.Text`
   margin-left: 5px;
@@ -212,47 +218,70 @@ const ShippingText = styled.Text`
   color: gray;
 `;
 
-const Item = () => {
+const ShowProducts = () => {
   return (
     <>
-      <RowContainer>
-        <EachCheckBoxAndroid />
-
-        <Image
-          style={{
-            height: imageHeight,
-            width: imageWidth,
-            marginLeft: 10,
-          }}
-          resizeMode={'contain'}
-          source={require('~/Assets/Images/testImage.jpg')}
-        />
-        <ColumnContainer>
-          <ProductNameText>유통사 이름</ProductNameText>
-          <ProductDetailText>제품 이름</ProductDetailText>
-          <ProductNutrientContainer>
-            <ProductNutrientText>
-              칼로리
-              <ProductNutrientNumberText>00kcal</ProductNutrientNumberText>
-              <Space>{''}</Space>
-              탄수화물{' '}
-              <ProductNutrientNumberText>00g</ProductNutrientNumberText>
-              <Space>{''}</Space>
-              단백질{''}
-              <ProductNutrientNumberText>00g{''}</ProductNutrientNumberText>
-              <Space>{''}</Space>
-              지방{''}
-              <ProductNutrientNumberText>00g{''}</ProductNutrientNumberText>
-            </ProductNutrientText>
-          </ProductNutrientContainer>
-        </ColumnContainer>
-      </RowContainer>
-      <ProductPriceText>ㅇㅇㅇㅇ원</ProductPriceText>
+      {basketProducts.map(i => (
+        <>
+          <RowContainer key={i.productNm}>
+            <Image
+              style={{
+                height: imageHeight,
+                width: imageWidth,
+                marginLeft: 10,
+              }}
+              resizeMode={'contain'}
+              source={{
+                uri: `http://61.100.16.155:8080${i.att}`,
+              }}
+            />
+            <EachCheckBoxAndroid />
+            <ColumnContainer>
+              <ProductNameText>{i.name}</ProductNameText>
+              <ProductDetailText>{i.description}</ProductDetailText>
+              <ProductNutrientContainer>
+                <ProductNutrientText>
+                  칼로리
+                  <ProductNutrientNumberText>
+                    {i.calorie}kcal
+                  </ProductNutrientNumberText>
+                  <Space>{''}</Space>
+                  탄수화물{' '}
+                  <ProductNutrientNumberText>
+                    {i.carb}g
+                  </ProductNutrientNumberText>
+                  <Space>{''}</Space>
+                  단백질{''}
+                  <ProductNutrientNumberText>
+                    {i.protein}g{''}
+                  </ProductNutrientNumberText>
+                  <Space>{''}</Space>
+                  지방{''}
+                  <ProductNutrientNumberText>
+                    {i.fat}g{''}
+                  </ProductNutrientNumberText>
+                </ProductNutrientText>
+              </ProductNutrientContainer>
+            </ColumnContainer>
+          </RowContainer>
+          <ProductPriceText>{i.price}원</ProductPriceText>
+        </>
+      ))}
     </>
   );
 };
 
 const OnBasket = ({navigation}) => {
+  const isFocused = useIsFocused();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    setData(basketProducts);
+  }, []);
+  console.log('basketProducts:', basketProducts);
+  useEffect(() => {
+    if (isFocused) console.log('focused');
+  }, [isFocused]);
+
   return (
     <ScrollView>
       <SafeAreaView style={styles.wrapper}>
@@ -267,14 +296,10 @@ const OnBasket = ({navigation}) => {
           <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
             식단
           </Text>
-
           <NutrientsBar />
           <ScrollView>
             <DietProductContainer>
-              <Item />
-              <Item />
-              <Item />
-              <Item />
+              <ShowProducts />
             </DietProductContainer>
           </ScrollView>
           <Text style={{textAlign: 'right'}}>합계: 00000원</Text>

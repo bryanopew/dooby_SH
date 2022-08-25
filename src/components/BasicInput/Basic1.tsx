@@ -8,6 +8,7 @@ import {
   Alert,
   TextInput,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import {useForm} from 'react-hook-form';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -15,16 +16,33 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {accessTokenConfig} from '~/utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styled from 'styled-components/native';
 
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
 
+const dimensions = Dimensions.get('window');
+const Height = Math.round(dimensions.width / 3);
+const Width = dimensions.width / 3;
+
+const InputContainer = styled.View`
+  margin-left: 16px;
+  margin-right: 16px;
+`;
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
   },
   textInput: {
     borderBottomWidth: 0.2,
+    borderColor: '#E5E5E5',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    fontWeight: 'bold',
+  },
+  onTextInput: {
+    borderBottomWidth: 0.2,
+    borderColor: '#590DE1',
     justifyContent: 'center',
     alignItems: 'flex-start',
     fontWeight: 'bold',
@@ -32,9 +50,14 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'white',
+    marginTop: 10,
+  },
+  onHeaderText: {
+    fontSize: 15,
+    fontWeight: 'bold',
     color: '#590DE1',
     marginTop: 10,
-    marginLeft: 10,
   },
   button: {
     marginTop: 80,
@@ -69,22 +92,22 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   clicked: {
-    borderRadius: 10,
+    borderRadius: 4,
     alignItems: 'center',
     borderColor: '#590DE1',
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 8,
+    marginRight: 16,
   },
   unClicked: {
-    borderRadius: 10,
+    borderRadius: 4,
     alignItems: 'center',
     borderColor: 'grey',
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 8,
+    marginRight: 16,
   },
 });
 
@@ -224,6 +247,7 @@ const Basic1 = ({navigation}) => {
     conTarget,
     gender,
   };
+  console.log(age);
   // console.log(basicInformation2);
   const bmrCalcul = () => {
     if (gender === 'male') {
@@ -267,9 +291,6 @@ const Basic1 = ({navigation}) => {
           }}>
           기본 정보를 {'\n'}입력해주세요.
         </Text>
-        <View>
-          <Text style={styles.headerText}>성별</Text>
-        </View>
 
         <View
           style={{
@@ -278,16 +299,6 @@ const Basic1 = ({navigation}) => {
             marginTop: 10,
             padding: 20,
           }}>
-          <Pressable
-            style={womanClick ? styles.clicked : styles.unClicked}
-            onPress={() => {
-              genderClick1(womanClick);
-              setWomanClick(!womanClick);
-            }}>
-            <Text style={womanClick ? styles.text : styles.unClickText}>
-              여성
-            </Text>
-          </Pressable>
           <Pressable
             style={manClick ? styles.clicked : styles.unClicked}
             onPress={() => {
@@ -298,56 +309,75 @@ const Basic1 = ({navigation}) => {
               남성
             </Text>
           </Pressable>
+          <Pressable
+            style={womanClick ? styles.clicked : styles.unClicked}
+            onPress={() => {
+              genderClick1(womanClick);
+              setWomanClick(!womanClick);
+            }}>
+            <Text style={womanClick ? styles.text : styles.unClickText}>
+              여성
+            </Text>
+          </Pressable>
         </View>
-        <Text style={styles.headerText}>만 나이</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="만 나이를 입력해주세요"
-          maxLength={3}
-          onChangeText={setAge}
-          value={age}
-          keyboardType="numeric"
-          onSubmitEditing={() => setAge(age)}
-        />
-        <Text style={styles.headerText}>신장(cm) </Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="신장을 입력해주세요"
-          maxLength={3}
-          onChangeText={setHeight}
-          value={height}
-          keyboardType="numeric"
-          onSubmitEditing={() => setHeight(height)}></TextInput>
-        <Text style={styles.headerText}>몸무게(kg)</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="몸무게를 입력해주세요"
-          onChangeText={setWeight}
-          maxLength={3}
-          value={weight}
-          keyboardType="numeric"></TextInput>
-        <Text style={styles.headerText}>식단의 목적</Text>
-        <DropDownPicker
-          dropDownContainerStyle={{
-            position: 'relative',
-            marginTop: -40,
-          }}
-          style={{
-            borderColor: 'white',
-            marginTop: 7,
-          }}
-          placeholder="식단의 목적"
-          open={open}
-          setOpen={setOpen}
-          value={value}
-          items={items}
-          setValue={setValue}
-          setItems={setItems}
-          textStyle={{fontSize: 15}}
-          listMode="SCROLLVIEW"
-          dropDownDirection="BOTTOM"
-          onChangeValue={okNext}
-        />
+        <InputContainer>
+          <Text style={age ? styles.onHeaderText : styles.headerText}>
+            만 나이
+          </Text>
+          <TextInput
+            style={age ? styles.onTextInput : styles.textInput}
+            placeholder="만 나이를 입력해주세요"
+            maxLength={3}
+            onChangeText={setAge}
+            value={age}
+            keyboardType="numeric"
+            onSubmitEditing={() => setAge(age)}
+          />
+          <Text style={height ? styles.onHeaderText : styles.headerText}>
+            신장(cm){' '}
+          </Text>
+          <TextInput
+            style={height ? styles.onTextInput : styles.textInput}
+            placeholder="신장을 입력해주세요"
+            maxLength={3}
+            onChangeText={setHeight}
+            value={height}
+            keyboardType="numeric"
+            onSubmitEditing={() => setHeight(height)}></TextInput>
+          <Text style={weight ? styles.onHeaderText : styles.headerText}>
+            몸무게(kg)
+          </Text>
+          <TextInput
+            style={weight ? styles.onTextInput : styles.textInput}
+            placeholder="몸무게를 입력해주세요"
+            onChangeText={setWeight}
+            maxLength={3}
+            value={weight}
+            keyboardType="numeric"
+            onSubmitEditing={() => setHeight(weight)}></TextInput>
+          <Text style={styles.onHeaderText}>식단의 목적</Text>
+          <DropDownPicker
+            dropDownContainerStyle={{
+              position: 'relative',
+              marginTop: -40,
+            }}
+            style={{
+              borderColor: 'white',
+              marginTop: 7,
+            }}
+            placeholder="식단의 목적"
+            open={open}
+            setOpen={setOpen}
+            value={value}
+            items={items}
+            setValue={setValue}
+            setItems={setItems}
+            textStyle={{fontSize: 15}}
+            listMode="SCROLLVIEW"
+            dropDownDirection="BOTTOM"
+            onChangeValue={okNext}
+          />
+        </InputContainer>
         <Pressable
           disabled={disabled}
           style={disabled ? styles.disabledButton : styles.button}
@@ -361,6 +391,7 @@ const Basic1 = ({navigation}) => {
           }>
           <Text style={{color: 'white'}}>다음</Text>
         </Pressable>
+
         {/* <NextButton isDisabled={isDisabled} goNext={goNext} /> */}
       </ScrollView>
     </SafeAreaView>
