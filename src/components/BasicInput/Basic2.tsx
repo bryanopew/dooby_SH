@@ -69,8 +69,8 @@ const Basic2 = ({route, navigation}) => {
   const [aData, setAData] = useState('');
   const [base, setBase] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const wValue = data;
-  const aValue = aData;
+  let wValue = data;
+  let aValue = aData;
   // 1. (활동대사량 = 0.0175 * Mets * 몸무게 * 운동시간(분))
   //  웨이트 운동 METs 값은 6으로 계산
   //  유산소 운동 METs 값은 7로 계산
@@ -91,9 +91,6 @@ const Basic2 = ({route, navigation}) => {
   // if(value = w3) => 60
   // if(value = w4) => 90
   // if(value = w5) => 120
-  const wcal = 0.0175 * 6 * weight * JSON.stringify(wValue);
-  const acal = 0.0175 * 7 * weight * JSON.stringify(aValue);
-  const AMR = wcal + acal + item * 0.2;
   function okNext() {
     if (wValue === '' || aValue === '') {
       return setDisabled(true);
@@ -104,8 +101,57 @@ const Basic2 = ({route, navigation}) => {
   useEffect(() => {
     okNext();
   }, [aValue]);
-  console.log('비활성화', disabled);
-  console.log('웨이트:', data, '유산소:', aData);
+  const wTime = () => {
+    switch (wValue) {
+      case 'SP003001':
+        wValue = 0;
+        break;
+      case 'SP003002':
+        wValue = 30;
+        break;
+      case 'SP003003':
+        wValue = 60;
+        break;
+      case 'SP003004':
+        wValue = 90;
+        break;
+      case 'SP003005':
+        wValue = 120;
+        break;
+      default:
+        return;
+    }
+  };
+
+  const aTime = () => {
+    switch (aValue) {
+      case 'SP004001':
+        aValue = 0;
+        break;
+      case 'SP004002':
+        aValue = 30;
+        break;
+      case 'SP004003':
+        aValue = 60;
+        break;
+      case 'SP004004':
+        aValue = 90;
+        break;
+      case 'SP004005':
+        aValue = 120;
+        break;
+      default:
+        return;
+    }
+  };
+
+  wTime();
+  aTime();
+  const wcal = 0.0175 * 6 * parseInt(weight) * wValue;
+  const acal = 0.0175 * 7 * parseInt(weight) * aValue;
+  const AMR = Math.round(wcal) + Math.round(acal) + item * 0.2;
+  console.log(AMR);
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <Text
@@ -134,7 +180,7 @@ const Basic2 = ({route, navigation}) => {
         style={disabled ? styles.disabledButton : styles.button}
         onPress={() =>
           navigation.navigate('Basic3', {
-            info: Math.round(AMR) + item,
+            info: AMR + item,
             target,
             conTarget,
           })

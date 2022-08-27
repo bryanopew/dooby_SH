@@ -6,12 +6,11 @@ const WTimePicker = props => {
   const [wValue, setWvalue] = useState();
 
   const [wtime, setWtime] = useState([
-    {label: '안함', value: 'SP003001'},
-    {label: '하루 30분 이하', value: 'SP003002'},
-    {label: '하루 30분~1시간 이하', value: 'SP003003'},
-    {label: '하루 1시간~1시간30분이하', value: 'SP003004'},
-    {label: '하루 1시간30분~2시간 이하', value: 'SP003005'},
-    {label: '하루 2시간 이상', value: 'SP003006'},
+    {label: '하루 30분 이하', value: 'SP003001'},
+    {label: '하루 30분~1시간 이하', value: 'SP003002'},
+    {label: '하루 1시간~1시간30분이하', value: 'SP003003'},
+    {label: '하루 1시간30분~2시간 이하', value: 'SP003004'},
+    {label: '하루 2시간 이상', value: 'SP003005'},
   ]);
   const {setData, openToggle} = props;
   return (

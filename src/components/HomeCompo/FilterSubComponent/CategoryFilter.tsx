@@ -73,11 +73,39 @@ const CategoryFilter = ({navigation}): JSX.Element => {
     {id: 5, text: '과자'},
     {id: 6, text: '음료'},
   ];
-
+  const onPress = i => {
+    // if (i.id === 1) {
+    //   console.log('도시락');
+    // } else if (i.id === 2) {
+    //   console.log('닭가슴살');
+    // }
+    switch (i.id) {
+      case 1:
+        console.log('도시락');
+        break;
+      case 2:
+        console.log('닭가슴살');
+        break;
+      case 3:
+        console.log('샐러드');
+        break;
+      case 4:
+        console.log('영양간식');
+        break;
+      case 5:
+        console.log('과자');
+        break;
+      case 6:
+        console.log('음료');
+        break;
+      default:
+        return;
+    }
+  };
   return (
     <ScrollView style={styles.wrapper}>
       {category.map((i, index) => (
-        <CategoryListButton key={i.id}>
+        <CategoryListButton key={i.id} onPress={() => onPress(i)}>
           <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
             <CategoryListText>{i.text}</CategoryListText>
           </CategoryListContainer>

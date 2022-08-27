@@ -28,7 +28,7 @@ import CheckBox from '@react-native-community/checkbox';
 const newNumbers = selectedProducts.filter((number, index, target) => {
   return target.indexOf(number) === index;
 });
-
+console.log('selectedProducts', selectedProducts);
 let basketProducts = [];
 if (newNumbers.length >= 1) {
   basketProducts = newNumbers.reduce(function (acc, cur) {

@@ -46,12 +46,17 @@ const Login = ({navigation}) => {
     );
     const ACCESS_TOKEN = res.data.accessToken;
     if (res?.status === 200) {
-      console.log('success');
+      console.log('access success');
       onMovePage();
     } else {
-      console.log('fail');
+      console.log('access token fail');
     }
-
+    const REFRESH_TOKEN = res.data.refreshToken;
+    if (res?.status === 200) {
+      console.log('refresh success');
+    } else {
+      console.log('refresh token fail');
+    }
     const getAuth = await axios.get(`${GET_AUTH}`, {
       headers: {
         Authentication: `Bearer ${ACCESS_TOKEN}`,
@@ -67,7 +72,14 @@ const Login = ({navigation}) => {
     );
     try {
       await AsyncStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
-    } catch (e) {}
+    } catch (e) {
+      console.log('ACCESS TOKEN ERROR', e);
+    }
+    try {
+      await AsyncStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
+    } catch (e) {
+      console.log('REFRESH TOKEN FAIL');
+    }
   };
   // const dispatch = useDispatch();
   // const {navigation} = props;

@@ -21,6 +21,7 @@ import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import Category from '~/Components/HomeCompo/Category';
 import Menus from '~/Components/HomeCompo/Menus';
 import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
+import SortModal from './HomeCompo/SortModal';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -116,6 +117,11 @@ const ProductPriceText = Styled.Text`
 padding: 20px;
 font-weight: bold;
 `;
+const SortButtonContainer = Styled.View`
+margin-left: 150px;
+flex-direction: row;
+
+`;
 const Space = Styled.Text`
 
 `;
@@ -142,10 +148,7 @@ const AddProductButton = ({item}) => {
       style={styles.button}
       onPress={() => {
         selectedProducts.push(item);
-        const newNumbers = selectedProducts.filter((number, index, target) => {
-          return target.indexOf(number) === index;
-        });
-        console.log(newNumbers);
+        console.log('ss', selectedProducts);
       }}>
       <Text style={styles.text}>+</Text>
     </TouchableOpacity>
@@ -181,14 +184,34 @@ const Home = ({navigation}: Props) => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
   };
+  const getRefreshToken = () => {
+    let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
+    return refreshToken;
+  };
+  // useEffect(() => {
+  //   getToken()
+  //     .then(token =>
+  //       axios.get(
+  //         'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd',
+  //         {
+  //           headers: {
+  //             Authentication: `Bearer ${token}`,
+  //           },
+  //         },
+  //       ),
+  //     )
+  //     .then(res => {
+  //       setData(res.data);
+  //     });
+  // }, []);
   useEffect(() => {
-    getToken()
-      .then(token =>
+    getRefreshToken()
+      .then(refreshToken =>
         axios.get(
           'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd',
           {
             headers: {
-              Authentication: `Bearer ${token}`,
+              Authentication: `Bearer ${refreshToken}`,
             },
           },
         ),
@@ -197,15 +220,16 @@ const Home = ({navigation}: Props) => {
         setData(res.data);
       });
   }, []);
+
   const realProduct = data.map(value => {
     let returnObj = {};
     returnObj.name = value.platformNm;
     returnObj.description = value.productNm;
     returnObj.price = value.price;
-    returnObj.calorie = value.calorie;
-    returnObj.carb = value.carb;
-    returnObj.protein = value.protein;
-    returnObj.fat = value.fat;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
     returnObj.att = value.mainAttUrl;
     returnObj.productNo = value.productNo;
     returnObj.shippingPrice = value.shippingPrice;
@@ -217,7 +241,12 @@ const Home = ({navigation}: Props) => {
       <NutrientsBar />
 
       <FoodNoticeContainer>
-        <FoodNoticeText>전체 식품 {realProduct.length}개</FoodNoticeText>
+        <RowContainer>
+          <FoodNoticeText>전체 식품 {realProduct.length}개</FoodNoticeText>
+          <SortButtonContainer>
+            <SortModal />
+          </SortButtonContainer>
+        </RowContainer>
       </FoodNoticeContainer>
       <FilterMenuContainer>
         {filterMenus.map(i => (

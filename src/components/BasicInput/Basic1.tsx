@@ -139,7 +139,10 @@ const Basic1 = ({navigation}) => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
   };
-
+  const getRefreshToken = () => {
+    let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
+    return refreshToken;
+  };
   // useEffect(() => {
   //   getToken()
   //     .then(token =>
@@ -151,17 +154,18 @@ const Basic1 = ({navigation}) => {
   //     )
   //     .then(res => console.log('SP001', res.data));
   // }, []);
-  useEffect(() => {
-    getToken()
-      .then(token =>
-        axios.get('http://61.100.16.155:8080/api/member/auth/re-issue-token/', {
-          headers: {
-            Authentication: `Bearer ${token}`,
-          },
-        }),
-      )
-      .then(res => console.log('reIssue:', res.data.refreshToken));
-  }, []);
+
+  // useEffect(() => {
+  //   getToken()
+  //     .then(token =>
+  //       axios.get('http://61.100.16.155:8080/api/member/auth/re-issue-token/', {
+  //         headers: {
+  //           Authentication: `Bearer ${token}`,
+  //         },
+  //       }),
+  //     )
+  //     .then(res => console.log('reIssue:', res.data.refreshToken));
+  // }, []);
 
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
@@ -219,11 +223,11 @@ const Basic1 = ({navigation}) => {
   switch (value) {
     case 'SP002001':
       target = '한달 1~2kg감량';
-      conTarget = '500kcal';
+      conTarget = '-500kcal';
       break;
     case 'SP002002':
       target = '한달 3~4kg감량';
-      conTarget = '700kcal';
+      conTarget = '-700kcal';
       break;
     case 'SP002003':
       target = '유지';
@@ -247,8 +251,6 @@ const Basic1 = ({navigation}) => {
     conTarget,
     gender,
   };
-  console.log(age);
-  // console.log(basicInformation2);
   const bmrCalcul = () => {
     if (gender === 'male') {
       return 10 * weight + 6.25 * height - 5 * age + 5;
@@ -257,6 +259,7 @@ const Basic1 = ({navigation}) => {
     }
   };
   const BMR = bmrCalcul();
+  console.log(BMR);
 
   //다음버튼 활성화
   function okNext() {
