@@ -35,6 +35,14 @@ const styles = StyleSheet.create({
   emph: {
     color: 'blue',
   },
+  clicked: {
+    borderWidth: 1,
+    borderColor: '#590DE1',
+  },
+  unClicked: {
+    borderWidth: 1,
+    borderColor: 'grey',
+  },
 });
 
 const HeaderText = Styled.Text`
@@ -59,15 +67,73 @@ border-color: grey;
 border-radius: 5px;
 padding: 10px;
 `;
+const ContentsContainer = Styled.View`
+border-width: 1px;
+border-color: grey;
+border-radius: 5px;
+padding: 10px;
+margin-top: -20px;
+`;
 
-const Portion = () => {
-  const [value, setValue] = useState();
+const Contents = props => {
+  let meal = props.info;
+  let value = props.value;
+  console.log(value);
+  //보건복지부 추천 55: 20: 25
+  let carbon = (0.55 * meal) / 4;
+  let protein = (0.2 * meal) / 4;
+  let fat = (0.25 * meal) / 9;
+
+  //저탄고지 20: 20: 60
+  //let carbon = (0.2*meal)/4;
+  //let protein = (0.2*meal)/4;
+  //let fat = (0.25*meal)/9;
+
+  //벌크업용 40: 40 : 20
+  // let carbon = (0.4*meal)/4
+  // let protein = (0.4*meal)/4
+  // let fat = (0.2*meal)/9
+
+  switch (value) {
+    case 'SP005001':
+      carbon = (0.55 * meal) / 4;
+      protein = (0.2 * meal) / 4;
+      fat = (0.25 * meal) / 9;
+      break;
+    case 'SP005002':
+      carbon = (0.2 * meal) / 4;
+      protein = (0.2 * meal) / 4;
+      fat = (0.25 * meal) / 9;
+      break;
+
+    case 'SP005003':
+      carbon = (0.4 * meal) / 4;
+      protein = (0.4 * meal) / 4;
+      fat = (0.2 * meal) / 9;
+      break;
+  }
+  return (
+    <ContentsContainer style={styles.clicked}>
+      <HeaderText>
+        {`  칼로리: ${meal} kcal
+  탄수화물: ${Math.round(carbon)}g
+  단백질: ${Math.round(protein)}g
+  지방: ${Math.round(fat)}g
+      `}
+      </HeaderText>
+    </ContentsContainer>
+  );
+};
+
+const Portion = props => {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState();
   const [cal, setCal] = useState([
-    {label: '55 : 20 : 25(보건복지부 추천)', value: '감량'},
-    {label: '20 : 20: 60(저탄고지 식단)', value: '증가'},
-    {label: '40 : 40 : 20(벌크업용)', value: '유지'},
+    {label: '55 : 20 : 25(보건복지부 추천)', value: 'SP005001'},
+    {label: '20 : 20: 60(저탄고지 식단)', value: 'SP005002'},
+    {label: '40 : 40 : 20(벌크업용)', value: 'SP005003'},
   ]);
+  const {setData} = props;
   return (
     <>
       <DropDownPicker
@@ -88,15 +154,19 @@ const Portion = () => {
         setValue={setValue}
         setItems={setCal}
         textStyle={{fontSize: 15}}
-        onPress={() => {
-          console.log('click');
+        onChangeValue={() => {
+          setData(value);
         }}
       />
     </>
   );
 };
 const Calcul = props => {
-  const {clicked, setClicked} = props;
+  const {info, target, conTarget, clicked, setClicked} = props;
+  const [data, setData] = useState();
+  const [text, setText] = useState();
+  console.log('text:', text);
+
   const handleClick = () =>
     setClicked(prevState => ({
       ...prevState,
@@ -104,20 +174,30 @@ const Calcul = props => {
       calculClicked: !prevState.calculClicked,
       manualClicked: false,
     }));
+  let meal = Math.round((parseInt(info) + parseInt(conTarget)) / 3);
+
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
-        <ContentsHeaderContiainer>
+        <ContentsHeaderContiainer
+          style={clicked.calculClicked ? styles.clicked : styles.unClicked}>
           <ContentsHeaderText>탄:단:지 비율로 계산하기</ContentsHeaderText>
         </ContentsHeaderContiainer>
       </Pressable>
       {clicked.calculClicked && (
         <View>
           <Text style={styles.text}>탄:단:지 비율</Text>
-          <Portion />
+          <Portion setData={setData} />
+          <Text>한 끼 칼로리(kcal)입력(추천: {meal})</Text>
           <TextInputContainer>
-            <TextInput placeholder="한 끼 칼로리(kcal)입력(추천:data)" />
+            <TextInput
+              placeholder="한 끼 칼로리(kcal)입력"
+              onChangeText={setText}
+              value={text}
+              onSubmitEditing={() => setText(text)}
+            />
           </TextInputContainer>
+          <Contents info={text} value={data} />
         </View>
       )}
     </>

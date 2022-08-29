@@ -150,8 +150,9 @@ const Basic2 = ({route, navigation}) => {
   const wcal = 0.0175 * 6 * parseInt(weight) * wValue;
   const acal = 0.0175 * 7 * parseInt(weight) * aValue;
   const AMR = Math.round(wcal) + Math.round(acal) + item * 0.2;
-  console.log(AMR);
-
+  console.log('활동대사량', AMR);
+  console.log('웨이트시간:', wValue);
+  console.log('유산소시간:', aValue);
   return (
     <SafeAreaView style={styles.wrapper}>
       <Text

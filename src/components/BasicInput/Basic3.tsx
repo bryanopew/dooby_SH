@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     borderColor: '#590DE1',
     borderRadius: 10,
+    borderWidth: 1,
   },
 });
 
@@ -47,7 +48,7 @@ const Basic3 = ({route, navigation}) => {
     calculClicked: false,
     manualClicked: false,
   });
-  console.log(info, target, conTarget);
+  console.log('info', info);
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>
@@ -70,14 +71,28 @@ const Basic3 = ({route, navigation}) => {
           />
         </View>
         <View style={styles.boxUnClicked}>
-          <Calcul clicked={clicked} setClicked={setClicked} />
+          <Calcul
+            info={info}
+            conTarget={conTarget}
+            clicked={clicked}
+            setClicked={setClicked}
+          />
         </View>
         <View style={styles.boxUnClicked}>
-          <Manual clicked={clicked} setClicked={setClicked} />
+          <Manual
+            info={info}
+            conTarget={conTarget}
+            clicked={clicked}
+            setClicked={setClicked}
+          />
         </View>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.reset({routes: [{name: 'MainTabs'}]})}>
+          onPress={() =>
+            navigation.reset({
+              routes: [{name: 'MainTabs', params: {info}}],
+            })
+          }>
           <Text style={{color: 'white'}}>완료</Text>
         </Pressable>
       </ScrollView>

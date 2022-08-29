@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   onTextInput: {
-    borderBottomWidth: 0.2,
+    borderBottomWidth: 1,
     borderColor: '#590DE1',
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -259,8 +259,8 @@ const Basic1 = ({navigation}) => {
     }
   };
   const BMR = bmrCalcul();
-  console.log(BMR);
-
+  // console.log(BMR);
+  console.log(target);
   //다음버튼 활성화
   function okNext() {
     if (
@@ -357,7 +357,7 @@ const Basic1 = ({navigation}) => {
             maxLength={3}
             value={weight}
             keyboardType="numeric"
-            onSubmitEditing={() => setHeight(weight)}></TextInput>
+            onSubmitEditing={() => setWeight(weight)}></TextInput>
           <Text style={styles.onHeaderText}>식단의 목적</Text>
           <DropDownPicker
             dropDownContainerStyle={{

@@ -31,6 +31,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
+  clicked: {
+    borderWidth: 1,
+    borderColor: '#590DE1',
+  },
+  unClicked: {
+    borderWidth: 1,
+    borderColor: 'grey',
+  },
 });
 
 const BorderLineContainer = Styled.View`
@@ -91,7 +99,8 @@ const Manual = props => {
   return (
     <>
       <Pressable style={styles.button} onPress={handleClick}>
-        <ContentsHeaderContiainer>
+        <ContentsHeaderContiainer
+          style={clicked.manualClicked ? styles.clicked : styles.unClicked}>
           <ContentsHeaderText>
             각 영양 성분 직접 입력(고수용)
           </ContentsHeaderText>

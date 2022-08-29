@@ -78,7 +78,7 @@ const Login = ({navigation}) => {
     try {
       await AsyncStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
     } catch (e) {
-      console.log('REFRESH TOKEN FAIL');
+      console.log('REFRESH TOKEN ERROR');
     }
   };
   // const dispatch = useDispatch();

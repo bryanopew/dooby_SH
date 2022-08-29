@@ -36,7 +36,7 @@ const WTimePicker = props => {
         setValue={setWvalue}
         setItems={setWtime}
         textStyle={{fontSize: 15}}
-        onPress={() => {
+        onChangeValue={() => {
           setData(wValue);
         }}
       />

@@ -168,9 +168,8 @@ const AddProductButton = ({item}) => {
 //   );
 // };
 
-const Home = ({navigation}: Props) => {
+const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
-
   // 제품이름(productNm) res.data.productNm
   // 플랫폼이름(platformNm) res.data.platformNm
   // 가격(price) res.data.price

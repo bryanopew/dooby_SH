@@ -37,8 +37,7 @@ const ATimePicker = props => {
         setValue={setAvalue}
         setItems={setAtime}
         textStyle={{fontSize: 15}}
-        onChangeValue={okNext}
-        onPress={() => {
+        onChangeValue={() => {
           setData(aValue);
         }}
       />
