@@ -67,6 +67,11 @@ padding: 10px;
 `;
 
 const Contents = () => {
+  //carbon * 4 = 탄수화물 총 칼로리
+  //protein * 4 = 단백질 총 칼로리
+  //fat * 9 = 지방 총 칼로리
+  //칼로리: 다더한거 kcal (탄 : 단 : 지)
+  // 비율 예시 (100 : 36: 21)
   return (
     <>
       <Text style={styles.text}>한끼 탄수화물(g)입력 (추천: 100g)</Text>

@@ -3,8 +3,16 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import rootReducer from '~/stores/reducers/rootReducer';
 
+import counterSlice from '../stores/slices/counterSlice';
+import calorieBarSlice from '../stores/slices/CalorieBarSlice';
+import basketProductSlice from '../stores/slices/basketSlice';
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    counter: counterSlice.reducer,
+    calorieBar: calorieBarSlice.reducer,
+    basketProduct: basketProductSlice.reducer,
+  },
 });
 
 // export type RootState = ReturnType<typeof store.getState>;
@@ -14,4 +22,6 @@ const store = configureStore({
 // useAppSelector와 useAppDispatch는 기존의 useSelector와 useDispatch hooks를 추상화한 것 입니다.
 //이와 같이 사용하면 각각의 컴포넌트에서 useSelector나 useDispatch를 매번 설정하지 않고 애플리케이션 전역에서 사용이 가능합니다.
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export default store;

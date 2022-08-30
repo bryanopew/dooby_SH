@@ -22,19 +22,18 @@ import {useIsFocused} from '@react-navigation/native';
 
 import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
-import {selectedProducts} from '~/Components/Home';
+import {result} from '~/Components/Home';
 import CheckBox from '@react-native-community/checkbox';
+import Counter from '~/Components/BasketComponent/Counter';
 
-const newNumbers = selectedProducts.filter((number, index, target) => {
+const basketProducts = result.filter((number, index, target) => {
   return target.indexOf(number) === index;
 });
-console.log('selectedProducts', selectedProducts);
-let basketProducts = [];
-if (newNumbers.length >= 1) {
-  basketProducts = newNumbers.reduce(function (acc, cur) {
-    return acc.concat(cur);
-  });
-}
+// if (newNumbers.length >= 1) {
+//   basketProducts = newNumbers.reduce(function (acc, cur) {
+//     return acc.concat(cur);
+//   });
+// }
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
@@ -198,7 +197,7 @@ const ProductDetailText = styled.Text`
 `;
 const ProductPriceText = styled.Text`
   margin-left: 150px;
-
+  margin-right: 100px
   font-weight: bold;
 `;
 const Space = styled.Text``;
@@ -219,6 +218,9 @@ const ShippingText = styled.Text`
 `;
 
 const ShowProducts = () => {
+  const content = useSelector((state: RootState) => {
+    return state.basketProduct.value;
+  });
   return (
     <>
       {basketProducts.map(i => (
@@ -229,16 +231,31 @@ const ShowProducts = () => {
                 height: imageHeight,
                 width: imageWidth,
                 marginLeft: 10,
+                transform: [{scale: 0.8}],
               }}
-              resizeMode={'contain'}
               source={{
                 uri: `http://61.100.16.155:8080${i.att}`,
               }}
             />
             <EachCheckBoxAndroid />
             <ColumnContainer>
-              <ProductNameText>{i.name}</ProductNameText>
+              <RowContainer>
+                <ProductNameText>{i.name}</ProductNameText>
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    right: 50,
+                  }}>
+                  <Image
+                    style={{
+                      transform: [{scale: 0.55}],
+                    }}
+                    source={require('~/Assets/Images/24_searchCancel.png')}
+                  />
+                </TouchableOpacity>
+              </RowContainer>
               <ProductDetailText>{i.description}</ProductDetailText>
+
               <ProductNutrientContainer>
                 <ProductNutrientText>
                   칼로리
@@ -264,7 +281,10 @@ const ShowProducts = () => {
               </ProductNutrientContainer>
             </ColumnContainer>
           </RowContainer>
-          <ProductPriceText>{i.price}원</ProductPriceText>
+          <RowContainer>
+            <ProductPriceText>{i.price}원</ProductPriceText>
+            <Counter />
+          </RowContainer>
         </>
       ))}
     </>
@@ -277,11 +297,9 @@ const OnBasket = ({navigation}) => {
   useEffect(() => {
     setData(basketProducts);
   }, []);
-  console.log('basketProducts:', basketProducts);
   useEffect(() => {
-    if (isFocused) console.log('focused');
+    if (isFocused) console.log('basketProducts', basketProducts);
   }, [isFocused]);
-
   return (
     <ScrollView>
       <SafeAreaView style={styles.wrapper}>

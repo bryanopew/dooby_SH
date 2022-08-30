@@ -16,12 +16,16 @@ import {
 import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {useSelector, useDispatch} from 'react-redux';
 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import Category from '~/Components/HomeCompo/Category';
 import Menus from '~/Components/HomeCompo/Menus';
 import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import SortModal from './HomeCompo/SortModal';
+
+import {RootState} from '~/stores/store';
+import {add, remove} from '~/stores/slices/basketSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -141,19 +145,41 @@ const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
 const imageWidth = dimensions.width / 3;
 
-export const selectedProducts: Array<{}> = [];
+// export const selectedProducts: Array<{}> = [];
+
+// const AddProductButton = ({item}) => {
+//   return (
+//     <TouchableOpacity
+//       style={styles.button}
+//       onPress={() => {
+//         selectedProducts.push(item);
+//         console.log('ss', selectedProducts);
+//       }}>
+//       <Text style={styles.text}>+</Text>
+//     </TouchableOpacity>
+//   );
+// };
+
+export let result = [];
 const AddProductButton = ({item}) => {
+  const dispatch = useDispatch();
+  const content = useSelector((state: RootState) => {
+    return state.basketProduct.value;
+  });
+  const addProduct = () => {
+    dispatch(add(item));
+  };
+
+  const [datas, setDatas] = useState([]);
+  result = datas;
+
   return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => {
-        selectedProducts.push(item);
-        console.log('ss', selectedProducts);
-      }}>
+    <TouchableOpacity style={styles.button} onPress={addProduct}>
       <Text style={styles.text}>+</Text>
     </TouchableOpacity>
   );
 };
+
 // const MinusProductButton = ({item}) => {
 //   return (
 //     <TouchableOpacity
