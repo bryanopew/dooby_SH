@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react';
 import {Button, Text, StyleSheet, Pressable} from 'react-native';
 import Styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   button: {
@@ -46,9 +47,34 @@ margin-top: -20px;
 
 const Contents = props => {
   let meal = Math.round((parseInt(props.info) + parseInt(props.conTarget)) / 3);
-  let carbon = (0.55 * meal) / 4;
-  let protein = (0.2 * meal) / 4;
-  let fat = (0.25 * meal) / 9;
+  let carbon = Math.round(0.55 * meal) / 4;
+  let protein = Math.round(0.2 * meal) / 4;
+  let fat = Math.round(0.25 * meal) / 9;
+
+  const c = Math.round(carbon);
+  const p = Math.round(protein);
+  const f = Math.round(fat);
+  const result = {
+    meal,
+    c,
+    p,
+    f,
+  };
+
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'AUTODO_RESULT',
+        JSON.stringify(result),
+        () => {
+          console.log('저장완료');
+        },
+      );
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
+  storeData();
   return (
     <ContentsContainer style={styles.clicked}>
       <HeaderText>

@@ -4,7 +4,7 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import rootReducer from '~/stores/reducers/rootReducer';
 
 import counterSlice from '../stores/slices/counterSlice';
-import calorieBarSlice from '../stores/slices/CalorieBarSlice';
+import calorieBarSlice from './slices/calorieBarSlice';
 import basketProductSlice from '../stores/slices/basketSlice';
 
 const store = configureStore({

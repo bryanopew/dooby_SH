@@ -326,6 +326,7 @@ const Home = ({navigation, route}: Props) => {
                     protein: item.protein,
                     fat: item.fat,
                     att: item.att,
+                    productNm: item.productNo,
                   },
                 ]}
               />

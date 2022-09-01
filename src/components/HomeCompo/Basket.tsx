@@ -76,7 +76,6 @@ const Basket = ({navigation}) => {
           <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
             식단
           </Text>
-
           <NutrientsBar />
           <Text style={{marginTop: 30}}>식품을 추가해보세요</Text>
           <AddDietButton>

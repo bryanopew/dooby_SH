@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Styled from 'styled-components/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
@@ -112,6 +112,29 @@ const Contents = props => {
       fat = (0.2 * meal) / 9;
       break;
   }
+  let c = Math.round(carbon);
+  let p = Math.round(protein);
+  let f = Math.round(fat);
+  let result = {
+    meal,
+    c,
+    p,
+    f,
+  };
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'CALCUL_RESULT',
+        JSON.stringify(result),
+        () => {
+          console.log('저장완료');
+        },
+      );
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
+  storeData();
   return (
     <ContentsContainer style={styles.clicked}>
       <HeaderText>
@@ -165,7 +188,6 @@ const Calcul = props => {
   const {info, target, conTarget, clicked, setClicked} = props;
   const [data, setData] = useState();
   const [text, setText] = useState();
-  console.log('text:', text);
 
   const handleClick = () =>
     setClicked(prevState => ({
@@ -192,6 +214,7 @@ const Calcul = props => {
           <TextInputContainer>
             <TextInput
               placeholder="한 끼 칼로리(kcal)입력"
+              keyboardType="numeric"
               onChangeText={setText}
               value={text}
               onSubmitEditing={() => setText(text)}

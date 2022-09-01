@@ -19,6 +19,7 @@ import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useIsFocused} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 
 import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
@@ -219,11 +220,12 @@ const ShippingText = styled.Text`
 
 const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
+    console.log('장바구니 데이터 배열:', state.basketProduct.value);
     return state.basketProduct.value;
   });
   return (
     <>
-      {basketProducts.map(i => (
+      {content.map(i => (
         <>
           <RowContainer key={i.productNm}>
             <Image

@@ -11,6 +11,7 @@ import {
   Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AutoDo from '~/Components/TargetCal/AutoDo';
 import Calcul from '../TargetCal/Calcul';
@@ -48,7 +49,17 @@ const Basic3 = ({route, navigation}) => {
     calculClicked: false,
     manualClicked: false,
   });
-  console.log('info', info);
+
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem('CLICKED', JSON.stringify(clicked), () => {
+        console.log('clicked 저장완료');
+      });
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
+  storeData();
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>
