@@ -52,14 +52,11 @@ const Basic3 = ({route, navigation}) => {
 
   const storeData = async () => {
     try {
-      await AsyncStorage.setItem('CLICKED', JSON.stringify(clicked), () => {
-        console.log('clicked 저장완료');
-      });
+      await AsyncStorage.setItem('CLICKED', JSON.stringify(clicked));
     } catch (e) {
       console.log('error', e);
     }
   };
-  storeData();
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>
@@ -99,11 +96,12 @@ const Basic3 = ({route, navigation}) => {
         </View>
         <Pressable
           style={styles.button}
-          onPress={() =>
+          onPress={() => {
             navigation.reset({
               routes: [{name: 'MainTabs', params: {info}}],
-            })
-          }>
+            });
+            storeData();
+          }}>
           <Text style={{color: 'white'}}>완료</Text>
         </Pressable>
       </ScrollView>

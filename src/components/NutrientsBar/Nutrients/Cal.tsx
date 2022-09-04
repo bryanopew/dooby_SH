@@ -12,23 +12,24 @@ import {
 } from 'react-native';
 import * as Progress from 'react-native-progress';
 import {nutrientStyle} from '~/Components/NutrientsBar/Nutrients/nutrientStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Cal = () => {
-  const totalCalories = 832;
-  const calories = 521;
+const Cal = props => {
+  const {totalCalorie} = props;
+  let calories = 0;
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>칼로리(kcal)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={calories / totalCalories}
+          progress={calories / totalCalorie}
           width={80}
           height={5}
           color="red"
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {calories}/{totalCalories}
+        {calories}/{totalCalorie}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

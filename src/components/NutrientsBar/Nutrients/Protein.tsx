@@ -14,36 +14,23 @@ import * as Progress from 'react-native-progress';
 import styled from 'styled-components/native';
 import {nutrientStyle} from '~/Components/NutrientsBar/Nutrients/nutrientStyle';
 
-const Protein = () => {
-  const protein = [
-    {
-      id: 1,
-      boolean: false,
-    },
-    {
-      id: 2,
-      boolean: true,
-    },
-  ];
-
-  const tasksValue = Object.values(protein);
-  const length = tasksValue.length;
-  const completed = tasksValue.filter(task => task.boolean === true).length;
+const Protein = props => {
+  const {totalProtein} = props;
   const totalCalories = 21;
-  const calories = 14;
+  let protein = 0;
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>단백질(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={calories / totalCalories}
+          progress={protein / totalProtein}
           width={80}
           height={5}
           color={'rgba(51, 65, 159, 0.8)'}
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {calories}/{totalCalories}
+        {protein}/{totalProtein}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

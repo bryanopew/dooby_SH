@@ -220,9 +220,16 @@ const ShippingText = styled.Text`
 
 const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
-    console.log('장바구니 데이터 배열:', state.basketProduct.value);
     return state.basketProduct.value;
   });
+  console.log('content:', content);
+  const basketCalorie = content.map(i => {
+    return i.calorie;
+  });
+  const result = basketCalorie.reduce((acc, cur) => {
+    return (acc += cur);
+  });
+  console.log('총 칼로리', result);
   return (
     <>
       {content.map(i => (
@@ -295,12 +302,9 @@ const ShowProducts = () => {
 
 const OnBasket = ({navigation}) => {
   const isFocused = useIsFocused();
-  const [data, setData] = useState([]);
+
   useEffect(() => {
-    setData(basketProducts);
-  }, []);
-  useEffect(() => {
-    if (isFocused) console.log('basketProducts', basketProducts);
+    if (isFocused) console.log('focused');
   }, [isFocused]);
   return (
     <ScrollView>
