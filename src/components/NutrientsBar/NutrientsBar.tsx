@@ -13,6 +13,7 @@ import {
 import * as Progress from 'react-native-progress';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector, useDispatch} from 'react-redux';
 
 import Cal from './Nutrients/Cal';
 import Carbon from './Nutrients/Carbon';
@@ -131,12 +132,16 @@ const getManualData = async () => {
 //   });
 
 const NutrientsBar = () => {
+  const content = useSelector((state: RootState) => {
+    return state.calorieBar;
+  });
+  console.log('영양소바', content);
   return (
     <Container>
-      <Cal totalCalorie={data.cal} />
-      <Carbon totalCarbon={data.carbon} />
-      <Protein totalProtein={data.protein} />
-      <Fat totalFat={data.fat} />
+      <Cal totalCalorie={data.cal} addCalorie={content.basketCalorie} />
+      <Carbon totalCarbon={data.carbon} addCarb={content.basketCarb} />
+      <Protein totalProtein={data.protein} addProtein={content.basketProtein} />
+      <Fat totalFat={data.fat} addFat={content.basketFat} />
     </Container>
   );
 };

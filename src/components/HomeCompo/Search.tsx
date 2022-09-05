@@ -27,9 +27,6 @@ import {result} from '~/Components/Home';
 import CheckBox from '@react-native-community/checkbox';
 import Counter from '~/Components/BasketComponent/Counter';
 
-const basketProducts = result.filter((number, index, target) => {
-  return target.indexOf(number) === index;
-});
 // if (newNumbers.length >= 1) {
 //   basketProducts = newNumbers.reduce(function (acc, cur) {
 //     return acc.concat(cur);
@@ -222,14 +219,30 @@ const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
     return state.basketProduct.value;
   });
-  console.log('content:', content);
-  const basketCalorie = content.map(i => {
-    return i.calorie;
-  });
-  const result = basketCalorie.reduce((acc, cur) => {
-    return (acc += cur);
-  });
-  console.log('총 칼로리', result);
+  // const basketCalorie = content
+  //   .map(i => {
+  //     return i.calorie;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur));
+
+  // const basketCarb = content
+  //   .map(i => {
+  //     return i.carb;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur));
+
+  // const basketProtein = content
+  //   .map(i => {
+  //     return i.protein;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur));
+
+  // const basketFat = content
+  //   .map(i => {
+  //     return i.fat;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur));
+  // const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
   return (
     <>
       {content.map(i => (

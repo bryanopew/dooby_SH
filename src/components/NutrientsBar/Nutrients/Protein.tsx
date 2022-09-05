@@ -15,22 +15,21 @@ import styled from 'styled-components/native';
 import {nutrientStyle} from '~/Components/NutrientsBar/Nutrients/nutrientStyle';
 
 const Protein = props => {
-  const {totalProtein} = props;
-  const totalCalories = 21;
-  let protein = 0;
+  const {totalProtein, addProtein} = props;
+
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>단백질(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={protein / totalProtein}
+          progress={addProtein / totalProtein}
           width={80}
           height={5}
-          color={'rgba(51, 65, 159, 0.8)'}
+          color="#00E297"
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {protein}/{totalProtein}
+        {addProtein}/{totalProtein}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

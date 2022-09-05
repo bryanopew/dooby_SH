@@ -14,22 +14,21 @@ import * as Progress from 'react-native-progress';
 import {nutrientStyle} from '~/Components/NutrientsBar/Nutrients/nutrientStyle';
 
 const Fat = props => {
-  const {totalFat} = props;
-  const totalCalories = 42;
-  let fat = 0;
+  const {totalFat, addFat} = props;
+
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>지방(g)</nutrientStyle.BarText>
       <nutrientStyle.Bar>
         <Progress.Bar
-          progress={fat / totalFat}
+          progress={addFat / totalFat}
           width={80}
           height={5}
-          color="green"
+          color="#FFBD60"
         />
       </nutrientStyle.Bar>
       <nutrientStyle.BarNumber>
-        {fat}/{totalFat}
+        {addFat}/{totalFat}
       </nutrientStyle.BarNumber>
     </nutrientStyle.BarView>
   );

@@ -26,6 +26,7 @@ import SortModal from './HomeCompo/SortModal';
 
 import {RootState} from '~/stores/store';
 import {add, remove} from '~/stores/slices/basketSlice';
+import {addNutrient} from '~/stores/slices/calorieBarSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -160,21 +161,49 @@ const imageWidth = dimensions.width / 3;
 //   );
 // };
 
-export let result = [];
 const AddProductButton = ({item}) => {
   const dispatch = useDispatch();
   const content = useSelector((state: RootState) => {
     return state.basketProduct.value;
   });
+  const basketCalorie = content
+    .map(i => {
+      return i.calorie;
+    })
+    .reduce((acc, cur) => (acc += cur), 0);
+
+  const basketCarb = content
+    .map(i => {
+      return i.carb;
+    })
+    .reduce((acc, cur) => (acc += cur), 0);
+
+  const basketProtein = content
+    .map(i => {
+      return i.protein;
+    })
+    .reduce((acc, cur) => (acc += cur), 0);
+
+  const basketFat = content
+    .map(i => {
+      return i.fat;
+    })
+    .reduce((acc, cur) => (acc += cur), 0);
+  const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
   const addProduct = () => {
     dispatch(add(item));
   };
-
-  const [datas, setDatas] = useState([]);
-  result = datas;
+  const addCalorie = () => {
+    dispatch(addNutrient(nutrientResult));
+  };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={addProduct}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => {
+        addProduct();
+        addCalorie();
+      }}>
       <Text style={styles.text}>+</Text>
     </TouchableOpacity>
   );
