@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AutoDo from '~/Components/TargetCal/AutoDo';
 import Calcul from '../TargetCal/Calcul';
 import Manual from '../TargetCal/Manual';
+import {getNutrientInfo} from '../NutrientsBar/NutrientsBar';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -101,6 +102,7 @@ const Basic3 = ({route, navigation}) => {
               routes: [{name: 'MainTabs', params: {info}}],
             });
             storeData();
+            getNutrientInfo();
           }}>
           <Text style={{color: 'white'}}>완료</Text>
         </Pressable>

@@ -19,7 +19,9 @@ const basketSlice = createSlice({
       state.value = state.value.concat(action.payload);
     },
     remove: (state, action) => {
-      state.value = state.value.filter(action.payload);
+      state.value = state.value.filter(
+        el => el.productNm !== action.payload[0].productNm,
+      );
     },
   },
 });

@@ -30,5 +30,17 @@ const calorieBarSlice = createSlice({
   },
 });
 
+// state.basketCalorie = action.payload[0];
+//       state.basketCarb = action.payload[1];
+//       state.basketProtein = action.payload[2];
+//       state.basketFat = action.payload[3];
+
+// state = {
+//   ...state,
+//   basketCalorie: action.payload[0],
+//   basketCarb: action.payload[1],
+//   basketProtein: action.payload[2],
+//   basketFat: action.payload[3],
+// };
 export default calorieBarSlice;
 export const {addNutrient} = calorieBarSlice.actions;

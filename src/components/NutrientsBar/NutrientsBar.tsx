@@ -42,39 +42,40 @@ const getClickedData = async () => {
     console.log(e.message);
   }
 };
-getClickedData()
-  .then(result => JSON.parse(result))
-  .then(result => {
-    if (result.autoDoClicked === true) {
-      getAutoDoData()
-        .then(result => JSON.parse(result))
-        .then(result => {
-          data.cal = result.meal;
-          data.carbon = result.c;
-          data.protein = result.p;
-          data.fat = result.f;
-        });
-    } else if (result.calculClicked === true) {
-      getCalculData()
-        .then(result => JSON.parse(result))
-        .then(result => {
-          data.cal = result.meal;
-          data.carbon = result.c;
-          data.protein = result.p;
-          data.fat = result.f;
-        });
-    } else if (result.manualClicked === true) {
-      getManualData()
-        .then(result => JSON.parse(result))
-        .then(result => {
-          data.cal = result.meal;
-          data.carbon = result.c;
-          data.protein = result.p;
-          data.fat = result.f;
-        });
-    }
-  });
-
+export const getNutrientInfo = () =>
+  getClickedData()
+    .then(result => JSON.parse(result))
+    .then(result => {
+      if (result.autoDoClicked === true) {
+        getAutoDoData()
+          .then(result => JSON.parse(result))
+          .then(result => {
+            data.cal = result.meal;
+            data.carbon = result.c;
+            data.protein = result.p;
+            data.fat = result.f;
+          });
+      } else if (result.calculClicked === true) {
+        getCalculData()
+          .then(result => JSON.parse(result))
+          .then(result => {
+            data.cal = result.meal;
+            data.carbon = result.c;
+            data.protein = result.p;
+            data.fat = result.f;
+          });
+      } else if (result.manualClicked === true) {
+        getManualData()
+          .then(result => JSON.parse(result))
+          .then(result => {
+            data.cal = result.meal;
+            data.carbon = result.c;
+            data.protein = result.p;
+            data.fat = result.f;
+          });
+      }
+    });
+getNutrientInfo();
 //autoDo 가져오기
 const getAutoDoData = async () => {
   try {
@@ -135,7 +136,8 @@ const NutrientsBar = () => {
   const content = useSelector((state: RootState) => {
     return state.calorieBar;
   });
-  console.log('영양소바', content);
+  console.log('content:', content);
+
   return (
     <Container>
       <Cal totalCalorie={data.cal} addCalorie={content.basketCalorie} />

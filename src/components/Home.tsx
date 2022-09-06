@@ -59,7 +59,34 @@ const styles = StyleSheet.create({
     }),
   },
 
+  clickButton: {
+    right: 10,
+    position: 'absolute',
+    backgroundColor: '#D4D4D4',
+    width: 25,
+    height: 25,
+    marginTop: 20,
+    borderRadius: 35,
+
+    ...Platform.select({
+      ios: {
+        shadowColor: 'rgba(0,0,0,0.2)',
+        shadowOpacity: 1,
+        shadowOffset: {height: 2, width: 2},
+        shadowRadius: 2,
+      },
+
+      android: {
+        elevation: 0,
+      },
+    }),
+  },
   text: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: 'white',
+  },
+  clickText: {
     fontSize: 18,
     textAlign: 'center',
     color: 'white',
@@ -163,6 +190,7 @@ const imageWidth = dimensions.width / 3;
 
 const AddProductButton = ({item}) => {
   const dispatch = useDispatch();
+  const [click, setClick] = useState(false);
   const content = useSelector((state: RootState) => {
     return state.basketProduct.value;
   });
@@ -193,35 +221,36 @@ const AddProductButton = ({item}) => {
   const addProduct = () => {
     dispatch(add(item));
   };
+  const removeProduct = () => {
+    dispatch(remove(item));
+  };
   const addCalorie = () => {
     dispatch(addNutrient(nutrientResult));
   };
-
+  if (click) {
+    return (
+      <TouchableOpacity
+        style={click ? styles.clickButton : styles.button}
+        onPress={() => {
+          removeProduct();
+          setClick(!click);
+        }}>
+        <Text style={click ? styles.clickText : styles.text}>-</Text>
+      </TouchableOpacity>
+    );
+  }
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={click ? styles.clickButton : styles.button}
       onPress={() => {
         addProduct();
         addCalorie();
+        setClick(!click);
       }}>
-      <Text style={styles.text}>+</Text>
+      <Text style={click ? styles.clickText : styles.text}>+</Text>
     </TouchableOpacity>
   );
 };
-
-// const MinusProductButton = ({item}) => {
-//   return (
-//     <TouchableOpacity
-//       style={styles.button}
-//       onPress={() => {
-//         selectedProducts.filter(list => list.toString() === item.toString());
-//         console.log(item);
-//         console.log(selectedProducts);
-//       }}>
-//       <Text style={styles.text}>-</Text>
-//     </TouchableOpacity>
-//   );
-// };
 
 const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
@@ -262,7 +291,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd',
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort',
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -289,7 +318,6 @@ const Home = ({navigation, route}: Props) => {
     returnObj.shippingPrice = value.shippingPrice;
     return returnObj;
   });
-
   return (
     <SafeAreaView style={styles.wrapper}>
       <NutrientsBar />

@@ -219,35 +219,12 @@ const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
     return state.basketProduct.value;
   });
-  // const basketCalorie = content
-  //   .map(i => {
-  //     return i.calorie;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur));
 
-  // const basketCarb = content
-  //   .map(i => {
-  //     return i.carb;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur));
-
-  // const basketProtein = content
-  //   .map(i => {
-  //     return i.protein;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur));
-
-  // const basketFat = content
-  //   .map(i => {
-  //     return i.fat;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur));
-  // const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
   return (
     <>
       {content.map(i => (
-        <>
-          <RowContainer key={i.productNm}>
+        <View key={i.productNm}>
+          <RowContainer>
             <Image
               style={{
                 height: imageHeight,
@@ -307,7 +284,7 @@ const ShowProducts = () => {
             <ProductPriceText>{i.price}원</ProductPriceText>
             <Counter />
           </RowContainer>
-        </>
+        </View>
       ))}
     </>
   );
