@@ -53,7 +53,13 @@ const LoginNavigator = () => {
 const HomeTab = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="식단" component={Home} />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="식단"
+        component={Home}
+      />
       <Stack.Screen
         name="modal"
         component={MenuFilterModal}
@@ -167,7 +173,6 @@ const MainNavigator = () => {
 
 export default () => {
   const {isLoading, userInfo} = useContext<IUserContext>(UserContext);
-  useColorScheme();
   if (isLoading === true) {
     return <Loading />;
   }

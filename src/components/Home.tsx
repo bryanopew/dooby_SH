@@ -17,6 +17,7 @@ import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useSelector, useDispatch} from 'react-redux';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import Category from '~/Components/HomeCompo/Category';
@@ -27,6 +28,7 @@ import SortModal from './HomeCompo/SortModal';
 import {RootState} from '~/stores/store';
 import {add, remove} from '~/stores/slices/basketSlice';
 import {addNutrient} from '~/stores/slices/calorieBarSlice';
+import SearchBar from './HomeCompo/SearchBar';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -152,11 +154,19 @@ font-weight: bold;
 const SortButtonContainer = Styled.View`
 margin-left: 150px;
 flex-direction: row;
-
 `;
 const Space = Styled.Text`
-
 `;
+const HeaderContainer = Styled.View``;
+
+const AddDietButtonContainer = Styled.View`
+  width: 24%
+`;
+const AddDietButtonText = Styled.Text`
+  font-weight: bold;
+  font-size: 20px;
+`;
+
 const filterMenus = [
   {id: 1, text: '카테고리'},
   {id: 2, text: '영양성분'},
@@ -318,8 +328,66 @@ const Home = ({navigation, route}: Props) => {
     returnObj.shippingPrice = value.shippingPrice;
     return returnObj;
   });
+
+  const AddDietButton = () => {
+    const [value, setValue] = useState();
+    const [open, setOpen] = useState(false);
+    const [items, setItems] = useState([
+      {label: '식단1', value: '1'},
+      {label: '식단 추가하기', value: 'add'},
+    ]);
+    let newItem;
+    const addDiet = () => {
+      return (newItem = [...items, {label: '식단2', value: '2'}]);
+    };
+    addDiet();
+    console.log('newitem:', newItem);
+    return (
+      <DropDownPicker
+        listItemLabelStyle={{
+          color: 'red',
+        }}
+        selectedItemContainerStyle={{
+          backgroundColor: 'blue',
+        }}
+        selectedItemLabelStyle={{
+          fontWeight: 'bold',
+        }}
+        itemSeparator={true}
+        itemSeparatorStyle={{
+          backgroundColor: 'red',
+        }}
+        dropDownContainerStyle={{}}
+        style={{
+          borderColor: 'white',
+        }}
+        placeholder="식단1"
+        open={open}
+        setOpen={setOpen}
+        value={value}
+        items={items}
+        onSelectItem={item => {
+          console.log(item);
+        }}
+        onChangeValue={addDiet}
+        setValue={setValue}
+        setItems={setItems}
+        textStyle={{fontSize: 15}}
+        listMode="SCROLLVIEW"
+        dropDownDirection="BOTTOM"
+      />
+    );
+  };
   return (
     <SafeAreaView style={styles.wrapper}>
+      <HeaderContainer>
+        <RowContainer>
+          <AddDietButtonContainer>
+            <AddDietButton />
+          </AddDietButtonContainer>
+          <SearchBar />
+        </RowContainer>
+      </HeaderContainer>
       <NutrientsBar />
 
       <FoodNoticeContainer>

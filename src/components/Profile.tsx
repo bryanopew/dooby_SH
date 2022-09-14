@@ -171,12 +171,74 @@
 //   },
 // });
 
-import React, {Component, useState, useEffect} from 'react';
-
+import React, {useState} from 'react';
+import {Text, View, TextInput, Button, Alert} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 import Counter from '~/Components/BasketComponent/Counter';
+import SearchBar from './HomeCompo/SearchBar';
+import styled from 'styled-components/native';
+
+const ErrorText = styled.Text`
+  color: red;
+  margin-left: 10;
+`;
 
 const Profile = () => {
-  return <Counter />;
+  const {
+    control,
+    handleSubmit,
+    formState: {errors, isValid},
+  } = useForm({
+    defaultValues: {
+      age: '',
+      lastName: '',
+    },
+  });
+  const onSubmit = data => console.log(data);
+  const [age, setAge] = useState('');
+  console.log('isValid', isValid);
+  return (
+    <View>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+          maxLength: 3,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <TextInput
+            placeholder="만 나이를 입력해주세요"
+            onChangeText={onChange}
+            value={value}
+            keyboardType="numeric"
+            onSubmitEditing={() => setAge(value)}
+          />
+        )}
+        name="age"
+      />
+      {errors.age ? <ErrorText>길이</ErrorText> : <Text>success</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+
+          maxLength: 5,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <TextInput
+            placeholder="last"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="lastName"
+      />
+      {errors.lastName && <ErrorText>길이 초과</ErrorText>}
+      <Button title="s" onPress={handleSubmit(onSubmit)} disabled={!isValid} />
+    </View>
+  );
 };
 
 export default Profile;

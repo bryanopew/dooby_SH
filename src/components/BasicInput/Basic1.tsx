@@ -10,13 +10,13 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import {useForm} from 'react-hook-form';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
 import {accessTokenConfig} from '~/utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
+import {useForm, Controller} from 'react-hook-form';
 
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
@@ -135,6 +135,18 @@ const Input = ({label, register, required}) => (
 );
 
 const Basic1 = ({navigation}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+    },
+  });
+  const onSubmit = data => console.log(data);
+
   const getToken = () => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
