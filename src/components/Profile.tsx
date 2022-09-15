@@ -180,7 +180,7 @@ import styled from 'styled-components/native';
 
 const ErrorText = styled.Text`
   color: red;
-  margin-left: 10;
+  margin-left: 10px;
 `;
 
 const Profile = () => {
@@ -195,8 +195,11 @@ const Profile = () => {
     },
   });
   const onSubmit = data => console.log(data);
+  const onError = (errors, e) => console.log(errors, e);
+
   const [age, setAge] = useState('');
-  console.log('isValid', isValid);
+  const [ageError, setAgeError] = useState(false);
+
   return (
     <View>
       <Controller
@@ -204,19 +207,24 @@ const Profile = () => {
         rules={{
           required: true,
           maxLength: 3,
+          validate: {
+            positive: v => parseInt(v) >= 10,
+            lessThan: v => parseInt(v) <= 100,
+          },
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <TextInput
             placeholder="만 나이를 입력해주세요"
+            maxLength={3}
             onChangeText={onChange}
             value={value}
             keyboardType="numeric"
-            onSubmitEditing={() => setAge(value)}
+            onSubmitEditing={handleSubmit(onSubmit)}
           />
         )}
         name="age"
       />
-      {errors.age ? <ErrorText>길이</ErrorText> : <Text>success</Text>}
+      {errors.age && <ErrorText>길이</ErrorText>}
 
       <Controller
         control={control}

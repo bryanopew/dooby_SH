@@ -16,10 +16,11 @@ import {accessTokenConfig} from '~/utils/config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm, Controller, useWatch} from 'react-hook-form';
 
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
+import GenderSelect from '~/Components/BasicInput/BasicInputComponents/GenderSelect';
 
 const dimensions = Dimensions.get('window');
 const Height = Math.round(dimensions.width / 3);
@@ -29,6 +30,11 @@ const InputContainer = styled.View`
   margin-left: 16px;
   margin-right: 16px;
 `;
+const ErrorText = styled.Text`
+  color: red;
+  margin-left: 10px;
+`;
+
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
@@ -127,26 +133,28 @@ export interface Props {
   fat: string;
 }
 
-const Input = ({label, register, required}) => (
-  <>
-    <label>{label}</label>
-    <input {...register(label, {required})} />
-  </>
-);
-
 const Basic1 = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    setValue,
+    formState: {errors, isValid},
   } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      gender: '',
+      age: '',
+      height: '',
+      weight: '',
+      dietPurposecd: '',
     },
   });
   const onSubmit = data => console.log(data);
-
+  const onError = (errors, e) => console.log(errors, e);
+  const ageValue = useWatch({control, name: 'age'});
+  const heightValue = useWatch({control, name: 'height'});
+  const weightValue = useWatch({control, name: 'weight'});
+  const genderValue = useWatch({control, name: 'gender'});
+  const dietPurposeValue = useWatch({control, name: 'dietPurposecd'});
   const getToken = () => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
@@ -178,40 +186,12 @@ const Basic1 = ({navigation}) => {
   //     )
   //     .then(res => console.log('reIssue:', res.data.refreshToken));
   // }, []);
-
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-  const [value, setValue] = useState();
+  const [pick, setPick] = useState();
   const [open, setOpen] = useState(false);
-  const [womanClick, setWomanClick] = useState(false);
-  const [manClick, setManClick] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [inputs, setInputs] = useState({
-    genders: '',
-    ages: '',
-    heights: '',
-    weights: '',
-    dietPurposeCds: '',
-  });
-  const {genders, ages, heights, weights, dietPurposeCds} = inputs;
-  const onChange = e => {
-    const {value, genders} = e.target;
-    setInputs({
-      ...inputs,
-      [genders]: value,
-    });
-  };
-  const genderClick1 = womanClick => {
-    if (!womanClick) {
-      setManClick(false);
-    }
-  };
-  const genderClick2 = manClick => {
-    if (!manClick) {
-      setWomanClick(false);
-    }
-  };
+
   const [items, setItems] = useState([
     {label: '다이어트(한 달 1~2kg감량)', value: 'SP002001'},
     {label: '다이어트(한 달 3~4kg감량)', value: 'SP002002'},
@@ -219,20 +199,10 @@ const Basic1 = ({navigation}) => {
     {label: '체중증가(한 달 1~2kg증량) ', value: 'SP002004'},
     {label: '체중증가(한 달 3~4kg증량)', value: 'SP002005'},
   ]);
-  const genderSelect = () => {
-    switch (true) {
-      case womanClick:
-        return 'female';
-      case manClick:
-        return 'male';
-      default:
-        return 'not';
-    }
-  };
-  const gender = genderSelect();
+
   let target: string;
   let conTarget: any;
-  switch (value) {
+  switch (dietPurposeValue) {
     case 'SP002001':
       target = '한달 1~2kg감량';
       conTarget = '-500kcal';
@@ -255,45 +225,15 @@ const Basic1 = ({navigation}) => {
       break;
     default:
   }
-  const basicInformation2 = {
-    age,
-    height,
-    weight,
-    target,
-    conTarget,
-    gender,
-  };
+
   const bmrCalcul = () => {
-    if (gender === 'male') {
-      return 10 * weight + 6.25 * height - 5 * age + 5;
-    } else if (gender === 'female') {
-      return 10 * weight + 6.25 * height - 5 * age - 161;
+    if (genderValue === 'M') {
+      return 10 * weightValue + 6.25 * heightValue - 5 * ageValue + 5;
+    } else if (genderValue === 'F') {
+      return 10 * weightValue + 6.25 * heightValue - 5 * ageValue - 161;
     }
   };
   const BMR = bmrCalcul();
-  // console.log(BMR);
-  console.log(target);
-  //다음버튼 활성화
-  function okNext() {
-    if (
-      gender !== 'not' &&
-      age !== '' &&
-      height !== '' &&
-      weight !== '' &&
-      target !== ''
-    ) {
-      return setDisabled(false);
-    } else {
-      return setDisabled(true);
-    }
-  }
-  useEffect(() => {
-    okNext();
-  }, []);
-
-  const goNext = () => {
-    navigation.navigate('Basic2');
-  };
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>
@@ -306,108 +246,135 @@ const Basic1 = ({navigation}) => {
           }}>
           기본 정보를 {'\n'}입력해주세요.
         </Text>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 10,
-            padding: 20,
-          }}>
-          <Pressable
-            style={manClick ? styles.clicked : styles.unClicked}
-            onPress={() => {
-              genderClick2(manClick);
-              setManClick(!manClick);
-            }}>
-            <Text style={manClick ? styles.text : styles.unClickText}>
-              남성
-            </Text>
-          </Pressable>
-          <Pressable
-            style={womanClick ? styles.clicked : styles.unClicked}
-            onPress={() => {
-              genderClick1(womanClick);
-              setWomanClick(!womanClick);
-            }}>
-            <Text style={womanClick ? styles.text : styles.unClickText}>
-              여성
-            </Text>
-          </Pressable>
-        </View>
+        <GenderSelect control={control} setValue={setValue} />
         <InputContainer>
-          <Text style={age ? styles.onHeaderText : styles.headerText}>
+          <Text style={ageValue ? styles.onHeaderText : styles.headerText}>
             만 나이
           </Text>
-          <TextInput
-            style={age ? styles.onTextInput : styles.textInput}
-            placeholder="만 나이를 입력해주세요"
-            maxLength={3}
-            onChangeText={setAge}
-            value={age}
-            keyboardType="numeric"
-            onSubmitEditing={() => setAge(age)}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              maxLength: 3,
+              validate: {
+                positive: v => parseInt(v) >= 10,
+                lessThan: v => parseInt(v) <= 100,
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={ageValue ? styles.onTextInput : styles.textInput}
+                placeholder="만 나이를 입력해주세요"
+                maxLength={3}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+                onSubmitEditing={handleSubmit(onSubmit)}
+              />
+            )}
+            name="age"
           />
-          <Text style={height ? styles.onHeaderText : styles.headerText}>
+          {errors.age && <ErrorText>10~100세 사이 입력</ErrorText>}
+
+          <Text style={heightValue ? styles.onHeaderText : styles.headerText}>
             신장(cm){' '}
           </Text>
-          <TextInput
-            style={height ? styles.onTextInput : styles.textInput}
-            placeholder="신장을 입력해주세요"
-            maxLength={3}
-            onChangeText={setHeight}
-            value={height}
-            keyboardType="numeric"
-            onSubmitEditing={() => setHeight(height)}></TextInput>
-          <Text style={weight ? styles.onHeaderText : styles.headerText}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              maxLength: 3,
+              validate: {
+                positive: v => parseInt(v) >= 100,
+                lessThan: v => parseInt(v) <= 200,
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={heightValue ? styles.onTextInput : styles.textInput}
+                placeholder="신장을 입력해주세요"
+                maxLength={3}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+                onSubmitEditing={handleSubmit(onSubmit)}
+              />
+            )}
+            name="height"
+          />
+          {errors.height && <ErrorText>100~200cm 사이 입력</ErrorText>}
+
+          <Text style={weightValue ? styles.onHeaderText : styles.headerText}>
             몸무게(kg)
           </Text>
-          <TextInput
-            style={weight ? styles.onTextInput : styles.textInput}
-            placeholder="몸무게를 입력해주세요"
-            onChangeText={setWeight}
-            maxLength={3}
-            value={weight}
-            keyboardType="numeric"
-            onSubmitEditing={() => setWeight(weight)}></TextInput>
-          <Text style={styles.onHeaderText}>식단의 목적</Text>
-          <DropDownPicker
-            dropDownContainerStyle={{
-              position: 'relative',
-              marginTop: -40,
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+              maxLength: 3,
+              validate: {
+                positive: v => parseInt(v) >= 10,
+                lessThan: v => parseInt(v) <= 150,
+              },
             }}
-            style={{
-              borderColor: 'white',
-              marginTop: 7,
-            }}
-            placeholder="식단의 목적"
-            open={open}
-            setOpen={setOpen}
-            value={value}
-            items={items}
-            setValue={setValue}
-            setItems={setItems}
-            textStyle={{fontSize: 15}}
-            listMode="SCROLLVIEW"
-            dropDownDirection="BOTTOM"
-            onChangeValue={okNext}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInput
+                style={weightValue ? styles.onTextInput : styles.textInput}
+                placeholder="몸무게를 입력해주세요"
+                maxLength={3}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+                onSubmitEditing={handleSubmit(onSubmit)}
+              />
+            )}
+            name="weight"
           />
+          {errors.weight && <ErrorText>10~150kg 사이 입력</ErrorText>}
+
+          <Text style={styles.onHeaderText}>식단의 목적</Text>
+          <Controller
+            control={control}
+            rules={{required: true}}
+            render={({field: {onChange, onBlur, value}}) => (
+              <DropDownPicker
+                dropDownContainerStyle={{
+                  position: 'relative',
+                  marginTop: -40,
+                }}
+                style={{
+                  borderColor: 'white',
+                  marginTop: 7,
+                }}
+                placeholder="식단의 목적"
+                open={open}
+                setOpen={setOpen}
+                value={value}
+                items={items}
+                setValue={onChange}
+                onChangeValue={onChange}
+                textStyle={{fontSize: 15}}
+                listMode="SCROLLVIEW"
+                dropDownDirection="BOTTOM"
+              />
+            )}
+            name="dietPurposecd"
+          />
+          {errors.dietPurposecd && <ErrorText>필수</ErrorText>}
         </InputContainer>
         <Pressable
-          disabled={disabled}
-          style={disabled ? styles.disabledButton : styles.button}
-          onPress={() =>
+          disabled={!isValid}
+          style={isValid ? styles.button : styles.disabledButton}
+          onPress={() => {
             navigation.navigate('Basic2', {
               item: BMR,
-              weight,
+              weightValue,
               target,
               conTarget,
-            })
-          }>
+            });
+          }}>
           <Text style={{color: 'white'}}>다음</Text>
         </Pressable>
-
-        {/* <NextButton isDisabled={isDisabled} goNext={goNext} /> */}
       </ScrollView>
     </SafeAreaView>
   );

@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
   },
+  disabledButton: {
+    marginTop: 80,
+    alignItems: 'center',
+    backgroundColor: 'grey',
+    padding: 20,
+  },
 });
 
 const Basic3 = ({route, navigation}) => {
@@ -50,7 +56,20 @@ const Basic3 = ({route, navigation}) => {
     calculClicked: false,
     manualClicked: false,
   });
-
+  let isValid;
+  const check = () => {
+    if (
+      clicked.autoDoClicked === false &&
+      clicked.calculClicked === false &&
+      clicked.manualClicked === false
+    ) {
+      return (isValid = false);
+    } else {
+      return (isValid = true);
+    }
+  };
+  check();
+  console.log(isValid);
   const storeData = async () => {
     try {
       await AsyncStorage.setItem('CLICKED', JSON.stringify(clicked));
@@ -96,7 +115,8 @@ const Basic3 = ({route, navigation}) => {
           />
         </View>
         <Pressable
-          style={styles.button}
+          disabled={!isValid}
+          style={!isValid ? styles.disabledButton : styles.button}
           onPress={() => {
             navigation.reset({
               routes: [{name: 'MainTabs', params: {info}}],

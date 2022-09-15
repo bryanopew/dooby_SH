@@ -136,8 +136,6 @@ const NutrientsBar = () => {
   const content = useSelector((state: RootState) => {
     return state.calorieBar;
   });
-  console.log('content:', content);
-
   return (
     <Container>
       <Cal totalCalorie={data.cal} addCalorie={content.basketCalorie} />

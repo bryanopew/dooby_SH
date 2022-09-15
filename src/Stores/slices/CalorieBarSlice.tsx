@@ -22,10 +22,12 @@ const calorieBarSlice = createSlice({
   initialState,
   reducers: {
     addNutrient: (state, action) => {
+      console.log(action.payload);
       state.basketCalorie = action.payload[0];
       state.basketCarb = action.payload[1];
       state.basketProtein = action.payload[2];
       state.basketFat = action.payload[3];
+      console.log('장바구니 칼로리', state);
     },
   },
 });

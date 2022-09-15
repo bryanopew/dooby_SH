@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 });
 
 const Basic2 = ({route, navigation}) => {
-  const {item, weight, target, conTarget} = route.params;
+  const {item, weightValue, target, conTarget} = route.params;
   const [data, setData] = useState('');
   const [aData, setAData] = useState('');
   const [base, setBase] = useState('');
@@ -147,9 +147,10 @@ const Basic2 = ({route, navigation}) => {
 
   wTime();
   aTime();
-  const wcal = 0.0175 * 6 * parseInt(weight) * wValue;
-  const acal = 0.0175 * 7 * parseInt(weight) * aValue;
+  const wcal = 0.0175 * 6 * parseInt(weightValue) * wValue;
+  const acal = 0.0175 * 7 * parseInt(weightValue) * aValue;
   const AMR = Math.round(wcal) + Math.round(acal) + item * 0.2;
+  console.log('weightValue', weightValue);
   console.log('활동대사량', AMR);
   console.log('웨이트시간:', wValue);
   console.log('유산소시간:', aValue);

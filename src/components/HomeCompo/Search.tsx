@@ -219,7 +219,6 @@ const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
     return state.basketProduct.value;
   });
-
   return (
     <>
       {content.map(i => (
