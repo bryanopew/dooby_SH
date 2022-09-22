@@ -26,6 +26,7 @@ import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
 import {result} from '~/Components/Home';
 import CheckBox from '@react-native-community/checkbox';
 import Counter from '~/Components/BasketComponent/Counter';
+import {increment, decrement} from '~/stores/slices/basketSlice';
 
 // if (newNumbers.length >= 1) {
 //   basketProducts = newNumbers.reduce(function (acc, cur) {
@@ -215,9 +216,24 @@ const ShippingText = styled.Text`
   color: gray;
 `;
 
+const Quantity = ({item}) => {
+  const dispatch = useDispatch();
+  return (
+    <>
+      <TouchableOpacity onPress={() => dispatch(decrement(item))}>
+        <Text>-</Text>
+      </TouchableOpacity>
+      <Text>{item.quantity}</Text>
+      <TouchableOpacity onPress={() => dispatch(increment(item))}>
+        <Text>+</Text>
+      </TouchableOpacity>
+    </>
+  );
+};
+
 const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
-    return state.basketProduct.value;
+    return state.basketProduct.cart;
   });
   return (
     <>
@@ -281,7 +297,7 @@ const ShowProducts = () => {
           </RowContainer>
           <RowContainer>
             <ProductPriceText>{i.price}원</ProductPriceText>
-            <Counter />
+            <Quantity item={i} />
           </RowContainer>
         </View>
       ))}

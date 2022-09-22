@@ -3,13 +3,13 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import rootReducer from '~/stores/reducers/rootReducer';
 
-import counterSlice from '../stores/slices/counterSlice';
+import cartSlice from './slices/cartSlice';
 import calorieBarSlice from './slices/calorieBarSlice';
 import basketProductSlice from '../stores/slices/basketSlice';
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
+    counter: cartSlice.reducer,
     calorieBar: calorieBarSlice.reducer,
     basketProduct: basketProductSlice.reducer,
   },

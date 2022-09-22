@@ -136,9 +136,10 @@ const NutrientsBar = () => {
   const content = useSelector((state: RootState) => {
     return state.calorieBar;
   });
+  const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
   return (
     <Container>
-      <Cal totalCalorie={data.cal} addCalorie={content.basketCalorie} />
+      <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
       <Carbon totalCarbon={data.carbon} addCarb={content.basketCarb} />
       <Protein totalProtein={data.protein} addProtein={content.basketProtein} />
       <Fat totalFat={data.fat} addFat={content.basketFat} />

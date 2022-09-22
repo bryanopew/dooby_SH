@@ -3,13 +3,17 @@ import {createSlice} from '@reduxjs/toolkit';
 type InitialState = {
   id: number;
   value: number;
+  cart: [];
+  total: number;
 };
 
 const initialState: InitialState = {
   id: 1,
   value: 1,
+  cart: [],
+  total: 0,
 };
-const counterSlice = createSlice({
+const cartSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
@@ -25,5 +29,5 @@ const counterSlice = createSlice({
   },
 });
 
-export default counterSlice;
-export const {up, down, init} = counterSlice.actions;
+export default cartSlice;
+export const {up, down, init} = cartSlice.actions;

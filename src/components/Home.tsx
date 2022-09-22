@@ -27,7 +27,7 @@ import SortModal from './HomeCompo/SortModal';
 
 import {RootState} from '~/stores/store';
 import {add, remove} from '~/stores/slices/basketSlice';
-import {addNutrient} from '~/stores/slices/calorieBarSlice';
+import {addNutrient, removeNutrient} from '~/stores/slices/calorieBarSlice';
 import SearchBar from './HomeCompo/SearchBar';
 
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -201,41 +201,49 @@ const imageWidth = dimensions.width / 3;
 const AddProductButton = ({item}) => {
   const dispatch = useDispatch();
   const [click, setClick] = useState(false);
-  const content = useSelector((state: RootState) => {
-    return state.basketProduct.value;
+  // const content = useSelector((state: RootState) => {
+  //   return state.basketProduct.value;
+  // });
+  const basketCalorie = item.map(i => {
+    return i.calorie;
   });
-  const basketCalorie = content
-    .map(i => {
-      return i.calorie;
-    })
-    .reduce((acc, cur) => (acc += cur), 0);
+  // const basketCarb = content
+  //   .map(i => {
+  //     return i.carb;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur), 0);
 
-  const basketCarb = content
-    .map(i => {
-      return i.carb;
-    })
-    .reduce((acc, cur) => (acc += cur), 0);
+  // const basketProtein = content
+  //   .map(i => {
+  //     return i.protein;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur), 0);
 
-  const basketProtein = content
-    .map(i => {
-      return i.protein;
-    })
-    .reduce((acc, cur) => (acc += cur), 0);
-
-  const basketFat = content
-    .map(i => {
-      return i.fat;
-    })
-    .reduce((acc, cur) => (acc += cur), 0);
-  const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
+  // const basketFat = content
+  //   .map(i => {
+  //     return i.fat;
+  //   })
+  //   .reduce((acc, cur) => (acc += cur), 0);
+  // const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
   const addProduct = () => {
     dispatch(add(item));
   };
   const removeProduct = () => {
     dispatch(remove(item));
   };
+  const removeCalorie = () => {
+    dispatch(removeNutrient(basketCalorie));
+  };
   const addCalorie = () => {
-    dispatch(addNutrient(nutrientResult));
+    // const insideNutrientResult = [
+    //   basketCalorie,
+    //   basketCarb,
+    //   basketProtein,
+    //   basketFat,
+    // ];
+    // let data = 100;
+    // console.log('inside:', insideNutrientResult);
+    dispatch(addNutrient(basketCalorie));
   };
   if (click) {
     return (
@@ -243,6 +251,7 @@ const AddProductButton = ({item}) => {
         style={click ? styles.clickButton : styles.button}
         onPress={() => {
           removeProduct();
+          removeCalorie();
           setClick(!click);
         }}>
         <Text style={click ? styles.clickText : styles.text}>-</Text>
@@ -326,6 +335,7 @@ const Home = ({navigation, route}: Props) => {
     returnObj.att = value.mainAttUrl;
     returnObj.productNo = value.productNo;
     returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
     return returnObj;
   });
 
@@ -341,7 +351,6 @@ const Home = ({navigation, route}: Props) => {
       return (newItem = [...items, {label: '식단2', value: '2'}]);
     };
     addDiet();
-    console.log('newitem:', newItem);
     return (
       <DropDownPicker
         listItemLabelStyle={{
@@ -452,6 +461,7 @@ const Home = ({navigation, route}: Props) => {
                     fat: item.fat,
                     att: item.att,
                     productNm: item.productNo,
+                    quantity: 1,
                   },
                 ]}
               />

@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 
 import {RootState} from '~/stores/store';
-import {down, init, up} from '~/stores/slices/counterSlice';
+import {down, init, up} from '~/stores/slices/cartSlice';
 
 const Counter = () => {
   const dispatch = useDispatch();

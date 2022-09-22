@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cal = props => {
   const {totalCalorie, addCalorie} = props;
+
   return (
     <nutrientStyle.BarView>
       <nutrientStyle.BarText>칼로리(kcal)</nutrientStyle.BarText>
