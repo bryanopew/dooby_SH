@@ -3,12 +3,14 @@ import {createSlice} from '@reduxjs/toolkit';
 type InitialState = {
   cart: [];
   total: number;
+  cartArray: [[]];
 };
 
 //장바구니 제품
 const initialState: InitialState = {
   cart: [],
   total: 0,
+  cartArray: [[]],
 };
 //add 했을때 home 컴포넌트꺼 가져다 쓰고
 //remove했을때  delete하는 함수 넣고
@@ -24,6 +26,7 @@ const basketSlice = createSlice({
         el => el.productNm !== action.payload[0].productNm,
       );
     },
+    addCart: (state, action) => {},
     increment: (state, action) => {
       // function ok(e) {
       //   if (e.productNm === action.payload.productNm) {

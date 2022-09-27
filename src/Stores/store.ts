@@ -6,12 +6,14 @@ import rootReducer from '~/stores/reducers/rootReducer';
 import cartSlice from './slices/cartSlice';
 import calorieBarSlice from './slices/calorieBarSlice';
 import basketProductSlice from '../stores/slices/basketSlice';
+import addDietSlice from './slices/addDietSlice';
 
 const store = configureStore({
   reducer: {
     counter: cartSlice.reducer,
     calorieBar: calorieBarSlice.reducer,
     basketProduct: basketProductSlice.reducer,
+    addDiet: addDietSlice.reducer,
   },
 });
 

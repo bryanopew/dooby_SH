@@ -26,9 +26,10 @@ import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import SortModal from './HomeCompo/SortModal';
 
 import {RootState} from '~/stores/store';
-import {add, remove} from '~/stores/slices/basketSlice';
+import {add, remove, selectCart} from '~/stores/slices/basketSlice';
 import {addNutrient, removeNutrient} from '~/stores/slices/calorieBarSlice';
 import SearchBar from './HomeCompo/SearchBar';
+import {addDiet, removeDiet} from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -201,9 +202,10 @@ const imageWidth = dimensions.width / 3;
 const AddProductButton = ({item}) => {
   const dispatch = useDispatch();
   const [click, setClick] = useState(false);
-  // const content = useSelector((state: RootState) => {
-  //   return state.basketProduct.value;
-  // });
+  const content = useSelector((state: RootState) => {
+    return state.basketProduct.cart;
+  });
+
   const basketCalorie = item.map(i => {
     return i.calorie;
   });
@@ -340,17 +342,38 @@ const Home = ({navigation, route}: Props) => {
   });
 
   const AddDietButton = () => {
+    const dispatch = useDispatch();
+    const content = useSelector((state: RootState) => {
+      return state.basketProduct.cartArray;
+    });
+    const select = () => dispatch(selectCart(value));
     const [value, setValue] = useState();
     const [open, setOpen] = useState(false);
+    const [state, setState] = useState(1);
     const [items, setItems] = useState([
-      {label: '식단1', value: '1'},
+      {label: '식단 1', value: 1},
       {label: '식단 추가하기', value: 'add'},
     ]);
-    let newItem;
-    const addDiet = () => {
-      return (newItem = [...items, {label: '식단2', value: '2'}]);
+    console.log(content);
+    //식단 추가하기 순서 정렬
+    const changeItemOrder = function (list, targetIdx, moveValue) {
+      if (list.length < 0) return;
+      const newPosition = targetIdx + moveValue;
+      if (newPosition < 0 || newPosition >= list.length) return;
+      const tempList = JSON.parse(JSON.stringify(list));
+      const target = tempList.splice(targetIdx, 1)[0];
+      tempList.splice(newPosition, 0, target);
+      return tempList;
     };
-    addDiet();
+    const orderedItems = changeItemOrder(items, 1, items.length - 2);
+    const onIncrease = () => {
+      return setState(prev => prev + 1);
+    };
+    const addDiet = () => {
+      onIncrease();
+      setItems([...items, {label: `식단 ${state + 1}`, value: state + 1}]);
+    };
+
     return (
       <DropDownPicker
         listItemLabelStyle={{
@@ -374,11 +397,13 @@ const Home = ({navigation, route}: Props) => {
         open={open}
         setOpen={setOpen}
         value={value}
-        items={items}
+        items={orderedItems}
         onSelectItem={item => {
-          console.log(item);
+          item.value === 'add' ? addDiet() : select();
         }}
-        onChangeValue={addDiet}
+        onChangeValue={value => {
+          value === 'add' ? setValue(items.length - 1) : setValue(value);
+        }}
         setValue={setValue}
         setItems={setItems}
         textStyle={{fontSize: 15}}
