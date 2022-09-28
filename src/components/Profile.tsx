@@ -172,7 +172,14 @@
 // });
 
 import React, {useState} from 'react';
-import {Text, View, TextInput, Button, Alert} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import Counter from '~/Components/BasketComponent/Counter';
 import SearchBar from './HomeCompo/SearchBar';
@@ -183,70 +190,19 @@ const ErrorText = styled.Text`
   margin-left: 10px;
 `;
 
+const totalArray = [];
+const array = [1, 2, 3, 4, 5];
+// 현재 원하는 형태가
+// [[array], [array1], [array2]]
+
 const Profile = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({
-    defaultValues: {
-      age: '',
-      lastName: '',
-    },
-  });
-  const onSubmit = data => console.log(data);
-  const onError = (errors, e) => console.log(errors, e);
-
-  const [age, setAge] = useState('');
-  const [ageError, setAgeError] = useState(false);
-
   return (
-    <View>
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-          maxLength: 3,
-          validate: {
-            positive: v => parseInt(v) >= 10,
-            lessThan: v => parseInt(v) <= 100,
-          },
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            placeholder="만 나이를 입력해주세요"
-            maxLength={3}
-            onChangeText={onChange}
-            value={value}
-            keyboardType="numeric"
-            onSubmitEditing={handleSubmit(onSubmit)}
-          />
-        )}
-        name="age"
-      />
-      {errors.age && <ErrorText>길이</ErrorText>}
-
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-
-          maxLength: 5,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
-            placeholder="last"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name="lastName"
-      />
-      {errors.lastName && <ErrorText>길이 초과</ErrorText>}
-      <Button title="s" onPress={handleSubmit(onSubmit)} disabled={!isValid} />
-    </View>
+    <>
+      <TouchableOpacity style={{margin: 10}}>
+        <Text>+</Text>
+      </TouchableOpacity>
+      <Text>{array}</Text>
+    </>
   );
 };
-
 export default Profile;
