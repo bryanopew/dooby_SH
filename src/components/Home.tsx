@@ -27,7 +27,11 @@ import SortModal from './HomeCompo/SortModal';
 
 import {RootState} from '~/stores/store';
 import {add, remove, selectCart, removeAll} from '~/stores/slices/basketSlice';
-import {addNutrient, removeNutrient} from '~/stores/slices/calorieBarSlice';
+import {
+  addNutrient,
+  removeNutrient,
+  addCarb,
+} from '~/stores/slices/calorieBarSlice';
 import SearchBar from './HomeCompo/SearchBar';
 import {addCart, removeCart} from '~/stores/slices/addDietSlice';
 
@@ -184,34 +188,33 @@ const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width / 3);
 const imageWidth = dimensions.width / 3;
 
-const AddProductButton = ({item, clickData, setClickData}) => {
+const AddProductButton = ({item, data}) => {
   const dispatch = useDispatch();
   const [click, setClick] = useState(false);
   const content = useSelector((state: RootState) => {
     return state.basketProduct.cart;
   });
-  console.log(click);
+
+  const refreshMenu = () => {
+    setClick(false);
+  };
+  useEffect(() => {
+    refreshMenu();
+  }, [data]);
+
   const basketCalorie = item.map(i => {
     return i.calorie;
   });
-  // const basketCarb = content
-  //   .map(i => {
-  //     return i.carb;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur), 0);
-
-  // const basketProtein = content
-  //   .map(i => {
-  //     return i.protein;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur), 0);
-
-  // const basketFat = content
-  //   .map(i => {
-  //     return i.fat;
-  //   })
-  //   .reduce((acc, cur) => (acc += cur), 0);
-  // const nutrientResult = [basketCalorie, basketCarb, basketProtein, basketFat];
+  const basketCarb = item.map(i => {
+    return i.carb;
+  });
+  const basketProtein = item.map(i => {
+    return i.protein;
+  });
+  const basketFat = item.map(i => {
+    return i.fat;
+  });
+  const basketNutrients = [basketCalorie, basketCarb, basketProtein, basketFat];
   const addProduct = () => {
     dispatch(add(item));
   };
@@ -219,18 +222,13 @@ const AddProductButton = ({item, clickData, setClickData}) => {
     dispatch(remove(item));
   };
   const removeCalorie = () => {
-    dispatch(removeNutrient(basketCalorie));
+    dispatch(removeNutrient(basketNutrients));
   };
   const addCalorie = () => {
-    // const insideNutrientResult = [
-    //   basketCalorie,
-    //   basketCarb,
-    //   basketProtein,
-    //   basketFat,
-    // ];
-    // let data = 100;
-    // console.log('inside:', insideNutrientResult);
-    dispatch(addNutrient(basketCalorie));
+    dispatch(addNutrient(basketNutrients));
+  };
+  const addCarbon = () => {
+    dispatch(addCarb(basketCarb));
   };
   if (click) {
     return (
@@ -260,7 +258,7 @@ const AddProductButton = ({item, clickData, setClickData}) => {
   );
 };
 
-const AddDietButton = () => {
+const AddDietButton = ({onRefresh}) => {
   const dispatch = useDispatch();
   const content = useSelector((state: RootState) => {
     return state.basketProduct.cart;
@@ -300,7 +298,7 @@ const AddDietButton = () => {
     onIncrease();
     setItems([...items, {label: `식단 ${state + 1}`, value: state + 1}]);
     createCart();
-    //!! -버튼으로 변한거 +로 초기화 로직
+    onRefresh();
     dispatch(removeAll());
   };
 
@@ -344,8 +342,8 @@ const AddDietButton = () => {
 };
 const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
-  const [clickData, setClickData] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+
   // 제품이름(productNm) res.data.productNm
   // 플랫폼이름(platformNm) res.data.platformNm
   // 가격(price) res.data.price
@@ -433,7 +431,7 @@ const Home = ({navigation, route}: Props) => {
       <HeaderContainer>
         <RowContainer>
           <AddDietButtonContainer>
-            <AddDietButton />
+            <AddDietButton onRefresh={onRefresh} />
           </AddDietButtonContainer>
           <SearchBar />
         </RowContainer>
@@ -491,8 +489,7 @@ const Home = ({navigation, route}: Props) => {
                 <ProductPriceText>{item.price}원</ProductPriceText>
               </ColumnContainer>
               <AddProductButton
-                clickData={clickData}
-                setClickData={setClickData}
+                data={data}
                 item={[
                   {
                     name: item.name,

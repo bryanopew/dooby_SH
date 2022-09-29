@@ -233,76 +233,151 @@ const Quantity = ({item}) => {
 
 const ShowProducts = () => {
   const content = useSelector((state: RootState) => {
+    return state.addDiet.cartsArray;
+  });
+  const basketContent = useSelector((state: RootState) => {
     return state.basketProduct.cart;
   });
-  return (
-    <>
-      {content.map(i => (
-        <View key={i.productNm}>
-          <RowContainer>
-            <Image
-              style={{
-                height: imageHeight,
-                width: imageWidth,
-                marginLeft: 10,
-                transform: [{scale: 0.8}],
-              }}
-              source={{
-                uri: `http://61.100.16.155:8080${i.att}`,
-              }}
-            />
-            <EachCheckBoxAndroid />
-            <ColumnContainer>
-              <RowContainer>
-                <ProductNameText>{i.name}</ProductNameText>
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    right: 50,
-                  }}>
-                  <Image
+  console.log(basketContent);
+  console.log('content:', content);
+  if (content === undefined) {
+    return (
+      <>
+        {basketContent.map(i => (
+          <View key={i.productNm}>
+            <RowContainer>
+              <Image
+                style={{
+                  height: imageHeight,
+                  width: imageWidth,
+                  marginLeft: 10,
+                  transform: [{scale: 0.8}],
+                }}
+                source={{
+                  uri: `http://61.100.16.155:8080${i.att}`,
+                }}
+              />
+              <EachCheckBoxAndroid />
+              <ColumnContainer>
+                <RowContainer>
+                  <ProductNameText>{i.name}</ProductNameText>
+                  <TouchableOpacity
                     style={{
-                      transform: [{scale: 0.55}],
-                    }}
-                    source={require('~/Assets/Images/24_searchCancel.png')}
-                  />
-                </TouchableOpacity>
-              </RowContainer>
-              <ProductDetailText>{i.description}</ProductDetailText>
+                      position: 'absolute',
+                      right: 50,
+                    }}>
+                    <Image
+                      style={{
+                        transform: [{scale: 0.55}],
+                      }}
+                      source={require('~/Assets/Images/24_searchCancel.png')}
+                    />
+                  </TouchableOpacity>
+                </RowContainer>
+                <ProductDetailText>{i.description}</ProductDetailText>
 
-              <ProductNutrientContainer>
-                <ProductNutrientText>
-                  칼로리
-                  <ProductNutrientNumberText>
-                    {i.calorie}kcal
-                  </ProductNutrientNumberText>
-                  <Space>{''}</Space>
-                  탄수화물{' '}
-                  <ProductNutrientNumberText>
-                    {i.carb}g
-                  </ProductNutrientNumberText>
-                  <Space>{''}</Space>
-                  단백질{''}
-                  <ProductNutrientNumberText>
-                    {i.protein}g{''}
-                  </ProductNutrientNumberText>
-                  <Space>{''}</Space>
-                  지방{''}
-                  <ProductNutrientNumberText>
-                    {i.fat}g{''}
-                  </ProductNutrientNumberText>
-                </ProductNutrientText>
-              </ProductNutrientContainer>
-            </ColumnContainer>
-          </RowContainer>
-          <RowContainer>
-            <ProductPriceText>{i.price}원</ProductPriceText>
-            <Quantity item={i} />
-          </RowContainer>
-        </View>
-      ))}
-    </>
-  );
+                <ProductNutrientContainer>
+                  <ProductNutrientText>
+                    칼로리
+                    <ProductNutrientNumberText>
+                      {i.calorie}kcal
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    탄수화물{' '}
+                    <ProductNutrientNumberText>
+                      {i.carb}g
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    단백질{''}
+                    <ProductNutrientNumberText>
+                      {i.protein}g{''}
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    지방{''}
+                    <ProductNutrientNumberText>
+                      {i.fat}g{''}
+                    </ProductNutrientNumberText>
+                  </ProductNutrientText>
+                </ProductNutrientContainer>
+              </ColumnContainer>
+            </RowContainer>
+            <RowContainer>
+              <ProductPriceText>{i.price}원</ProductPriceText>
+              <Quantity item={i} />
+            </RowContainer>
+          </View>
+        ))}
+      </>
+    );
+  } else
+    return (
+      <>
+        {content.map(i => (
+          <View key={i.productNm}>
+            <RowContainer>
+              <Image
+                style={{
+                  height: imageHeight,
+                  width: imageWidth,
+                  marginLeft: 10,
+                  transform: [{scale: 0.8}],
+                }}
+                source={{
+                  uri: `http://61.100.16.155:8080${i.att}`,
+                }}
+              />
+              <EachCheckBoxAndroid />
+              <ColumnContainer>
+                <RowContainer>
+                  <ProductNameText>{i.name}</ProductNameText>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 50,
+                    }}>
+                    <Image
+                      style={{
+                        transform: [{scale: 0.55}],
+                      }}
+                      source={require('~/Assets/Images/24_searchCancel.png')}
+                    />
+                  </TouchableOpacity>
+                </RowContainer>
+                <ProductDetailText>{i.description}</ProductDetailText>
+
+                <ProductNutrientContainer>
+                  <ProductNutrientText>
+                    칼로리
+                    <ProductNutrientNumberText>
+                      {i.calorie}kcal
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    탄수화물{' '}
+                    <ProductNutrientNumberText>
+                      {i.carb}g
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    단백질{''}
+                    <ProductNutrientNumberText>
+                      {i.protein}g{''}
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    지방{''}
+                    <ProductNutrientNumberText>
+                      {i.fat}g{''}
+                    </ProductNutrientNumberText>
+                  </ProductNutrientText>
+                </ProductNutrientContainer>
+              </ColumnContainer>
+            </RowContainer>
+            <RowContainer>
+              <ProductPriceText>{i.price}원</ProductPriceText>
+              <Quantity item={i} />
+            </RowContainer>
+          </View>
+        ))}
+      </>
+    );
 };
 
 const OnBasket = ({navigation}) => {

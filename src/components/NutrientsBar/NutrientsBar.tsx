@@ -136,13 +136,17 @@ const NutrientsBar = () => {
   const content = useSelector((state: RootState) => {
     return state.calorieBar;
   });
+  console.log('칼로리바:', content);
   const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
+  const addCarb = content.basketCarb.reduce((a, b) => a + b, 0);
+  const addProtein = content.basketProtein.reduce((a, b) => a + b, 0);
+  const addFat = content.basketFat.reduce((a, b) => a + b, 0);
   return (
     <Container>
       <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
-      <Carbon totalCarbon={data.carbon} addCarb={content.basketCarb} />
-      <Protein totalProtein={data.protein} addProtein={content.basketProtein} />
-      <Fat totalFat={data.fat} addFat={content.basketFat} />
+      <Carbon totalCarbon={data.carbon} addCarb={addCarb} />
+      <Protein totalProtein={data.protein} addProtein={addProtein} />
+      <Fat totalFat={data.fat} addFat={addFat} />
     </Container>
   );
 };
