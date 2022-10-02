@@ -136,19 +136,50 @@ const NutrientsBar = () => {
   const content = useSelector((state: RootState) => {
     return state.calorieBar;
   });
-  console.log('칼로리바:', content);
-  const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
-  const addCarb = content.basketCarb.reduce((a, b) => a + b, 0);
-  const addProtein = content.basketProtein.reduce((a, b) => a + b, 0);
-  const addFat = content.basketFat.reduce((a, b) => a + b, 0);
-  return (
-    <Container>
-      <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
-      <Carbon totalCarbon={data.carbon} addCarb={addCarb} />
-      <Protein totalProtein={data.protein} addProtein={addProtein} />
-      <Fat totalFat={data.fat} addFat={addFat} />
-    </Container>
-  );
+  const selectedCart = useSelector((state: RootState) => {
+    return state.addDiet.selected;
+  });
+  console.log('selectedCart:', selectedCart);
+  if (selectedCart === undefined) {
+    const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
+    const addCarb = content.basketCarb.reduce((a, b) => a + b, 0);
+    const addProtein = content.basketProtein.reduce((a, b) => a + b, 0);
+    const addFat = content.basketFat.reduce((a, b) => a + b, 0);
+
+    return (
+      <Container>
+        <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
+        <Carbon totalCarbon={data.carbon} addCarb={addCarb} />
+        <Protein totalProtein={data.protein} addProtein={addProtein} />
+        <Fat totalFat={data.fat} addFat={addFat} />
+      </Container>
+    );
+  } else {
+    const newCalorieArray = selectedCart.map(e => {
+      return e.calorie;
+    });
+    const newCarbArray = selectedCart.map(e => {
+      return e.carb;
+    });
+    const newProteinArray = selectedCart.map(e => {
+      return e.protein;
+    });
+    const newFatArray = selectedCart.map(e => {
+      return e.fat;
+    });
+    const addCalorie = newCalorieArray.reduce((a, b) => a + b, 0);
+    const addCarb = newCarbArray.reduce((a, b) => a + b, 0);
+    const addProtein = newProteinArray.reduce((a, b) => a + b, 0);
+    const addFat = newFatArray.reduce((a, b) => a + b, 0);
+    return (
+      <Container>
+        <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
+        <Carbon totalCarbon={data.carbon} addCarb={addCarb} />
+        <Protein totalProtein={data.protein} addProtein={addProtein} />
+        <Fat totalFat={data.fat} addFat={addFat} />
+      </Container>
+    );
+  }
 };
 
 export default NutrientsBar;

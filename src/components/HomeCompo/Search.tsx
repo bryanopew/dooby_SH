@@ -15,6 +15,7 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -380,6 +381,45 @@ const ShowProducts = () => {
     );
 };
 
+const SelectDietButton = () => {
+  const [value, setValue] = useState();
+  const [open, setOpen] = useState(false);
+  const [state, setState] = useState(1);
+  const [items, setItems] = useState([
+    {label: '식단 1', value: 1},
+    {label: '식단 2', value: 2},
+  ]);
+  return (
+    <DropDownPicker
+      selectedItemContainerStyle={{
+        backgroundColor: 'blue',
+      }}
+      selectedItemLabelStyle={{
+        fontWeight: 'bold',
+      }}
+      itemSeparator={false}
+      itemSeparatorStyle={{
+        backgroundColor: 'red',
+      }}
+      dropDownContainerStyle={{}}
+      style={{
+        borderColor: 'white',
+      }}
+      placeholder="식단1"
+      open={open}
+      setOpen={setOpen}
+      value={value}
+      items={items}
+      onSelectItem={() => console.log('식단 선택!')}
+      setValue={setValue}
+      setItems={setItems}
+      textStyle={{fontSize: 15}}
+      listMode="SCROLLVIEW"
+      dropDownDirection="BOTTOM"
+    />
+  );
+};
+
 const OnBasket = ({navigation}) => {
   const isFocused = useIsFocused();
 
@@ -397,9 +437,7 @@ const OnBasket = ({navigation}) => {
           </PickDelete>
         </HeaderButtonContainer>
         <DietContainer>
-          <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
-            식단
-          </Text>
+          <SelectDietButton />
           <NutrientsBar />
           <ScrollView>
             <DietProductContainer>

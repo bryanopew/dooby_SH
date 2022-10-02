@@ -2,6 +2,14 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   cartsArray: [],
+  selected: [
+    {
+      basketCalorie: [],
+      basketCarb: [],
+      basketProtein: [],
+      basketFat: [],
+    },
+  ],
 };
 
 const addDietSlice = createSlice({
@@ -15,12 +23,11 @@ const addDietSlice = createSlice({
       console.log(action.payload);
     },
     selectCart: (state, action) => {
-      //add 된 제품들을 하나의 배열로 생성
-      //각 선택된 식단에 해당하는 데이터 불러오기
-      //cart[0], cart[1], cart[2],...
+      state.selected = state.cartsArray[action.payload - 1];
+      console.log('un', action.payload);
     },
   },
 });
 
 export default addDietSlice;
-export const {addCart, removeCart} = addDietSlice.actions;
+export const {addCart, removeCart, selectCart} = addDietSlice.actions;

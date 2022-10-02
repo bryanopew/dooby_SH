@@ -26,14 +26,14 @@ import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import SortModal from './HomeCompo/SortModal';
 
 import {RootState} from '~/stores/store';
-import {add, remove, selectCart, removeAll} from '~/stores/slices/basketSlice';
+import {add, remove, removeAll} from '~/stores/slices/basketSlice';
 import {
   addNutrient,
   removeNutrient,
   addCarb,
 } from '~/stores/slices/calorieBarSlice';
 import SearchBar from './HomeCompo/SearchBar';
-import {addCart, removeCart} from '~/stores/slices/addDietSlice';
+import {addCart, removeCart, selectCart} from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -263,11 +263,11 @@ const AddDietButton = ({onRefresh}) => {
   const content = useSelector((state: RootState) => {
     return state.basketProduct.cart;
   });
-  console.log('cart:', content);
+  // console.log('cart:', content);
   const dietContent = useSelector((state: RootState) => {
     return state.addDiet.cartsArray;
   });
-  console.log('dietContent:', dietContent);
+  // console.log('dietContent:', dietContent);
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(1);
@@ -275,12 +275,17 @@ const AddDietButton = ({onRefresh}) => {
     {label: '식단 1', value: 1},
     {label: '식단 추가하기', value: 'add'},
   ]);
-  //식단 추가하기 순서 정렬
 
   const createCart = () => {
     dispatch(addCart(content));
   };
-
+  //식단 추가하기 순서 정렬
+  const selectDiet = i => {
+    if (i === undefined) {
+      return [{calorie: 0, carb: 0, protein: 0, fat: 0}];
+    }
+    return console.log('성공', dietContent[i - 1]);
+  };
   const changeItemOrder = function (list, targetIdx, moveValue) {
     if (list.length < 0) return;
     const newPosition = targetIdx + moveValue;
@@ -327,7 +332,7 @@ const AddDietButton = ({onRefresh}) => {
       value={value}
       items={orderedItems}
       onSelectItem={item => {
-        item.value === 'add' ? addDiet() : console.log('해당 카트로 이동');
+        item.value === 'add' ? addDiet() : dispatch(selectCart(item.value));
       }}
       onChangeValue={value => {
         value === 'add' ? setValue(items.length - 1) : setValue(value);
