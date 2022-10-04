@@ -34,14 +34,18 @@ const calorieBarSlice = createSlice({
       state.basketProtein = state.basketProtein.concat(action.payload[2]);
       state.basketFat = state.basketFat.concat(action.payload[3]);
     },
-    addCarb: (state, action) => {},
     removeNutrient: (state, action) => {
       state.basketCalorie = state.basketCalorie.concat(-action.payload[0]);
       state.basketCarb = state.basketCarb.concat(-action.payload[1]);
       state.basketProtein = state.basketProtein.concat(-action.payload[2]);
       state.basketFat = state.basketFat.concat(-action.payload[3]);
     },
-    newDietNutrient: (state, action) => {},
+    cleanCalorieBar: (state, action) => {
+      state.basketCalorie = [];
+      state.basketCarb = [];
+      state.basketProtein = [];
+      state.basketFat = [];
+    },
   },
   extraReducers: {},
 });
@@ -59,4 +63,5 @@ const calorieBarSlice = createSlice({
 //   basketFat: action.payload[3],
 // };
 export default calorieBarSlice;
-export const {addNutrient, addCarb, removeNutrient} = calorieBarSlice.actions;
+export const {addNutrient, removeNutrient, cleanCalorieBar} =
+  calorieBarSlice.actions;

@@ -2,14 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   cartsArray: [],
-  selected: [
-    {
-      basketCalorie: [],
-      basketCarb: [],
-      basketProtein: [],
-      basketFat: [],
-    },
-  ],
+  selected: [],
 };
 
 const addDietSlice = createSlice({
@@ -18,16 +11,25 @@ const addDietSlice = createSlice({
   reducers: {
     addCart: (state, action) => {
       state.cartsArray = [...state.cartsArray, action.payload];
+      console.log('addCart:', action.payload);
+    },
+    selectAddProduct: (state, action) => {
+      state.selected = [...state.selected, action.payload];
     },
     removeCart: (state, action) => {
       console.log(action.payload);
     },
     selectCart: (state, action) => {
-      state.selected = state.cartsArray[action.payload - 1];
-      console.log('un', action.payload);
+      if (action.payload > state.cartsArray.length) {
+        state.selected = [];
+      } else {
+        state.selected = state.cartsArray[action.payload - 1];
+      }
+      console.log('cart page:', action.payload);
     },
   },
 });
 
 export default addDietSlice;
-export const {addCart, removeCart, selectCart} = addDietSlice.actions;
+export const {addCart, removeCart, selectCart, selectAddProduct} =
+  addDietSlice.actions;

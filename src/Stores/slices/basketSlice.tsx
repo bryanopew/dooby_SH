@@ -12,6 +12,7 @@ const initialState: InitialState = {
 };
 //add 했을때 home 컴포넌트꺼 가져다 쓰고
 //remove했을때  delete하는 함수 넣고
+
 const basketSlice = createSlice({
   name: 'basketProduct',
   initialState,
@@ -54,6 +55,7 @@ const basketSlice = createSlice({
       if (plus) {
         plus.quantity += 1;
       }
+      console.log('+');
     },
 
     decrement: (state, action) => {

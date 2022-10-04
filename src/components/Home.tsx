@@ -30,10 +30,15 @@ import {add, remove, removeAll} from '~/stores/slices/basketSlice';
 import {
   addNutrient,
   removeNutrient,
-  addCarb,
+  cleanCalorieBar,
 } from '~/stores/slices/calorieBarSlice';
 import SearchBar from './HomeCompo/SearchBar';
-import {addCart, removeCart, selectCart} from '~/stores/slices/addDietSlice';
+import {
+  addCart,
+  removeCart,
+  selectCart,
+  selectAddProduct,
+} from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -194,7 +199,16 @@ const AddProductButton = ({item, data}) => {
   const content = useSelector((state: RootState) => {
     return state.basketProduct.cart;
   });
-
+  const cartsArray = useSelector((state: RootState) => {
+    return state.addDiet.cartsArray;
+  });
+  const selectedCart = useSelector((state: RootState) => {
+    return state.addDiet.selected;
+  });
+  //!cartsArray에서 selectdCart를 가져와서 add item을 해준다.
+  //!만약 가장 마지막에 추가된식단이라면 state.basketProduct.cart에 추가해주면됨
+  console.log('Home/basketproduct:', content);
+  console.log('Home/selectedCart:', selectedCart);
   const refreshMenu = () => {
     setClick(false);
   };
@@ -227,9 +241,7 @@ const AddProductButton = ({item, data}) => {
   const addCalorie = () => {
     dispatch(addNutrient(basketNutrients));
   };
-  const addCarbon = () => {
-    dispatch(addCarb(basketCarb));
-  };
+
   if (click) {
     return (
       <>
@@ -305,6 +317,7 @@ const AddDietButton = ({onRefresh}) => {
     createCart();
     onRefresh();
     dispatch(removeAll());
+    dispatch(cleanCalorieBar());
   };
 
   return (
@@ -332,7 +345,9 @@ const AddDietButton = ({onRefresh}) => {
       value={value}
       items={orderedItems}
       onSelectItem={item => {
-        item.value === 'add' ? addDiet() : dispatch(selectCart(item.value));
+        item.value === 'add'
+          ? addDiet()
+          : (dispatch(selectCart(item.value)), onRefresh());
       }}
       onChangeValue={value => {
         value === 'add' ? setValue(items.length - 1) : setValue(value);
