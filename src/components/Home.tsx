@@ -38,6 +38,7 @@ import {
   removeCart,
   selectCart,
   selectAddProduct,
+  addToCartsArray,
 } from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -205,10 +206,16 @@ const AddProductButton = ({item, data}) => {
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
+  const cartPage = useSelector((state: RootState) => {
+    return state.addDiet.selectedCartPage;
+  });
+  // console.log('cartPage:', cartPage);
   //!cartsArray에서 selectdCart를 가져와서 add item을 해준다.
   //!만약 가장 마지막에 추가된식단이라면 state.basketProduct.cart에 추가해주면됨
-  console.log('Home/basketproduct:', content);
-  console.log('Home/selectedCart:', selectedCart);
+  // console.log('Home/basketproduct:', content);
+  // console.log('Home/selectedCart:', selectedCart);
+  // console.log('Home/cartsArray:', cartsArray);
+
   const refreshMenu = () => {
     setClick(false);
   };
@@ -231,6 +238,17 @@ const AddProductButton = ({item, data}) => {
   const basketNutrients = [basketCalorie, basketCarb, basketProtein, basketFat];
   const addProduct = () => {
     dispatch(add(item));
+  };
+  const selectDietAddProduct = () => {
+    dispatch(selectAddProduct(item[0]));
+  };
+  const plusProduct = () => {
+    if (selectedCart.length === 0) {
+      return addProduct();
+    } else {
+      selectDietAddProduct();
+      dispatch(addToCartsArray(cartPage));
+    }
   };
   const removeProduct = () => {
     dispatch(remove(item));
@@ -261,7 +279,7 @@ const AddProductButton = ({item, data}) => {
     <TouchableOpacity
       style={click ? styles.clickButton : styles.button}
       onPress={() => {
-        addProduct();
+        plusProduct();
         addCalorie();
         setClick(!click);
       }}>

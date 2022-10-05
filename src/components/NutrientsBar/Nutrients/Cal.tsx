@@ -16,11 +16,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 
 const Cal = props => {
-  const {totalCalorie, addCalorie, calorieData} = props;
+  const {totalCalorie, addCalorie, calorieData, helper} = props;
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
-  if (selectedCart.length > 0 && calorieData) {
+  console.log('Cal/selectedCart:', selectedCart);
+  console.log('Cal/calorieData', calorieData);
+  console.log('Cal/addCalire', addCalorie);
+  if (selectedCart?.length > 0 && calorieData) {
     return (
       <nutrientStyle.BarView>
         <nutrientStyle.BarText>칼로리(kcal)</nutrientStyle.BarText>

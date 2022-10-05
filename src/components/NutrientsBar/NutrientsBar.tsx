@@ -143,8 +143,8 @@ const NutrientsBar = () => {
     return state.addDiet.selected;
   });
   // console.log('NutrientsBar/content:', content);
-  // console.log('NutrientsBar/selectedCart:', selectedCart);
-  // console.log('NutrientsBar/cartsArray:', cartsArray);
+  console.log('NutrientsBar/selectedCart:', selectedCart);
+  console.log('NutrientsBar/cartsArray:', cartsArray);
   // console.log('NutrientsBar/content:', content);
   //   const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
   //   const addCarb = content.basketCarb.reduce((a, b) => a + b, 0);
@@ -181,9 +181,7 @@ const NutrientsBar = () => {
   const currentAddCarb = content.basketCarb.reduce((a, b) => a + b, 0);
   const currentAddProtein = content.basketProtein.reduce((a, b) => a + b, 0);
   const currentAddFat = content.basketFat.reduce((a, b) => a + b, 0);
-  //보여주는 부분이랑 장바구니 데이터 분리시켜서
-  //첫화면에서는 보여주기만,
-  //식단추가하고 식단 페이지 이동할때는 저장된 데이터 가져와서 보여주기
+
   return (
     <Container>
       <Cal
