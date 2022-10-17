@@ -17,6 +17,8 @@ import styled from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import CheckBox from '@react-native-community/checkbox';
+import {useSelector, useDispatch} from 'react-redux';
+import {checkAll} from '~/stores/slices/checkBoxSlice';
 
 const styles = StyleSheet.create({
   textInput: {
@@ -32,11 +34,15 @@ const styles = StyleSheet.create({
 
 const CheckBoxAndroid = () => {
   const [state, setState] = useState(false);
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <CheckBox
         value={state}
-        onValueChange={value => setState(value)}
+        onValueChange={value => {
+          setState(value);
+          dispatch(checkAll(value));
+        }}
         tintColors={{true: '#30D158'}}
       />
     </View>

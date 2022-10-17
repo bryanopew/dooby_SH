@@ -16,14 +16,8 @@ const addDietSlice = createSlice({
     selectAddProduct: (state, action) => {
       state.selected = [...state.selected, action.payload];
     },
-    //현재 선택된 cart를 가져와서 그 cart에만 제품 추가해주면됨
-    //1번 cart인지 , 2번cart인지 어떻게 알지
-    //id를 주면 모든게 해결
-    //cartsArray에 있는 item의 index가 state.selected가 가리키는 index와 같다면
-    //해당 cartsArray에 있는  index 아이템을 state.selected로 변환하면 됨
-    addToCartsArray: (state, action) => {
-      let i: number;
 
+    addToCartsArray: (state, action) => {
       const answer = state.cartsArray.filter(
         item => item === state.cartsArray[action.payload - 1],
       );
@@ -31,19 +25,34 @@ const addDietSlice = createSlice({
       // console.log('answer:', answer[0]);
       // console.log('state.cartsArray', state.cartsArray);
       console.log('index:', index);
-      // console.log('selecteditem:', state.selected);
-      // if (index === -1) {
-      //   state.cartsArray[state.cartsArray.length - 1] = state.selected;
-      // } else {
-      //   state.cartsArray[index] = state.selected;
-      // }
+
       if (index >= 0) {
         state.cartsArray[index] = state.selected;
       }
     },
-
+    // [[a], [b,c], [d,e,f]]
+    // 현재 index로 몇번째인지 앎
+    // 그러면 그 배열안에있는 제품에서 내가 removeCart한 아이템의 productNm을
+    // 찾아서 filter해서 새로운 배열로 나타내주면 됨
+    // state.cartsArray[index] = state.cartsArray[index].filter(
+    // el => el.productNm ! == action.payload[0].productNm)
     removeCart: (state, action) => {
-      console.log(action.payload);
+      // const answer = state.cartsArray.filter(
+      //   item => item === state.cartsArray[action.payload - 1],
+      // );
+      // const index = state.cartsArray.indexOf(answer[0]);
+      // if (index >= 0) {
+      //   state.cartsArray = state.cartsArray.filter(
+      //     el => el.productNm !== state.cartsArray[index].productNm,
+      //   );
+      // }
+      // console.log('state.cartsArray:', state.cartsArray);
+      // console.log('removed/index:', index);
+      state.selected = state.selected.filter(
+        el => el.prodcutNm !== action.payload[0].productNm,
+      );
+      console.log('remove/selected:', state.selected);
+      console.log('remove/action', action.payload[0].productNm);
     },
     selectCart: (state, action) => {
       if (action.payload > state.cartsArray.length) {

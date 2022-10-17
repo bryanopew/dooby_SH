@@ -7,6 +7,7 @@ import cartSlice from './slices/cartSlice';
 import calorieBarSlice from './slices/calorieBarSlice';
 import basketProductSlice from '../stores/slices/basketSlice';
 import addDietSlice from './slices/addDietSlice';
+import checkBoxSlice from './slices/checkBoxSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     calorieBar: calorieBarSlice.reducer,
     basketProduct: basketProductSlice.reducer,
     addDiet: addDietSlice.reducer,
+    checkBox: checkBoxSlice.reducer,
   },
 });
 

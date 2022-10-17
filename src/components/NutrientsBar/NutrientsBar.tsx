@@ -142,24 +142,21 @@ const NutrientsBar = () => {
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
-  // console.log('NutrientsBar/content:', content);
+  const cartPage = useSelector((state: RootState) => {
+    return state.addDiet.selectedCartPage;
+  });
+  console.log('nutrientsBar/cartpage', cartPage);
   console.log('NutrientsBar/selectedCart:', selectedCart);
-  console.log('NutrientsBar/cartsArray:', cartsArray);
-  // console.log('NutrientsBar/content:', content);
-  //   const addCalorie = content.basketCalorie.reduce((a, b) => a + b, 0);
-  //   const addCarb = content.basketCarb.reduce((a, b) => a + b, 0);
-  //   const addProtein = content.basketProtein.reduce((a, b) => a + b, 0);
-  //   const addFat = content.basketFat.reduce((a, b) => a + b, 0);
-
-  //   return (
-  //     <Container>
-  //       <Cal totalCalorie={data.cal} addCalorie={addCalorie} />
-  //       <Carbon totalCarbon={data.carbon} addCarb={addCarb} />
-  //       <Protein totalProtein={data.protein} addProtein={addProtein} />
-  //       <Fat totalFat={data.fat} addFat={addFat} />
-  //     </Container>
-  //   );
-
+  console.log('NutrientsBar/cartsArray', cartsArray.length);
+  //만약에 cartPage가 최신이라면 빈배열을 가르키게 만들고
+  //해당 cartPage에 맞는 배열을 가져다가 거기에서 알맞게 추가하게
+  const checkCartPage = () => {
+    if (cartPage === cartsArray.length + 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const newCalorieArray = selectedCart?.map(e => {
     return e.calorie;
   });
@@ -181,25 +178,39 @@ const NutrientsBar = () => {
   const currentAddCarb = content.basketCarb.reduce((a, b) => a + b, 0);
   const currentAddProtein = content.basketProtein.reduce((a, b) => a + b, 0);
   const currentAddFat = content.basketFat.reduce((a, b) => a + b, 0);
-
+  console.log(
+    'nutrientsBar',
+    currentAddCalorie,
+    currentAddCarb,
+    currentAddProtein,
+  );
+  console.log('nutrientsBar', content);
   return (
     <Container>
       <Cal
         totalCalorie={data.cal}
         addCalorie={currentAddCalorie}
         calorieData={addCalorie}
+        checkCartPage={checkCartPage}
       />
       <Carbon
         totalCarbon={data.carbon}
         addCarb={currentAddCarb}
         carbData={addCarb}
+        checkCartPage={checkCartPage}
       />
       <Protein
         totalProtein={data.protein}
         addProtein={currentAddProtein}
         proteinData={addProtein}
+        checkCartPage={checkCartPage}
       />
-      <Fat totalFat={data.fat} addFat={currentAddFat} fatData={addFat} />
+      <Fat
+        totalFat={data.fat}
+        addFat={currentAddFat}
+        fatData={addFat}
+        checkCartPage={checkCartPage}
+      />
     </Container>
   );
 };

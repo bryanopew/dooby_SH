@@ -28,7 +28,7 @@ import {result} from '~/Components/Home';
 import CheckBox from '@react-native-community/checkbox';
 import Counter from '~/Components/BasketComponent/Counter';
 import {increment, decrement} from '~/stores/slices/basketSlice';
-
+import {checkAll} from '~/stores/slices/checkBoxSlice';
 // if (newNumbers.length >= 1) {
 //   basketProducts = newNumbers.reduce(function (acc, cur) {
 //     return acc.concat(cur);
@@ -84,7 +84,16 @@ const styles = StyleSheet.create({
 });
 
 const EachCheckBoxAndroid = () => {
-  const [state, setState] = useState(false);
+  const [state, setState] = useState(true);
+  const checked = useSelector((state: RootState) => {
+    return state.checkBox.check;
+  });
+  const cartCheckAll = () => {
+    setState(!state);
+  };
+  useEffect(() => {
+    cartCheckAll();
+  }, [checked]);
   return (
     <View style={styles.container}>
       <CheckBox
