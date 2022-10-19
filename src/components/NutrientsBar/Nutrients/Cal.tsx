@@ -16,13 +16,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 
 const Cal = props => {
-  const {totalCalorie, addCalorie, calorieData, checkCartPage} = props;
+  const {totalCalorie, calorieData, checkCartPage, lastProduct} = props;
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
-  // console.log('Cal/selectedCart:', selectedCart);
-  // console.log('Cal/calorieData', calorieData);
-  // console.log('Cal/addCalire', addCalorie);
+  const last = lastProduct?.map(e => {
+    return e.calorie;
+  });
+  const lastCalorie = last?.reduce((a, b) => a + b, 0);
+
   if (selectedCart?.length > 0 && calorieData) {
     return (
       <nutrientStyle.BarView>
@@ -40,38 +42,42 @@ const Cal = props => {
         </nutrientStyle.BarNumber>
       </nutrientStyle.BarView>
     );
-  } else {
-    if (checkCartPage() === true || selectedCart.length === 0) {
+  } else if (checkCartPage() === true) {
+    //처음에는 0이다가 추가하면 움직이게 하기
+    //checkcartpage=> 식단추가하기시에 가장 마지막 식단으로 클릭이됨
+    //조건부 렌더링으로
+    {
       return (
         <nutrientStyle.BarView>
           <nutrientStyle.BarText>칼로리(kcal)</nutrientStyle.BarText>
           <nutrientStyle.Bar>
             <Progress.Bar
-              progress={0 / totalCalorie}
+              progress={lastCalorie / totalCalorie}
               width={80}
               height={5}
               color="#590DE1"
             />
           </nutrientStyle.Bar>
           <nutrientStyle.BarNumber>
-            {0}/{totalCalorie}
+            {lastCalorie}/{totalCalorie}
           </nutrientStyle.BarNumber>
         </nutrientStyle.BarView>
       );
     }
+  } else if (selectedCart.length === 0) {
     return (
       <nutrientStyle.BarView>
         <nutrientStyle.BarText>칼로리(kcal)</nutrientStyle.BarText>
         <nutrientStyle.Bar>
           <Progress.Bar
-            progress={addCalorie / totalCalorie}
+            progress={calorieData / totalCalorie}
             width={80}
             height={5}
             color="#590DE1"
           />
         </nutrientStyle.Bar>
         <nutrientStyle.BarNumber>
-          {addCalorie}/{totalCalorie}
+          {calorieData}/{totalCalorie}
         </nutrientStyle.BarNumber>
       </nutrientStyle.BarView>
     );

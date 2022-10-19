@@ -4,6 +4,7 @@ const initialState = {
   cartsArray: [],
   selected: [],
   selectedCartPage: 1,
+  pick: [],
 };
 
 const addDietSlice = createSlice({
@@ -16,7 +17,12 @@ const addDietSlice = createSlice({
     selectAddProduct: (state, action) => {
       state.selected = [...state.selected, action.payload];
     },
-
+    selectRemoveProduct: (state, action) => {
+      state.selected = state.selected.filter(
+        el => el.productNm !== action.payload,
+      );
+      state.cartsArray[state.selectedCartPage - 1] = state.selected;
+    },
     addToCartsArray: (state, action) => {
       const answer = state.cartsArray.filter(
         item => item === state.cartsArray[action.payload - 1],
@@ -30,24 +36,7 @@ const addDietSlice = createSlice({
         state.cartsArray[index] = state.selected;
       }
     },
-    // [[a], [b,c], [d,e,f]]
-    // 현재 index로 몇번째인지 앎
-    // 그러면 그 배열안에있는 제품에서 내가 removeCart한 아이템의 productNm을
-    // 찾아서 filter해서 새로운 배열로 나타내주면 됨
-    // state.cartsArray[index] = state.cartsArray[index].filter(
-    // el => el.productNm ! == action.payload[0].productNm)
     removeCart: (state, action) => {
-      // const answer = state.cartsArray.filter(
-      //   item => item === state.cartsArray[action.payload - 1],
-      // );
-      // const index = state.cartsArray.indexOf(answer[0]);
-      // if (index >= 0) {
-      //   state.cartsArray = state.cartsArray.filter(
-      //     el => el.productNm !== state.cartsArray[index].productNm,
-      //   );
-      // }
-      // console.log('state.cartsArray:', state.cartsArray);
-      // console.log('removed/index:', index);
       state.selected = state.selected.filter(
         el => el.prodcutNm !== action.payload[0].productNm,
       );
@@ -63,6 +52,29 @@ const addDietSlice = createSlice({
         state.selectedCartPage = action.payload;
       }
     },
+    increment: (state, action) => {
+      const plus = state.selected.find(item => {
+        if (item.productNm === action.payload.productNm) {
+          return true;
+        }
+      });
+
+      if (plus) {
+        plus.quantity += 1;
+      }
+      state.cartsArray[state.selectedCartPage - 1] = state.selected;
+    },
+    decrement: (state, action) => {
+      const minus = state.selected.find(item => {
+        if (item.productNm === action.payload.productNm) {
+          return true;
+        }
+      });
+      if (minus) {
+        minus.quantity -= 1;
+      }
+      state.cartsArray[state.selectedCartPage - 1] = state.selected;
+    },
   },
 });
 
@@ -73,4 +85,8 @@ export const {
   selectCart,
   selectAddProduct,
   addToCartsArray,
+  selectRemoveProduct,
+  pickCartsArray,
+  increment,
+  decrement,
 } = addDietSlice.actions;

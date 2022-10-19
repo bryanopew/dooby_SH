@@ -31,8 +31,7 @@ const basketSlice = createSlice({
       state.cart = state.cart.filter(
         el => el.productNm !== action.payload[0].productNm,
       );
-      console.log('basketremove:', state.cart);
-      console.log('basketremove/action', action.payload[0].productNm);
+      console.log('basketremove/action', action.payload);
     },
     removeAll: (state, action) => {
       state.cart = [];

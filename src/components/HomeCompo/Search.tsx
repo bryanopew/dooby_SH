@@ -27,7 +27,12 @@ import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
 import {result} from '~/Components/Home';
 import CheckBox from '@react-native-community/checkbox';
 import Counter from '~/Components/BasketComponent/Counter';
-import {increment, decrement} from '~/stores/slices/basketSlice';
+import {remove} from '~/stores/slices/basketSlice';
+import {
+  selectRemoveProduct,
+  increment,
+  decrement,
+} from '~/stores/slices/addDietSlice';
 import {checkAll} from '~/stores/slices/checkBoxSlice';
 // if (newNumbers.length >= 1) {
 //   basketProducts = newNumbers.reduce(function (acc, cur) {
@@ -243,6 +248,7 @@ const Quantity = ({item}) => {
 };
 
 const ShowProducts = () => {
+  const dispatch = useDispatch();
   const content = useSelector((state: RootState) => {
     return state.addDiet.cartsArray;
   });
@@ -252,7 +258,17 @@ const ShowProducts = () => {
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
-  // console.log('Search/selectdCart:', selectedCart);
+  const cartPage = useSelector((state: RootState) => {
+    return state.addDiet.selectedCartPage;
+  });
+  const checkCartPage = () => {
+    if (cartPage === content.length + 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  console.log('Search/selectdCart:', selectedCart);
   // console.log('Search/basketContent:',basketContent);
   // console.log('Search/cartsArray:', content);
 
@@ -351,6 +367,83 @@ const ShowProducts = () => {
                     style={{
                       position: 'absolute',
                       right: 50,
+                    }}
+                    onPress={() => {
+                      dispatch(selectRemoveProduct(i.productNm));
+                      console.log('삭제');
+                    }}>
+                    <Image
+                      style={{
+                        transform: [{scale: 0.55}],
+                      }}
+                      source={require('~/Assets/Images/24_searchCancel.png')}
+                    />
+                  </TouchableOpacity>
+                </RowContainer>
+                <ProductDetailText>{i.description}</ProductDetailText>
+
+                <ProductNutrientContainer>
+                  <ProductNutrientText>
+                    칼로리
+                    <ProductNutrientNumberText>
+                      {i.calorie}kcal
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    탄수화물{' '}
+                    <ProductNutrientNumberText>
+                      {i.carb}g
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    단백질{''}
+                    <ProductNutrientNumberText>
+                      {i.protein}g{''}
+                    </ProductNutrientNumberText>
+                    <Space>{''}</Space>
+                    지방{''}
+                    <ProductNutrientNumberText>
+                      {i.fat}g{''}
+                    </ProductNutrientNumberText>
+                  </ProductNutrientText>
+                </ProductNutrientContainer>
+              </ColumnContainer>
+            </RowContainer>
+            <RowContainer>
+              <ProductPriceText>{i.price}원</ProductPriceText>
+              <Quantity item={i} />
+            </RowContainer>
+          </View>
+        ))}
+      </>
+    );
+  } else if (selectedCart.length === 0 && checkCartPage() === false) {
+    return (
+      <>
+        {selectedCart.map(i => (
+          <View key={i.productNm}>
+            <RowContainer>
+              <Image
+                style={{
+                  height: imageHeight,
+                  width: imageWidth,
+                  marginLeft: 10,
+                  transform: [{scale: 0.8}],
+                }}
+                source={{
+                  uri: `http://61.100.16.155:8080${i.att}`,
+                }}
+              />
+              <EachCheckBoxAndroid />
+              <ColumnContainer>
+                <RowContainer>
+                  <ProductNameText>{i.name}</ProductNameText>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 50,
+                    }}
+                    onPress={() => {
+                      dispatch(selectRemoveProduct(i.productNm));
+                      console.log('삭제');
                     }}>
                     <Image
                       style={{
@@ -420,6 +513,10 @@ const ShowProducts = () => {
                     style={{
                       position: 'absolute',
                       right: 50,
+                    }}
+                    onPress={() => {
+                      dispatch(remove(basketContent));
+                      console.log('삭제');
                     }}>
                     <Image
                       style={{
@@ -541,7 +638,7 @@ const OnBasket = ({navigation}) => {
           <ShippingText>배송비:2,500원(30,000원 이상 무료배송)</ShippingText>
         </TotalContainer>
         <OrderButton>
-          <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
+          <Text style={{color: 'white'}}>총 0 주문하기</Text>
         </OrderButton>
       </SafeAreaView>
     </ScrollView>

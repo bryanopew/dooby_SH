@@ -44,6 +44,7 @@ import {
   selectCart,
   selectAddProduct,
   addToCartsArray,
+  selectRemoveProduct,
 } from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -214,12 +215,6 @@ const AddProductButton = ({item, data}) => {
   const cartPage = useSelector((state: RootState) => {
     return state.addDiet.selectedCartPage;
   });
-  // console.log('cartPage:', cartPage);
-  //!cartsArray에서 selectdCart를 가져와서 add item을 해준다.
-  //!만약 가장 마지막에 추가된식단이라면 state.basketProduct.cart에 추가해주면됨
-  console.log('Home/basketproduct:', content);
-  // console.log('Home/selectedCart:', selectedCart);
-  console.log('Home/cartsArray:', cartsArray);
 
   const refreshMenu = () => {
     setClick(false);
@@ -247,9 +242,6 @@ const AddProductButton = ({item, data}) => {
   const selectDietAddProduct = () => {
     dispatch(selectAddProduct(item[0]));
   };
-  // cartPage = cartsArray.length+1
-  console.log('cartPage:', cartPage);
-  console.log('cartsArray:', cartsArray.length);
   const plusProduct = () => {
     //마지막 식단이 선택되었을때
     if (selectedCart.length === 0 && cartPage - 1 === cartsArray.length) {
@@ -288,6 +280,7 @@ const AddProductButton = ({item, data}) => {
             removeProduct();
             removeCalorie();
             setClick(!click);
+            dispatch(selectRemoveProduct(item[0].productNm));
           }}>
           <Text style={click ? styles.clickText : styles.text}>-</Text>
         </TouchableOpacity>
@@ -315,15 +308,16 @@ const AddDietButton = ({onRefresh}) => {
   const selectedCart = useSelector((state: RootState) => {
     return state.addDiet.selected;
   });
-  // console.log('cart:', content);
   const dietContent = useSelector((state: RootState) => {
     return state.addDiet.cartsArray;
   });
   const cartPage = useSelector((state: RootState) => {
     return state.addDiet.selectedCartPage;
   });
-  // console.log('HOME/selectedCart:', selectedCart);
-  // console.log('식단추가:', cartPage);
+  const picked = useSelector((state: RootState) => {
+    return state.addDiet.pick;
+  });
+
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(1);

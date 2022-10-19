@@ -145,11 +145,13 @@ const NutrientsBar = () => {
   const cartPage = useSelector((state: RootState) => {
     return state.addDiet.selectedCartPage;
   });
-  console.log('nutrientsBar/cartpage', cartPage);
-  console.log('NutrientsBar/selectedCart:', selectedCart);
-  console.log('NutrientsBar/cartsArray', cartsArray.length);
-  //만약에 cartPage가 최신이라면 빈배열을 가르키게 만들고
-  //해당 cartPage에 맞는 배열을 가져다가 거기에서 알맞게 추가하게
+  const basketProduct = useSelector((state: RootState) => {
+    return state.basketProduct.cart;
+  });
+
+  const findProductArray = e => {
+    return cartsArray[e - 1];
+  };
   const checkCartPage = () => {
     if (cartPage === cartsArray.length + 1) {
       return true;
@@ -178,38 +180,46 @@ const NutrientsBar = () => {
   const currentAddCarb = content.basketCarb.reduce((a, b) => a + b, 0);
   const currentAddProtein = content.basketProtein.reduce((a, b) => a + b, 0);
   const currentAddFat = content.basketFat.reduce((a, b) => a + b, 0);
+
   console.log(
-    'nutrientsBar',
+    'nutrientsBar/currentAdd',
     currentAddCalorie,
     currentAddCarb,
     currentAddProtein,
+    currentAddFat,
   );
-  console.log('nutrientsBar', content);
+
+  //배열이 비었을경우에 아래 데이터가 나와야함
+  //즉 calorieData가 나와야함
+  console.log('nutrientsBar/add', addCalorie, addCarb, addProtein, addFat);
   return (
     <Container>
       <Cal
         totalCalorie={data.cal}
-        addCalorie={currentAddCalorie}
         calorieData={addCalorie}
         checkCartPage={checkCartPage}
+        lastProduct={basketProduct}
       />
       <Carbon
         totalCarbon={data.carbon}
         addCarb={currentAddCarb}
         carbData={addCarb}
         checkCartPage={checkCartPage}
+        lastProduct={basketProduct}
       />
       <Protein
         totalProtein={data.protein}
         addProtein={currentAddProtein}
         proteinData={addProtein}
         checkCartPage={checkCartPage}
+        lastProduct={basketProduct}
       />
       <Fat
         totalFat={data.fat}
         addFat={currentAddFat}
         fatData={addFat}
         checkCartPage={checkCartPage}
+        lastProduct={basketProduct}
       />
     </Container>
   );
