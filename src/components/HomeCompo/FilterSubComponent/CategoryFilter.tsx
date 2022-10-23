@@ -13,7 +13,11 @@ import {
   ScrollView,
 } from 'react-native';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {useSelector, useDispatch} from 'react-redux';
 
+import {clickFilter, fetchCategoryFilter} from '~/stores/slices/filterSlice';
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
@@ -63,8 +67,18 @@ const ButtonText = styled.Text`
   color: #8f8f8f;
 `;
 const CategoryListButton = styled.TouchableOpacity``;
+const getRefreshToken = () => {
+  let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
+  return refreshToken;
+};
+
 const CategoryFilter = ({navigation}): JSX.Element => {
   const [click, setClick] = useState();
+  const dispatch = useDispatch();
+  const content = useSelector((state: RootState) => {
+    return state.filter.filterContents;
+  });
+  console.log('filtercontents:', content);
   const category = [
     {id: 1, text: '도시락'},
     {id: 2, text: '닭가슴살'},
@@ -73,15 +87,34 @@ const CategoryFilter = ({navigation}): JSX.Element => {
     {id: 5, text: '과자'},
     {id: 6, text: '음료'},
   ];
+  const [data, setData] = useState([]);
+  const [boxData, setBoxData] = useState([]);
+  const [breastData, setBreastData] = useState([]);
+  const [saladData, setSaladData] = useState([]);
+  const [snackData, setSnackData] = useState([]);
+  const [chipData, setChipData] = useState([]);
+  const [beverageData, setBeverageData] = useState([]);
+
+  const getBoxData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setBoxData(res.data);
+      });
+  };
   const onPress = i => {
-    // if (i.id === 1) {
-    //   console.log('도시락');
-    // } else if (i.id === 2) {
-    //   console.log('닭가슴살');
-    // }
     switch (i.id) {
       case 1:
-        console.log('도시락');
+        dispatch(fetchCategoryFilter());
         break;
       case 2:
         console.log('닭가슴살');

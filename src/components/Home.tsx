@@ -110,6 +110,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
+  iconStyle: {
+    height: 100,
+    width: 200,
+  },
 });
 
 const FoodNoticeContainer = Styled.View`
@@ -177,7 +181,7 @@ const Space = Styled.Text`
 const HeaderContainer = Styled.View``;
 
 const AddDietButtonContainer = Styled.View`
-  width: 24%
+  width: 30%
 `;
 const AddDietButtonText = Styled.Text`
   font-weight: bold;
@@ -317,12 +321,22 @@ const AddDietButton = ({onRefresh}) => {
   const picked = useSelector((state: RootState) => {
     return state.addDiet.pick;
   });
-
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(1);
   const [items, setItems] = useState([
-    {label: '식단 1', value: 1},
+    {
+      label: '식단 1',
+      value: 1,
+      icon: () => (
+        <Image
+          source={require('~/Assets/Images/24_searchCancel.png')}
+          style={{
+            transform: [{scale: 100}],
+          }}
+        />
+      ),
+    },
     {label: '식단 추가하기', value: 'add'},
   ]);
   const createCart = () => {
@@ -357,23 +371,22 @@ const AddDietButton = ({onRefresh}) => {
     dispatch(cleanCalorieBar());
     dispatch(selectCart(items.length));
   };
-
+  const removediet = () => {};
   return (
     <DropDownPicker
       listItemLabelStyle={{
-        color: 'red',
+        color: '#590DE1',
       }}
       selectedItemContainerStyle={{
-        backgroundColor: 'blue',
+        backgroundColor: 'white',
       }}
       selectedItemLabelStyle={{
         fontWeight: 'bold',
       }}
       itemSeparator={true}
       itemSeparatorStyle={{
-        backgroundColor: 'red',
+        backgroundColor: 'grey',
       }}
-      dropDownContainerStyle={{}}
       style={{
         borderColor: 'white',
       }}
@@ -419,22 +432,7 @@ const Home = ({navigation, route}: Props) => {
     let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
     return refreshToken;
   };
-  // useEffect(() => {
-  //   getToken()
-  //     .then(token =>
-  //       axios.get(
-  //         'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd',
-  //         {
-  //           headers: {
-  //             Authentication: `Bearer ${token}`,
-  //           },
-  //         },
-  //       ),
-  //     )
-  //     .then(res => {
-  //       setData(res.data);
-  //     });
-  // }, []);
+
   useEffect(() => {
     getRefreshToken()
       .then(refreshToken =>
@@ -507,7 +505,7 @@ const Home = ({navigation, route}: Props) => {
       <FilterMenuContainer>
         {filterMenus.map(i => (
           <BottomSheetTestScreen key={i.id} list={filterMenus}>
-            {i.text}
+            {i.text}{' '}
           </BottomSheetTestScreen>
         ))}
       </FilterMenuContainer>

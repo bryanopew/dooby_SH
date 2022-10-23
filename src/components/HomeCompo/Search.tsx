@@ -32,6 +32,7 @@ import {
   selectRemoveProduct,
   increment,
   decrement,
+  selectCart,
 } from '~/stores/slices/addDietSlice';
 import {checkAll} from '~/stores/slices/checkBoxSlice';
 // if (newNumbers.length >= 1) {
@@ -268,7 +269,7 @@ const ShowProducts = () => {
       return false;
     }
   };
-  console.log('Search/selectdCart:', selectedCart);
+  // console.log('Search/selectdCart:', selectedCart);
   // console.log('Search/basketContent:',basketContent);
   // console.log('Search/cartsArray:', content);
 
@@ -565,13 +566,32 @@ const ShowProducts = () => {
 };
 
 const SelectDietButton = () => {
+  const dispatch = useDispatch();
+  const cartPage = useSelector((state: RootState) => {
+    return state.addDiet.selectedCartPage;
+  });
+  const pageList = useSelector((state: RootState) => {
+    return state.addDiet.cartsArray.length;
+  });
+  const itemList = pageList + 1;
+  console.log(itemList);
+  console.log('Search/cartpage', cartPage);
+  console.log('Search/pageList', pageList);
+  let list = [];
+  for (let i = 0; i <= pageList; i++) {
+    list.push({label: `식단 ${i + 1}`, value: i + 1});
+  }
+  console.log('Serach/List', list);
+
+  // 현재 원하는 형태는
+  // [
+  //  {label: '식단 1', value: 1},
+  // {label: '식단 2', value: 2},
+  // {label: '식단 3', value: 3} ]
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
-  const [state, setState] = useState(1);
-  const [items, setItems] = useState([
-    {label: '식단 1', value: 1},
-    {label: '식단 2', value: 2},
-  ]);
+  const [items, setItems] = useState(list);
+  console.log('value:', value);
   return (
     <DropDownPicker
       selectedItemContainerStyle={{
@@ -591,9 +611,11 @@ const SelectDietButton = () => {
       placeholder="식단1"
       open={open}
       setOpen={setOpen}
-      value={value}
-      items={items}
-      onSelectItem={() => console.log('식단 선택!')}
+      value={cartPage}
+      items={list}
+      onSelectItem={item => {
+        dispatch(selectCart(item.value));
+      }}
       setValue={setValue}
       setItems={setItems}
       textStyle={{fontSize: 15}}

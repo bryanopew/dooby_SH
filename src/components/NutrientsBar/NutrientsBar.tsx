@@ -181,17 +181,15 @@ const NutrientsBar = () => {
   const currentAddProtein = content.basketProtein.reduce((a, b) => a + b, 0);
   const currentAddFat = content.basketFat.reduce((a, b) => a + b, 0);
 
-  console.log(
-    'nutrientsBar/currentAdd',
-    currentAddCalorie,
-    currentAddCarb,
-    currentAddProtein,
-    currentAddFat,
-  );
+  // console.log(
+  //   'nutrientsBar/currentAdd',
+  //   currentAddCalorie,
+  //   currentAddCarb,
+  //   currentAddProtein,
+  //   currentAddFat,
+  // );
 
-  //배열이 비었을경우에 아래 데이터가 나와야함
-  //즉 calorieData가 나와야함
-  console.log('nutrientsBar/add', addCalorie, addCarb, addProtein, addFat);
+  // console.log('nutrientsBar/add', addCalorie, addCarb, addProtein, addFat);
   return (
     <Container>
       <Cal

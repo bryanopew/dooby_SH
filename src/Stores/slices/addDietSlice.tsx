@@ -86,7 +86,6 @@ export const {
   selectAddProduct,
   addToCartsArray,
   selectRemoveProduct,
-  pickCartsArray,
   increment,
   decrement,
 } = addDietSlice.actions;

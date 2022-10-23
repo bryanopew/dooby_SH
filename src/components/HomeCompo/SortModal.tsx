@@ -11,6 +11,7 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -49,6 +50,10 @@ const FilterButtonContainer = styled.View`
   justify-content: center;
 `;
 
+const RowContainer = styled.View`
+  flex-direction: row;
+`;
+
 // const ButtonContainer = styled.View`
 //   flex: 1;
 //   border: 0.5px grey;
@@ -85,7 +90,15 @@ const CategoryFilter = ({navigation}): JSX.Element => {
       {category.map((i, index) => (
         <CategoryListButton key={i.id}>
           <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
-            <CategoryListText>{i.text}</CategoryListText>
+            <RowContainer>
+              <CategoryListText>{i.text}</CategoryListText>
+              <Image
+                style={{
+                  transform: [{scale: 0.55}],
+                }}
+                source={require('~/Assets/Images/24_sort.png')}
+              />
+            </RowContainer>
           </CategoryListContainer>
         </CategoryListButton>
       ))}
