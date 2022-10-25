@@ -24,6 +24,7 @@ import Category from '~/Components/HomeCompo/Category';
 import Menus from '~/Components/HomeCompo/Menus';
 import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import SortModal from './HomeCompo/SortModal';
+import {clickFilter, fetchCategoryFilter} from '~/stores/slices/filterSlice';
 
 import {RootState} from '~/stores/store';
 import {
@@ -318,6 +319,7 @@ const AddDietButton = ({onRefresh}) => {
   const cartPage = useSelector((state: RootState) => {
     return state.addDiet.selectedCartPage;
   });
+  console.log('Home/cartPage', cartPage);
   const picked = useSelector((state: RootState) => {
     return state.addDiet.pick;
   });
@@ -371,6 +373,10 @@ const AddDietButton = ({onRefresh}) => {
     dispatch(cleanCalorieBar());
     dispatch(selectCart(items.length));
   };
+  useEffect(() => {
+    setValue(cartPage);
+    onRefresh();
+  }, [cartPage]);
   const removediet = () => {};
   return (
     <DropDownPicker
@@ -423,7 +429,7 @@ const Home = ({navigation, route}: Props) => {
   // 단백질(protein) res.data.protein
   // 지방(fat) res.data.fat
   // 사진(mainAttUrl) res.data.mainAttUrl
-
+  const dispatch = useDispatch();
   const getToken = () => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
@@ -432,7 +438,13 @@ const Home = ({navigation, route}: Props) => {
     let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
     return refreshToken;
   };
-
+  const onCategoryFilter = useSelector((state: RootState) => {
+    return state.filter.filterContents;
+  });
+  const filterList = useSelector((state: RootState) => {
+    return state.filter.filterList;
+  });
+  console.log('Home/filterlist', filterList);
   useEffect(() => {
     getRefreshToken()
       .then(refreshToken =>
@@ -466,6 +478,23 @@ const Home = ({navigation, route}: Props) => {
         setData(res.data);
       });
   };
+  const filterOnRefresh = () => {
+    setIsFetching(false);
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setData(res.data);
+      });
+  };
   const realProduct = data.map(value => {
     let returnObj = {};
     returnObj.name = value.platformNm;
@@ -481,7 +510,188 @@ const Home = ({navigation, route}: Props) => {
     returnObj.quantity = value.quantity;
     return returnObj;
   });
-
+  const filterProduct = onCategoryFilter[0]?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  console.log('Home/filterProduct:', filterProduct);
+  const RenderItem = () => {
+    if (onCategoryFilter.length > 0) {
+      return (
+        <FlatList
+          style={{backgroundColor: 'white', marginTop: 20}}
+          data={filterProduct}
+          // style={{width}}
+          keyExtractor={(products, index) => {
+            return `menus-${index}`;
+          }}
+          showsVerticalScrollIndicator={false}
+          bounces={true}
+          windowSize={2}
+          onRefresh={filterOnRefresh}
+          // onEndReached={() => {
+          //   setMenuList([...menuList, ...getmenuList()]);
+          // }}
+          onEndReachedThreshold={0.5}
+          refreshing={isFetching}
+          renderItem={({item, index}) => (
+            <ProductContainer>
+              <RowContainer>
+                <Image
+                  style={{
+                    height: imageHeight,
+                    width: imageWidth,
+                    marginLeft: 10,
+                  }}
+                  resizeMode={'contain'}
+                  source={{
+                    uri: `http://61.100.16.155:8080${item.att}`,
+                  }}
+                />
+                <ColumnContainer>
+                  <ProductNameText>{item.name}</ProductNameText>
+                  <ProductDetailText>{item.description}</ProductDetailText>
+                  <ProductPriceText>{item.price}원</ProductPriceText>
+                </ColumnContainer>
+                <AddProductButton
+                  data={filterProduct}
+                  item={[
+                    {
+                      name: item.name,
+                      price: item.price,
+                      description: item.description,
+                      calorie: item.calorie,
+                      carb: item.carb,
+                      protein: item.protein,
+                      fat: item.fat,
+                      att: item.att,
+                      productNm: item.productNo,
+                      quantity: 1,
+                    },
+                  ]}
+                />
+              </RowContainer>
+              <ProductNutrientContainer>
+                <ProductNutrientText>
+                  칼로리
+                  <ProductNutrientNumberText>
+                    {Math.round(item.calorie)}kcal
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  탄수화물{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.carb)}g
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  단백질{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.protein)}g
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  지방{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.fat)}g
+                  </ProductNutrientNumberText>
+                </ProductNutrientText>
+              </ProductNutrientContainer>
+            </ProductContainer>
+          )}
+        />
+      );
+    } else
+      return (
+        <FlatList
+          style={{backgroundColor: 'white', marginTop: 20}}
+          data={realProduct}
+          // style={{width}}
+          keyExtractor={(products, index) => {
+            return `menus-${index}`;
+          }}
+          showsVerticalScrollIndicator={false}
+          bounces={true}
+          windowSize={2}
+          onRefresh={onRefresh}
+          // onEndReached={() => {
+          //   setMenuList([...menuList, ...getmenuList()]);
+          // }}
+          onEndReachedThreshold={0.5}
+          refreshing={isFetching}
+          renderItem={({item, index}) => (
+            <ProductContainer>
+              <RowContainer>
+                <Image
+                  style={{
+                    height: imageHeight,
+                    width: imageWidth,
+                    marginLeft: 10,
+                  }}
+                  resizeMode={'contain'}
+                  source={{
+                    uri: `http://61.100.16.155:8080${item.att}`,
+                  }}
+                />
+                <ColumnContainer>
+                  <ProductNameText>{item.name}</ProductNameText>
+                  <ProductDetailText>{item.description}</ProductDetailText>
+                  <ProductPriceText>{item.price}원</ProductPriceText>
+                </ColumnContainer>
+                <AddProductButton
+                  data={data}
+                  item={[
+                    {
+                      name: item.name,
+                      price: item.price,
+                      description: item.description,
+                      calorie: item.calorie,
+                      carb: item.carb,
+                      protein: item.protein,
+                      fat: item.fat,
+                      att: item.att,
+                      productNm: item.productNo,
+                      quantity: 1,
+                    },
+                  ]}
+                />
+              </RowContainer>
+              <ProductNutrientContainer>
+                <ProductNutrientText>
+                  칼로리
+                  <ProductNutrientNumberText>
+                    {Math.round(item.calorie)}kcal
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  탄수화물{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.carb)}g
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  단백질{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.protein)}g
+                  </ProductNutrientNumberText>
+                  <Space>{'    '}</Space>
+                  지방{' '}
+                  <ProductNutrientNumberText>
+                    {Math.round(item.fat)}g
+                  </ProductNutrientNumberText>
+                </ProductNutrientText>
+              </ProductNutrientContainer>
+            </ProductContainer>
+          )}
+        />
+      );
+  };
   return (
     <SafeAreaView style={styles.wrapper}>
       <HeaderContainer>
@@ -496,7 +706,13 @@ const Home = ({navigation, route}: Props) => {
 
       <FoodNoticeContainer>
         <RowContainer>
-          <FoodNoticeText>전체 식품 {realProduct.length}개</FoodNoticeText>
+          <FoodNoticeText>
+            전체 식품{' '}
+            {onCategoryFilter.length > 0
+              ? onCategoryFilter[0].length
+              : realProduct.length}
+            개
+          </FoodNoticeText>
           <SortButtonContainer>
             <SortModal />
           </SortButtonContainer>
@@ -509,85 +725,8 @@ const Home = ({navigation, route}: Props) => {
           </BottomSheetTestScreen>
         ))}
       </FilterMenuContainer>
-      <FlatList
-        style={{backgroundColor: 'white', marginTop: 20}}
-        data={realProduct}
-        // style={{width}}
-        keyExtractor={(products, index) => {
-          return `menus-${index}`;
-        }}
-        showsVerticalScrollIndicator={false}
-        bounces={true}
-        windowSize={2}
-        onRefresh={onRefresh}
-        // onEndReached={() => {
-        //   setMenuList([...menuList, ...getmenuList()]);
-        // }}
-        onEndReachedThreshold={0.5}
-        refreshing={isFetching}
-        renderItem={({item, index}) => (
-          <ProductContainer>
-            <RowContainer>
-              <Image
-                style={{
-                  height: imageHeight,
-                  width: imageWidth,
-                  marginLeft: 10,
-                }}
-                resizeMode={'contain'}
-                source={{
-                  uri: `http://61.100.16.155:8080${item.att}`,
-                }}
-              />
-              <ColumnContainer>
-                <ProductNameText>{item.name}</ProductNameText>
-                <ProductDetailText>{item.description}</ProductDetailText>
-                <ProductPriceText>{item.price}원</ProductPriceText>
-              </ColumnContainer>
-              <AddProductButton
-                data={data}
-                item={[
-                  {
-                    name: item.name,
-                    price: item.price,
-                    description: item.description,
-                    calorie: item.calorie,
-                    carb: item.carb,
-                    protein: item.protein,
-                    fat: item.fat,
-                    att: item.att,
-                    productNm: item.productNo,
-                    quantity: 1,
-                  },
-                ]}
-              />
-            </RowContainer>
-            <ProductNutrientContainer>
-              <ProductNutrientText>
-                칼로리
-                <ProductNutrientNumberText>
-                  {Math.round(item.calorie)}kcal
-                </ProductNutrientNumberText>
-                <Space>{'    '}</Space>
-                탄수화물{' '}
-                <ProductNutrientNumberText>
-                  {Math.round(item.carb)}g
-                </ProductNutrientNumberText>
-                <Space>{'    '}</Space>
-                단백질{' '}
-                <ProductNutrientNumberText>
-                  {Math.round(item.protein)}g
-                </ProductNutrientNumberText>
-                <Space>{'    '}</Space>
-                지방{' '}
-                <ProductNutrientNumberText>
-                  {Math.round(item.fat)}g
-                </ProductNutrientNumberText>
-              </ProductNutrientText>
-            </ProductNutrientContainer>
-          </ProductContainer>
-        )}
-      />
+
+      <RenderItem />
     </SafeAreaView>
   );
 };

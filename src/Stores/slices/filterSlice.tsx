@@ -5,6 +5,7 @@ import axios from 'axios';
 const initialState = {
   filterContents: [],
   loading: '',
+  filterList: [],
 };
 const getRefreshToken = () => {
   let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
@@ -32,7 +33,8 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     clickFilter: (state, action) => {
-      console.log(action.payload);
+      state.filterList = action.payload;
+      console.log('활성화된 필터 리스트', action.payload);
     },
   },
   extraReducers: builder => {
@@ -41,7 +43,7 @@ const filterSlice = createSlice({
         console.log('pending:', state);
       })
       .addCase(fetchCategoryFilter.fulfilled, (state, action) => {
-        console.log('ful', action.payload);
+        state.filterContents.push(action.payload);
       })
       .addCase(fetchCategoryFilter.rejected, state => {
         console.log('reject', state);

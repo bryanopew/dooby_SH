@@ -22,6 +22,18 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
   },
+  disabledText: {
+    alignItems: 'center',
+    color: 'grey',
+  },
+  text: {
+    alignItems: 'center',
+    color: '#590DE1',
+  },
+  clicked: {
+    backgroundColor: 'red',
+  },
+  offClicked: {},
 });
 const CategoryListContainer = styled.View`
   flex-direction: column;
@@ -73,20 +85,11 @@ const getRefreshToken = () => {
 };
 
 const CategoryFilter = ({navigation}): JSX.Element => {
-  const [click, setClick] = useState();
   const dispatch = useDispatch();
   const content = useSelector((state: RootState) => {
     return state.filter.filterContents;
   });
-  console.log('filtercontents:', content);
-  const category = [
-    {id: 1, text: '도시락'},
-    {id: 2, text: '닭가슴살'},
-    {id: 3, text: '샐러드'},
-    {id: 4, text: '영양간식'},
-    {id: 5, text: '과자'},
-    {id: 6, text: '음료'},
-  ];
+
   const [data, setData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [breastData, setBreastData] = useState([]);
@@ -94,7 +97,9 @@ const CategoryFilter = ({navigation}): JSX.Element => {
   const [snackData, setSnackData] = useState([]);
   const [chipData, setChipData] = useState([]);
   const [beverageData, setBeverageData] = useState([]);
-
+  const toggleFilter = i => {
+    return [...category, (category[i].clicked = !category[i].clicked)];
+  };
   const getBoxData = () => {
     getRefreshToken()
       .then(refreshToken =>
@@ -111,44 +116,100 @@ const CategoryFilter = ({navigation}): JSX.Element => {
         setBoxData(res.data);
       });
   };
+  useEffect(() => {
+    getBoxData();
+  }, []);
+  const cntBoxData = async () => {
+    await getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://13.125.244.117:8080/api/member/category/list-category-product-cnt/CG',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => setData(res.data));
+  };
+
+  //   useEffect(() => {
+  //     const getData = async () => {
+  //       const response = await cntBoxData();
+  //   }
+  //   getData();
+  // }, []);
+  useEffect(() => {
+    cntBoxData();
+  }, []);
+
+  const category = [
+    {id: 1, text: `도시락(${data[0]?.productCnt})`, clicked: false},
+    {id: 2, text: `닭가슴살(${data[1]?.productCnt})`, clicked: false},
+    {id: 3, text: `샐러드(${data[2]?.productCnt})`, clicked: false},
+    {id: 4, text: `영양간식(${data[3]?.productCnt})`, clicked: false},
+    {id: 5, text: `과자(${data[4]?.productCnt})`, clicked: false},
+    {id: 6, text: `음료(${data[5]?.productCnt})`, clicked: false},
+  ];
+
   const onPress = i => {
     switch (i.id) {
       case 1:
-        dispatch(fetchCategoryFilter());
+        // dispatch(fetchCategoryFilter());
+        console.log('도시락');
+        toggleFilter(0);
+
         break;
       case 2:
         console.log('닭가슴살');
+        toggleFilter(1);
         break;
       case 3:
         console.log('샐러드');
+        toggleFilter(2);
         break;
       case 4:
         console.log('영양간식');
+        toggleFilter(3);
+
         break;
       case 5:
         console.log('과자');
+        toggleFilter(4);
+
         break;
       case 6:
         console.log('음료');
+        toggleFilter(5);
+
         break;
       default:
         return;
     }
   };
+
   return (
     <ScrollView style={styles.wrapper}>
       {category.map((i, index) => (
-        <CategoryListButton key={i.id} onPress={() => onPress(i)}>
+        <CategoryListButton
+          key={i.id}
+          onPress={() => {
+            onPress(i);
+          }}>
           <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
-            <CategoryListText>{i.text}</CategoryListText>
+            <CategoryListText
+              style={i.clicked ? styles.clicked : styles.offClicked}>
+              {i.text}
+            </CategoryListText>
           </CategoryListContainer>
         </CategoryListButton>
       ))}
       <FilterButtonContainer>
-        <StyledButton>
+        <StyledButton onPress={() => console.log('category:', category)}>
           <ButtonText>카테고리 초기화</ButtonText>
         </StyledButton>
-        <StyledButton>
+        <StyledButton onPress={() => dispatch(clickFilter(category))}>
           <ButtonText>확인</ButtonText>
         </StyledButton>
       </FilterButtonContainer>
