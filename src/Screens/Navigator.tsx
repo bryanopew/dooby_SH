@@ -133,21 +133,21 @@ const MainTabs = () => {
         name="장바구니"
         component={Basket}
         options={{
-          headerShown: true,
+          headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({color, focused}) => (
             <Image
               source={
                 focused
                   ? require('~/Assets/Images/36_paymentPage_selected.png')
-                  : require('~/Assets/Images/24_paymentPage.png')
+                  : require('~/Assets/Images/36_paymentPage.png')
               }
             />
           ),
         }}
       />
       <BottomTab.Screen
-        name="장바구니 물건있을때"
+        name="장바구니 "
         component={Search}
         options={{
           headerShown: true,
@@ -156,8 +156,8 @@ const MainTabs = () => {
             <Image
               source={
                 focused
-                  ? require('~/Assets/Images/36_icon=basket.png')
-                  : require('~/Assets/Images/36_icon=basket.png')
+                  ? require('~/Assets/Images/24_cartPage_selected.png')
+                  : require('~/Assets/Images/24_cartPage.png')
               }
             />
           ),

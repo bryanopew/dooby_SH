@@ -420,7 +420,12 @@ const AddDietButton = ({onRefresh}) => {
 const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
-
+  const [boxData, setBoxData] = useState([]);
+  const [breastData, setBreastData] = useState([]);
+  const [saladData, setSaladData] = useState([]);
+  const [snackData, setSnackData] = useState([]);
+  const [chipData, setChipData] = useState([]);
+  const [beverageData, setBeverageData] = useState([]);
   // 제품이름(productNm) res.data.productNm
   // 플랫폼이름(platformNm) res.data.platformNm
   // 가격(price) res.data.price
@@ -441,10 +446,122 @@ const Home = ({navigation, route}: Props) => {
   const onCategoryFilter = useSelector((state: RootState) => {
     return state.filter.filterContents;
   });
-  const filterList = useSelector((state: RootState) => {
+  const getfilterList = useSelector((state: RootState) => {
     return state.filter.filterList;
   });
-  console.log('Home/filterlist', filterList);
+  const filterList = getfilterList.map(e => {
+    return {text: e.text, clicked: e.clicked};
+  });
+  let realFilterData: any = [];
+  const getFilterProduct = filterList.map(e => {
+    return e.clicked === true ? [...realFilterData, e.text] : realFilterData;
+  });
+
+  const getBoxData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://13.125.244.117:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setBoxData(res.data);
+      });
+  };
+  const getBreastData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=닭가슴살&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setBreastData(res.data);
+      });
+  };
+  const getSaladData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=샐러드&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setSaladData(res.data);
+      });
+  };
+  const getSnackData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=영양간식&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setSnackData(res.data);
+      });
+  };
+  const getChipData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=과자&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setChipData(res.data);
+      });
+  };
+  const getBeverageData = () => {
+    getRefreshToken()
+      .then(refreshToken =>
+        axios.get(
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=음료&categoryCd=&sort',
+          {
+            headers: {
+              Authentication: `Bearer ${refreshToken}`,
+            },
+          },
+        ),
+      )
+      .then(res => {
+        setBeverageData(res.data);
+      });
+  };
+  useEffect(() => {
+    getBoxData();
+    getBreastData();
+    getSaladData();
+    getSnackData();
+    getChipData();
+    getBeverageData();
+  }, []);
+
   useEffect(() => {
     getRefreshToken()
       .then(refreshToken =>
@@ -495,6 +612,7 @@ const Home = ({navigation, route}: Props) => {
         setData(res.data);
       });
   };
+  //전체 식품
   const realProduct = data.map(value => {
     let returnObj = {};
     returnObj.name = value.platformNm;
@@ -510,7 +628,8 @@ const Home = ({navigation, route}: Props) => {
     returnObj.quantity = value.quantity;
     return returnObj;
   });
-  const filterProduct = onCategoryFilter[0]?.map(value => {
+  //리스트
+  const boxProduct = boxData?.map(value => {
     let returnObj = {};
     returnObj.name = value.platformNm;
     returnObj.description = value.productNm;
@@ -525,13 +644,102 @@ const Home = ({navigation, route}: Props) => {
     returnObj.quantity = value.quantity;
     return returnObj;
   });
-  console.log('Home/filterProduct:', filterProduct);
+  const breastProduct = breastData?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  const saladProduct = saladData?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  const snackProduct = snackData?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  const chipProduct = chipData?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  const beverageProduct = beverageData?.map(value => {
+    let returnObj = {};
+    returnObj.name = value.platformNm;
+    returnObj.description = value.productNm;
+    returnObj.price = value.price;
+    returnObj.calorie = Math.round(value.calorie);
+    returnObj.carb = Math.round(value.carb);
+    returnObj.protein = Math.round(value.protein);
+    returnObj.fat = Math.round(value.fat);
+    returnObj.att = value.mainAttUrl;
+    returnObj.productNo = value.productNo;
+    returnObj.shippingPrice = value.shippingPrice;
+    returnObj.quantity = value.quantity;
+    return returnObj;
+  });
+  const filterProduct = [
+    boxProduct,
+    breastProduct,
+    saladProduct,
+    snackProduct,
+    chipProduct,
+    beverageProduct,
+  ];
+  let filterListArray = [];
+  //! 여기다가 제품 순서에 맞는 아이템 넣어야함
+  const realFilterProduct = getFilterProduct.map((e, index) => {
+    return e.length > 0 ? (filterListArray = filterProduct[index]) : [];
+  });
+
+  const mergeFilterProduct = [].concat.apply([], realFilterProduct);
   const RenderItem = () => {
-    if (onCategoryFilter.length > 0) {
+    if (mergeFilterProduct.length > 0) {
       return (
         <FlatList
           style={{backgroundColor: 'white', marginTop: 20}}
-          data={filterProduct}
+          data={mergeFilterProduct}
           // style={{width}}
           keyExtractor={(products, index) => {
             return `menus-${index}`;
@@ -565,7 +773,7 @@ const Home = ({navigation, route}: Props) => {
                   <ProductPriceText>{item.price}원</ProductPriceText>
                 </ColumnContainer>
                 <AddProductButton
-                  data={filterProduct}
+                  data={mergeFilterProduct}
                   item={[
                     {
                       name: item.name,
@@ -706,13 +914,14 @@ const Home = ({navigation, route}: Props) => {
 
       <FoodNoticeContainer>
         <RowContainer>
-          <FoodNoticeText>
-            전체 식품{' '}
-            {onCategoryFilter.length > 0
-              ? onCategoryFilter[0].length
-              : realProduct.length}
-            개
-          </FoodNoticeText>
+          {mergeFilterProduct.length > 0 ? (
+            <FoodNoticeText>
+              검색 결과 {mergeFilterProduct.length}{' '}
+            </FoodNoticeText>
+          ) : (
+            <FoodNoticeText>전체 식품 {realProduct.length}</FoodNoticeText>
+          )}
+
           <SortButtonContainer>
             <SortModal />
           </SortButtonContainer>

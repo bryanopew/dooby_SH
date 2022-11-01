@@ -57,40 +57,6 @@ const basketSlice = createSlice({
       }
       console.log('action.payload:', action.payload);
     },
-    //   if (index === -1) {
-    //     const plus = state.cart.find(item => {
-    //       if (item.productNm === action.payload.productNm) {
-    //         return true;
-    //       }
-    //     });
-    //     if (plus) {
-    //       plus.quantity += 1;
-    //     }
-    //     console.log('increment:', action.payload);
-    //   } else if (index >= 0) {
-    //     const plus = state.cart.find(item => {
-    //       if (item.productNm === action.payload.productNm) {
-    //         return true;
-    //       }
-    //     });
-    //     if (plus) {
-    //       plus.quantity += 1;
-    //     }
-    //     console.log('increment:', action.payload);
-
-    //   }
-    // },
-
-    // 원래 추가 로직
-    // const plus = state.cart.find(item => {
-    //   if (item.productNm === action.payload.productNm) {
-    //     return true;
-    //   }
-    // });
-    // if (plus) {
-    //   plus.quantity += 1;
-    // }
-    // console.log('payload:', action.payload);
 
     decrement: (state, action) => {
       const minus = state.cart.find(item => {

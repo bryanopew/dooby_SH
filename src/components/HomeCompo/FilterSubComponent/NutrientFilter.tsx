@@ -5,6 +5,33 @@ import styled from 'styled-components/native';
 import {Slider} from './Slider/Slider';
 import {SliderContainer} from './Slider/SliderContainer';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {useSelector, useDispatch} from 'react-redux';
+
+const getToken = () => {
+  let token = AsyncStorage.getItem('ACCESS_TOKEN');
+  return token;
+};
+const getRefreshToken = () => {
+  let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
+  return refreshToken;
+};
+
+const filterRange = () => {
+  getRefreshToken()
+    .then(refreshToken =>
+      axios.get(
+        'http://13.125.244.117:8080/api/member/product/get-product-filter-range/Carb',
+        {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
+          },
+        },
+      ),
+    )
+    .then(res => console.log('filterRange:', res.data));
+};
 const FilterButtonContainer = styled.View`
   flex-direction: row;
   justify-content: center;
@@ -65,6 +92,13 @@ const renderBelowKcal = (value: number, index: number) => {
     </View>
   );
 };
+const renderAboveKcal = (value: number, index: number) => {
+  return (
+    <View style={aboveThumbStyles.kcalContainer}>
+      <Text>{index}kcal</Text>
+    </View>
+  );
+};
 const renderBelowGram = (value: number, index: number) => {
   return (
     <View style={aboveThumbStyles.gramContainer}>
@@ -96,6 +130,7 @@ const NutrientFilter = ({}) => {
             step={50}
             thumbTintColor="white"
             renderBelowThumbComponent={renderBelowKcal}
+            // renderAboveThumbComponent={renderAboveKcal}
             trackStyle={customTrackStyle.track}
             onSlidingStart={start}
             onSlidingComplete={end}

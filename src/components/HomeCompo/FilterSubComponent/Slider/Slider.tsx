@@ -814,6 +814,7 @@ export class Slider extends PureComponent<SliderProps, SliderState> {
                 animatedValue instanceof Animated.Value
                   ? animatedValue.__getValue()
                   : animatedValue;
+              console.log('animatedValue', value);
               return (
                 <Animated.View
                   key={`slider-below-thumb-${i}`}

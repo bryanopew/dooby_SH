@@ -24,7 +24,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
-import {result} from '~/Components/Home';
+import BasketFilterModal from '~/Components/ModalComponent/BasketFilterModal';
 import CheckBox from '@react-native-community/checkbox';
 import Counter from '~/Components/BasketComponent/Counter';
 import {remove} from '~/stores/slices/basketSlice';
@@ -565,6 +565,26 @@ const ShowProducts = () => {
   }
 };
 
+const EmptyBasket = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  return (
+    <>
+      <ScrollView>
+        <DietContainer>
+          <Text style={{marginTop: 30}}>식품을 추가해보세요</Text>
+          <BasketFilterModal
+            onPress={() => {
+              setModalVisible(true);
+            }}></BasketFilterModal>
+
+          <Text style={{textAlign: 'right'}}>합계: 0원</Text>
+        </DietContainer>
+      </ScrollView>
+    </>
+  );
+};
+
 const SelectDietButton = () => {
   const dispatch = useDispatch();
   const cartPage = useSelector((state: RootState) => {
@@ -583,11 +603,6 @@ const SelectDietButton = () => {
   }
   console.log('Serach/List', list);
 
-  // 현재 원하는 형태는
-  // [
-  //  {label: '식단 1', value: 1},
-  // {label: '식단 2', value: 2},
-  // {label: '식단 3', value: 3} ]
   const [value, setValue] = useState();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(list);
@@ -595,16 +610,12 @@ const SelectDietButton = () => {
   return (
     <DropDownPicker
       selectedItemContainerStyle={{
-        backgroundColor: 'blue',
+        backgroundColor: 'white',
       }}
       selectedItemLabelStyle={{
         fontWeight: 'bold',
       }}
-      itemSeparator={false}
-      itemSeparatorStyle={{
-        backgroundColor: 'red',
-      }}
-      dropDownContainerStyle={{}}
+      itemSeparator={true}
       style={{
         borderColor: 'white',
       }}
@@ -627,6 +638,12 @@ const SelectDietButton = () => {
 
 const OnBasket = ({navigation}) => {
   const isFocused = useIsFocused();
+  const basketProducts = useSelector((state: RootState) => {
+    return state.basketProduct.cart;
+  });
+  const content = useSelector((state: RootState) => {
+    return state.addDiet.cartsArray;
+  });
 
   useEffect(() => {
     if (isFocused) console.log('focused');
@@ -646,7 +663,11 @@ const OnBasket = ({navigation}) => {
           <NutrientsBar />
           <ScrollView>
             <DietProductContainer>
-              <ShowProducts />
+              {basketProducts.length === 0 && content.length === 0 ? (
+                <EmptyBasket />
+              ) : (
+                <ShowProducts />
+              )}
             </DietProductContainer>
           </ScrollView>
           <Text style={{textAlign: 'right'}}>합계: 00000원</Text>

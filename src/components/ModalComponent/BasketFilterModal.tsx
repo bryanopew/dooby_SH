@@ -195,12 +195,117 @@ const end = () => {
 const change = () => {
   console.log('change');
 };
-const Profile = (Props: any): React.ReactElement => {
+const BasketFilterModal = (Props: any): React.ReactElement => {
   //State를 이용하여 Modal을 제어함
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   //Output을 State로 받아서 화면에 표출하거나 정보 값으로 활용
   const [modalOutput, setModalOutput] = useState<string>('Open Modal');
-  return <Text>프로필탭</Text>;
+  return (
+    <StyledSafeAreaView>
+      {/* Modal이 StyledModalOpenButton의 아래에 있더라도 무관함. Container안에 들어가만 있으면 됨 */}
+      <Modal
+        //isVisible Props에 State 값을 물려주어 On/off control
+        isVisible={modalVisible}
+        //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
+        useNativeDriver={true}
+        hideModalContentWhileAnimating={true}
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <StyledModalContainer>
+          <StyledModalGradeWrapper>
+            <StyledModalGradeText>
+              추천받을 식품 유형 3가지 이상 선택해주세요
+            </StyledModalGradeText>
+          </StyledModalGradeWrapper>
+          <RowContainer>
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 1');
+              }}>
+              <EachCheckBoxAndroid />
+              <StyledModalText>도시락</StyledModalText>
+            </StyledModalButton>
+
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 2');
+              }}>
+              <EachCheckBoxAndroid />
+
+              <StyledModalText>닭가슴살</StyledModalText>
+            </StyledModalButton>
+
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 3');
+              }}>
+              <EachCheckBoxAndroid />
+
+              <StyledModalText>샐러드</StyledModalText>
+            </StyledModalButton>
+          </RowContainer>
+          <RowContainer>
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 4');
+              }}>
+              <EachCheckBoxAndroid />
+
+              <StyledModalText>영양간식</StyledModalText>
+            </StyledModalButton>
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 5');
+              }}>
+              <EachCheckBoxAndroid />
+
+              <StyledModalText>과자</StyledModalText>
+            </StyledModalButton>
+            <StyledModalButton
+              onPress={() => {
+                setModalOutput('선택 6');
+              }}>
+              <EachCheckBoxAndroid />
+
+              <StyledModalText>음료</StyledModalText>
+            </StyledModalButton>
+          </RowContainer>
+          <HorizentalLine />
+          <Space>
+            <SliderContainer caption="한 끼 가격" sliderValue={[4000, 14000]}>
+              <Slider
+                animateTransitions
+                maximumValue={14000}
+                minimumTrackTintColor="#590DE1"
+                minimumValue={4000}
+                step={1000}
+                thumbTintColor="white"
+                renderBelowThumbComponent={renderBelowKcal}
+                // renderAboveThumbComponent={renderAboveKcal}
+                trackStyle={customTrackStyle.track}
+                onSlidingStart={start}
+                onSlidingComplete={end}
+                onValueChange={change}
+              />
+            </SliderContainer>
+          </Space>
+          <StyledModalButton
+            onPress={() => {
+              setModalVisible(false);
+            }}>
+            <Text style={{alignSelf: 'center'}}>확인</Text>
+          </StyledModalButton>
+        </StyledModalContainer>
+      </Modal>
+
+      <StyledModalOpenButton
+        onPress={() => {
+          setModalVisible(true);
+        }}>
+        <Text>귀찮을 땐 자동구성</Text>
+        {/* 모달에서 선택 결과 값을 State로 받아서 화면에 표시 */}
+      </StyledModalOpenButton>
+    </StyledSafeAreaView>
+  );
 };
 
-export default Profile;
+export default BasketFilterModal;

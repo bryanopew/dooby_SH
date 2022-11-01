@@ -34,7 +34,6 @@ const filterSlice = createSlice({
   reducers: {
     clickFilter: (state, action) => {
       state.filterList = action.payload;
-      console.log('활성화된 필터 리스트', action.payload);
     },
   },
   extraReducers: builder => {

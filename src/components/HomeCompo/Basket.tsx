@@ -64,34 +64,35 @@ const PickDelete = styled.TouchableOpacity`
 
 const Basket = ({navigation}) => {
   return (
-    <>
-      <HeaderButtonContainer>
-        <HeaderButtonText>전체 선택</HeaderButtonText>
-        <PickDelete>
-          <Text>선택 삭제</Text>
-        </PickDelete>
-      </HeaderButtonContainer>
-      <ScrollView>
-        <DietContainer>
-          <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
-            식단
-          </Text>
-          <NutrientsBar />
-          <Text style={{marginTop: 30}}>식품을 추가해보세요</Text>
-          <AddDietButton>
-            <Text>귀찮을 땐 자동구성</Text>
-          </AddDietButton>
+    // <>
+    //   <HeaderButtonContainer>
+    //     <HeaderButtonText>전체 선택</HeaderButtonText>
+    //     <PickDelete>
+    //       <Text>선택 삭제</Text>
+    //     </PickDelete>
+    //   </HeaderButtonContainer>
+    //   <ScrollView>
+    //     <DietContainer>
+    //       <Text style={{marginLeft: 170, fontWeight: 'bold', marginBottom: 15}}>
+    //         식단
+    //       </Text>
+    //       <NutrientsBar />
+    //       <Text style={{marginTop: 30}}>식품을 추가해보세요</Text>
+    //       <AddDietButton>
+    //         <Text>귀찮을 땐 자동구성</Text>
+    //       </AddDietButton>
 
-          <Text style={{textAlign: 'right'}}>합계: 00000원</Text>
-        </DietContainer>
-      </ScrollView>
-      <TotalContainer>
-        <Text>전체합계:</Text>
-      </TotalContainer>
-      <OrderButton>
-        <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
-      </OrderButton>
-    </>
+    //       <Text style={{textAlign: 'right'}}>합계: 00000원</Text>
+    //     </DietContainer>
+    //   </ScrollView>
+    //   <TotalContainer>
+    //     <Text>전체합계:</Text>
+    //   </TotalContainer>
+    //   <OrderButton>
+    //     <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
+    //   </OrderButton>
+    // </>
+    <Text> 결제탭</Text>
   );
 };
 
