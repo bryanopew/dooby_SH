@@ -17,6 +17,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
+import Payment from '~/Components/payments/Payment';
+import Cart from '~/Components/payments/screens/Cart';
+import Mypage from '~/Components/payments/screens/Mypage';
 
 const HeaderButtonContainer = styled.View`
   flex-direction: row;
@@ -92,7 +95,10 @@ const Basket = ({navigation}) => {
     //     <Text style={{color: 'white'}}>총 19800원 주문하기</Text>
     //   </OrderButton>
     // </>
-    <Text> 결제탭</Text>
+    <>
+      <Text> 결제탭</Text>
+      <Mypage />
+    </>
   );
 };
 

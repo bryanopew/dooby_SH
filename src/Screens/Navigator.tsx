@@ -33,7 +33,11 @@ const LoginNavigator = () => {
       screenOptions={{
         headerShown: true,
       }}>
-      <Stack.Screen name="로그인" component={Login} />
+      <Stack.Screen
+        name="로그인"
+        component={Login}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Basic1"
         component={Basic1}

@@ -158,10 +158,11 @@ const Basic2 = ({route, navigation}) => {
     <SafeAreaView style={styles.wrapper}>
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 24,
           fontWeight: 'bold',
-          color: 'black',
-          marginBottom: 20,
+          color: '#444444',
+          marginBottom: 15,
+          padding: 15,
         }}>
         선택 정보를 {'\n'}입력해주세요.
       </Text>

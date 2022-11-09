@@ -5,20 +5,20 @@ import Config from 'react-native-config';
 
 export const DEBUG = __DEV__ ? true : false;
 
-export const BASE_URL = 'http://61.100.16.155:8080';
+export const BASE_URL = 'http://13.125.244.117:8080';
 export const KAKAO_TOKEN_CONTROLLER =
-  'http://61.100.16.155:8080/api/every/token/get-token'; //토큰 조회
-export const GET_AUTH = 'http://61.100.16.155:8080/api/member/auth/get-auth'; //인증 여부 조회
+  'http://13.125.244.117:8080/api/every/token/get-token'; //토큰 조회
+export const GET_AUTH = 'http://13.125.244.117:8080/api/member/auth/get-auth'; //인증 여부 조회
 export const RE_ISSUE_TOKEN =
-  'http://61.100.16.155:8080/api/member/auth/re-issue-token';
-export const GET_USER = 'http://61.100.16.155:8080/api/member/user/get-user'; //사용자 정보 조회
+  'http://13.125.244.117:8080/api/member/auth/re-issue-token';
+export const GET_USER = 'http://13.125.244.117:8080/api/member/user/get-user'; //사용자 정보 조회
 export const CREATE_BASE_LINE = //기본 정보 생성
-  'http://61.100.16.155:8080/api/member/baseline/create-base-line';
+  'http://13.125.244.117:8080/api/member/baseline/create-base-line';
 export const GET_BASE_LINE = //기본 정보 조회
-  'http://61.100.16.155:8080/api/member/baseline/get-base-line';
+  'http://13.125.244.117:8080/api/member/baseline/get-base-line';
 export const CREATE_DIET = //식단정보생성
-  'http://61.100.16.155:8080/api/member/diet/create-diet';
-export const LIST_DIET = 'http://61.100.16.155:8080/api/member/diet/list-diet'; //식단 정보 목록 조회
+  'http://13.125.244.117:8080/api/member/diet/create-diet';
+export const LIST_DIET = 'http://13.125.244.117:8080/api/member/diet/list-diet'; //식단 정보 목록 조회
 export const DIET_PURPOSE_CD = {
   1: 'SP002001',
   2: 'SP002002',
@@ -47,3 +47,21 @@ export const heightButton = WIDTH_SCALE * 48;
 export const REST_THRESHOLD_TIME = 5;
 export const REST_THRESHOLD_DISTANCE = 100;
 export const MAX_WIDTH = 400;
+
+export const colors = {
+  white: '#FFFFFF',
+  inActivated: '#E5E5E5',
+  black: '#000000',
+  backgroundLight: '#F8F8F8',
+  main: '#590DE1',
+  blue: '#3D9AFF',
+  green: '#00E297',
+  orange: '#FFBD60',
+  textMain: '#444444',
+  textSub: '#8f8f8f',
+  warning: '#FF6060',
+  highlight: '#F9F6FF',
+  line: '#F0F0F0',
+  modalBg: '#000000A6',
+  kakaoColor: '#ffe812',
+};

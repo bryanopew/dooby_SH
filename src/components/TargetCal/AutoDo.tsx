@@ -25,6 +25,7 @@ const HeaderText = Styled.Text`
   font-weight: bold;
 `;
 const ContentsHeaderText = Styled.Text`
+  padding-top: 3px;
   font-weight: bold;
   font-size: 15px;
 `;

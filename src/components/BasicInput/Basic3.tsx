@@ -82,10 +82,11 @@ const Basic3 = ({route, navigation}) => {
       <ScrollView style={styles.wrapper}>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: 24,
             fontWeight: 'bold',
-            color: 'black',
-            marginBottom: 10,
+            color: '#444444',
+            marginBottom: 15,
+            padding: 15,
           }}>
           목표 섭취량을 {'\n'}입력해주세요
         </Text>

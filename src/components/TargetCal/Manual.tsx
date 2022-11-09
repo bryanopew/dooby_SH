@@ -50,6 +50,8 @@ const BorderLineContainer = Styled.View`
 const ContentsHeaderText = Styled.Text`
   font-weight: bold;
   font-size: 15px;
+  padding-top: 3px;
+
 `;
 const ContentsHeaderContiainer = Styled.View`
 border-width: 1px;

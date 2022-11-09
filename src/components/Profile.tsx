@@ -21,6 +21,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import {Slider} from '~/Components/HomeCompo/FilterSubComponent/Slider/Slider';
 import {SliderContainer} from '~/Components/HomeCompo/FilterSubComponent/Slider/SliderContainer';
+import {CheckSquare} from '~/Components/custom-check-square';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -94,7 +95,7 @@ const renderBelowKcal = (value: number, index: number) => {
     </View>
   );
 };
-//최외각에서 뷰들을 감싸는 Constainer
+//최외각에서 뷰들을 감싸는 Container
 const StyledSafeAreaView = styled.SafeAreaView`
   flex: 1;
   justify-content: center;
@@ -195,12 +196,32 @@ const end = () => {
 const change = () => {
   console.log('change');
 };
+
 const Profile = (Props: any): React.ReactElement => {
   //State를 이용하여 Modal을 제어함
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   //Output을 State로 받아서 화면에 표출하거나 정보 값으로 활용
   const [modalOutput, setModalOutput] = useState<string>('Open Modal');
-  return <Text>프로필탭</Text>;
+  return (
+    <>
+      <CheckSquare
+        onCheck={(isCheck: any) => {
+          if (isCheck) {
+            console.log('check');
+          } else {
+            console.log('uncheck');
+          }
+        }}
+        isCheck={console.log('??')}
+        style={{
+          width: 20,
+          height: 20,
+          borderWidth: 1,
+        }}
+      />
+      <Text>프로필</Text>
+    </>
+  );
 };
 
 export default Profile;

@@ -31,8 +31,17 @@ const InputContainer = styled.View`
   margin-right: 16px;
 `;
 const ErrorText = styled.Text`
-  color: red;
+  font-size: 16px;
+  color: #ffffff;
   margin-left: 10px;
+`;
+const ErrorBox = styled.View`
+  background-color: #ff6060;
+  border-radius: 3px;
+  width: 288px;
+  left: 90px;
+  height: 24px;
+  opacity: 1;
 `;
 
 const styles = StyleSheet.create({
@@ -54,13 +63,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   headerText: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
     marginTop: 10,
   },
   onHeaderText: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#590DE1',
     marginTop: 10,
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   unClickText: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
@@ -239,10 +248,11 @@ const Basic1 = ({navigation}) => {
       <ScrollView style={styles.wrapper}>
         <Text
           style={{
-            fontSize: 30,
+            fontSize: 24,
             fontWeight: 'bold',
-            color: 'black',
+            color: '#444444',
             marginBottom: 15,
+            padding: 15,
           }}>
           기본 정보를 {'\n'}입력해주세요.
         </Text>
@@ -274,7 +284,11 @@ const Basic1 = ({navigation}) => {
             )}
             name="age"
           />
-          {errors.age && <ErrorText>10~100세 사이 입력</ErrorText>}
+          {errors.age && (
+            <ErrorBox>
+              <ErrorText>10~100세 사이 입력</ErrorText>
+            </ErrorBox>
+          )}
 
           <Text style={heightValue ? styles.onHeaderText : styles.headerText}>
             신장(cm){' '}

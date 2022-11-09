@@ -22,13 +22,14 @@ import {RE_ISSUE_TOKEN} from '~/constants/constants';
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 8,
+    borderRadius: 4,
     paddingVertical: 14,
-    paddingHorizontal: 10,
     backgroundColor: '#FEE500',
+    opacity: 1,
+    height: 52,
   },
   buttonText: {
-    color: 'black',
+    color: '#444444',
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',
@@ -114,10 +115,13 @@ const Login = ({navigation}) => {
     <View>
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 24,
           marginTop: 300,
           textAlign: 'center',
           marginBottom: 20,
+          fontWeight: 'bold',
+          color: '#444444',
+          height: 70,
         }}>
         식단 조절은 {'\n'} 두비에게
       </Text>

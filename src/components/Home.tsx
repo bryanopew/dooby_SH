@@ -49,8 +49,7 @@ import {
 } from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
-
-import IconButton from '~/Components/IconButton';
+import {colors} from '~/constants/constants';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
   button: {
     right: 10,
     position: 'absolute',
-    backgroundColor: '#590DE1',
+    backgroundColor: colors.main,
     width: 25,
     height: 25,
     marginTop: 20,
@@ -149,7 +148,7 @@ const ColumnContainer = Styled.View`
 flex-direction: column;
 `;
 const ProductNutrientContainer = Styled.View`
-background: #F0F0F0;
+background: ${colors.line};
 border-radius: 5px;
 left: 9px;
 width: 380px;
@@ -381,7 +380,7 @@ const AddDietButton = ({onRefresh}) => {
   return (
     <DropDownPicker
       listItemLabelStyle={{
-        color: '#590DE1',
+        color: colors.main,
       }}
       selectedItemContainerStyle={{
         backgroundColor: 'white',
