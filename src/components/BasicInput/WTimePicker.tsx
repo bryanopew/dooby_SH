@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import colors from '~/styles/stylesHS/colors';
 
 const WTimePicker = props => {
   const [wOpen, setWopen] = useState(false);
-  const [wValue, setWvalue] = useState();
+  const [wValue, setWvalue] = useState('SP003001');
 
   const [wtime, setWtime] = useState([
     {label: '하루 30분 이하', value: 'SP003001'},
@@ -16,29 +17,34 @@ const WTimePicker = props => {
   return (
     <>
       <DropDownPicker
-        zIndex={3000}
-        zIndexInverse={1000}
-        style={{
-          borderWidth: 0,
-          borderBottomWidth: 1,
-          marginBottom: 10,
-        }}
         dropDownContainerStyle={{
+          position: 'relative',
+          marginTop: -48,
+          borderRadius: 0,
           borderWidth: 0,
-          width: '98%',
-          marginLeft: 5,
+          borderTopWidth: 1,
+          borderColor: colors.line,
+          elevation: 2, // 안드로이드. ios는 적용 다름
         }}
-        placeholder="웨이트 운동시간"
+        style={{
+          borderColor: 'white',
+        }}
+        selectedItemContainerStyle={{
+          backgroundColor: colors.highlight,
+        }}
+        textStyle={{fontSize: 16}}
+        showTickIcon={false}
+        // placeholder="웨이트 운동시간"
         open={wOpen}
         setOpen={setWopen}
         value={wValue}
         items={wtime}
         setValue={setWvalue}
-        setItems={setWtime}
-        textStyle={{fontSize: 15}}
         onChangeValue={() => {
           setData(wValue);
         }}
+        listMode="SCROLLVIEW"
+        dropDownDirection="BOTTOM"
       />
     </>
   );

@@ -22,7 +22,14 @@ import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
 import GenderSelect from '~/Components/BasicInput/BasicInputComponents/GenderSelect';
 import colors from '~/styles/stylesHS/colors';
-import {BtnCTA, BtnText} from '~/styles/stylesHS/styledConsts';
+import {
+  BtnCTA,
+  BtnText,
+  ErrorBox,
+  ErrorText,
+  InputHeaderText,
+  UserInfoTextInput,
+} from '~/styles/stylesHS/styledConsts';
 
 const dimensions = Dimensions.get('window');
 const Height = Math.round(dimensions.width / 3);
@@ -40,119 +47,13 @@ const TitleText = styled.Text`
   color: ${colors.textMain};
 `;
 
-// style={{
-//   fontSize: 24,
-//   fontWeight: 'bold',
-//   color: '#444444',
-//   marginBottom: 15,
-//   padding: 15,
-// }}
-
 const InputContainer = styled.View``;
-
-const ErrorText = styled.Text`
-  font-size: 16px;
-  color: #ffffff;
-  margin-left: 10px;
-`;
-const ErrorBox = styled.View`
-  background-color: #ff6060;
-  border-radius: 3px;
-  width: 288px;
-  left: 90px;
-  height: 24px;
-  opacity: 1;
-`;
 
 const NextBtn = styled(BtnCTA)`
   align-self: center;
   margin-top: -60px;
   margin-bottom: 8px;
 `;
-
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: 'white',
-  },
-  textInput: {
-    borderBottomWidth: 1,
-    borderColor: '#E5E5E5',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    fontWeight: 'normal',
-    fontSize: 16,
-  },
-  onTextInput: {
-    borderBottomWidth: 1,
-    borderColor: '#590DE1',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    fontWeight: 'normal',
-    fontSize: 16,
-  },
-  headerText: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    color: 'white',
-    marginTop: 24,
-  },
-  onHeaderText: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    color: '#590DE1',
-    marginTop: 24,
-  },
-  button: {
-    marginTop: 80,
-    alignItems: 'center',
-    backgroundColor: '#590DE1',
-    padding: 20,
-  },
-  disabledButton: {
-    marginTop: 80,
-    alignItems: 'center',
-    backgroundColor: 'grey',
-    padding: 20,
-  },
-  text: {
-    fontSize: 14,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: '#590DE1',
-    paddingRight: 50,
-    paddingLeft: 50,
-    marginLeft: 10,
-  },
-  unClickText: {
-    fontSize: 14,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'grey',
-    paddingRight: 50,
-    paddingLeft: 50,
-    marginLeft: 10,
-  },
-  clicked: {
-    borderRadius: 4,
-    alignItems: 'center',
-    borderColor: '#590DE1',
-    borderWidth: 1,
-    padding: 10,
-    marginLeft: 8,
-    marginRight: 16,
-  },
-  unClicked: {
-    borderRadius: 4,
-    alignItems: 'center',
-    borderColor: 'grey',
-    borderWidth: 1,
-    padding: 10,
-    marginLeft: 8,
-    marginRight: 16,
-  },
-});
 
 export interface Props {
   companyCd: string;
@@ -272,16 +173,14 @@ const Basic1 = ({navigation}) => {
     }
   };
   const BMR = bmrCalcul();
-  console.log('dietPurposeValue: ', dietPurposeValue);
+
   return (
     <Container>
       <ScrollView contentContainerStyle={{paddingBottom: 120}}>
         <TitleText>기본 정보를 {'\n'}입력해주세요.</TitleText>
         <GenderSelect control={control} setValue={setValue} />
         <InputContainer>
-          <Text style={ageValue ? styles.onHeaderText : styles.headerText}>
-            만 나이
-          </Text>
+          <InputHeaderText isActivated={ageValue}>만 나이</InputHeaderText>
           <Controller
             control={control}
             rules={{
@@ -294,13 +193,13 @@ const Basic1 = ({navigation}) => {
             }}
             render={({field: {onChange, onBlur, value}}) => {
               return (
-                <TextInput
-                  style={ageValue ? styles.onTextInput : styles.textInput}
+                <UserInfoTextInput
+                  isActivated={ageValue}
                   placeholder="만 나이를 입력해주세요"
                   maxLength={3}
                   onChangeText={onChange}
                   value={value}
-                  onBlur={handleSubmit()}
+                  onBlur={handleSubmit(onSubmit)}
                   // onBlur={() => handleSubmit()} 이거랑 차이가...?!
                   keyboardType="numeric"
                   onSubmitEditing={handleSubmit(onSubmit)}
@@ -315,9 +214,7 @@ const Basic1 = ({navigation}) => {
             </ErrorBox>
           )}
 
-          <Text style={heightValue ? styles.onHeaderText : styles.headerText}>
-            신장(cm){' '}
-          </Text>
+          <InputHeaderText isActivated={heightValue}>신장(cm) </InputHeaderText>
           <Controller
             control={control}
             rules={{
@@ -329,8 +226,8 @@ const Basic1 = ({navigation}) => {
               },
             }}
             render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={heightValue ? styles.onTextInput : styles.textInput}
+              <UserInfoTextInput
+                isActivated={heightValue}
                 placeholder="신장을 입력해주세요"
                 maxLength={3}
                 onChangeText={onChange}
@@ -342,11 +239,15 @@ const Basic1 = ({navigation}) => {
             )}
             name="height"
           />
-          {errors.height && <ErrorText>100~200cm 사이 입력</ErrorText>}
+          {errors.height && (
+            <ErrorBox>
+              <ErrorText>100~200cm 사이 입력</ErrorText>
+            </ErrorBox>
+          )}
 
-          <Text style={weightValue ? styles.onHeaderText : styles.headerText}>
+          <InputHeaderText isActivated={weightValue}>
             몸무게(kg)
-          </Text>
+          </InputHeaderText>
           <Controller
             control={control}
             rules={{
@@ -358,8 +259,8 @@ const Basic1 = ({navigation}) => {
               },
             }}
             render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={weightValue ? styles.onTextInput : styles.textInput}
+              <UserInfoTextInput
+                isActivated={weightValue}
                 placeholder="몸무게를 입력해주세요"
                 maxLength={3}
                 onChangeText={onChange}
@@ -371,9 +272,13 @@ const Basic1 = ({navigation}) => {
             )}
             name="weight"
           />
-          {errors.weight && <ErrorText>10~150kg 사이 입력</ErrorText>}
+          {errors.weight && (
+            <ErrorBox>
+              <ErrorText>10~150kg 사이 입력</ErrorText>
+            </ErrorBox>
+          )}
 
-          <Text style={styles.onHeaderText}>식단의 목적</Text>
+          <InputHeaderText isActivated={true}>식단의 목적</InputHeaderText>
           <Controller
             control={control}
             rules={{required: true}}
@@ -410,7 +315,11 @@ const Basic1 = ({navigation}) => {
             )}
             name="dietPurposecd"
           />
-          {errors.dietPurposecd && <ErrorText>필수</ErrorText>}
+          {errors.dietPurposecd && (
+            <ErrorBox>
+              <ErrorText>필수</ErrorText>
+            </ErrorBox>
+          )}
         </InputContainer>
       </ScrollView>
       <NextBtn

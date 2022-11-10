@@ -9,11 +9,38 @@ import {
   TextInput,
   Pressable,
   BackHandler,
+  ScrollView,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import WTimePicker from '~/Components/BasicInput/WTimePicker';
 import ATimePicker from '~/Components/BasicInput/ATimePicker';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+import {
+  BtnCTA,
+  BtnText,
+  InputHeaderText,
+  UserInfoTextInput,
+} from '~/styles/stylesHS/styledConsts';
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${colors.white};
+  padding: 0px 16px 0px 16px;
+`;
+
+const TitleText = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: ${colors.textMain};
+`;
+
+const NextBtn = styled(BtnCTA)`
+  align-self: center;
+  margin-top: -60px;
+  margin-bottom: 8px;
+`;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -65,8 +92,8 @@ const styles = StyleSheet.create({
 
 const Basic2 = ({route, navigation}) => {
   const {item, weightValue, target, conTarget} = route.params;
-  const [data, setData] = useState('');
-  const [aData, setAData] = useState('');
+  const [data, setData] = useState('SP003001');
+  const [aData, setAData] = useState('SP004001');
   const [base, setBase] = useState('');
   const [disabled, setDisabled] = useState(true);
   let wValue = data;
@@ -155,42 +182,38 @@ const Basic2 = ({route, navigation}) => {
   console.log('웨이트시간:', wValue);
   console.log('유산소시간:', aValue);
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <Text
-        style={{
-          fontSize: 24,
-          fontWeight: 'bold',
-          color: '#444444',
-          marginBottom: 15,
-          padding: 15,
-        }}>
-        선택 정보를 {'\n'}입력해주세요.
-      </Text>
-      <Text>유저의 기초대사량: {JSON.stringify(item)} </Text>
-      <TextInput
-        style={styles.header}
-        placeholder="기초대사량을 알고 있다면 적어주세요(kcal)"
-        onChangeText={setBase}
-        value={base}
-        keyboardType="numeric"
-      />
-      <Text style={styles.headerText}>웨이트 운동시간</Text>
-      <WTimePicker setData={setData} />
-      <Text style={styles.headerText}>유산소 운동시간</Text>
-      <ATimePicker onChangeValue={okNext} setData={setAData} />
-      <Pressable
+    <Container>
+      <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+        <TitleText>선택 정보를 {'\n'}입력해주세요.</TitleText>
+        <InputHeaderText isActivated={false}>
+          유저의 기초대사량: {JSON.stringify(item)}{' '}
+        </InputHeaderText>
+        <UserInfoTextInput
+          isActivated={base}
+          placeholder="기초대사량을 알고 있다면 적어주세요(kcal)"
+          onChangeText={setBase}
+          value={base}
+          keyboardType="numeric"
+        />
+        <InputHeaderText isActivated={true}>웨이트 운동시간</InputHeaderText>
+        <WTimePicker setData={setData} />
+        <InputHeaderText isActivated={true}>유산소 운동시간</InputHeaderText>
+        <ATimePicker onChangeValue={okNext} setData={setAData} />
+      </ScrollView>
+
+      <NextBtn
         disabled={disabled}
-        style={disabled ? styles.disabledButton : styles.button}
-        onPress={() =>
+        btnStyle={disabled ? 'inactivated' : 'activated'}
+        onPress={() => {
           navigation.navigate('Basic3', {
             info: AMR + item,
             target,
             conTarget,
-          })
-        }>
-        <Text style={{color: 'white'}}>다음</Text>
-      </Pressable>
-    </SafeAreaView>
+          });
+        }}>
+        <BtnText>다음</BtnText>
+      </NextBtn>
+    </Container>
   );
 };
 

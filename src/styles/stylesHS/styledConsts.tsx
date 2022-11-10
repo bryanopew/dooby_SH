@@ -4,6 +4,39 @@ import {Dimensions} from 'react-native';
 
 const {width: SCREENWIDTH} = Dimensions.get('window');
 
+export const InputHeaderText = styled.Text`
+  margin-top: 24px;
+  font-size: 14px;
+  font-weight: normal;
+  color: ${({isActivated}) => (isActivated ? colors.main : colors.white)};
+`;
+export const UserInfoTextInput = styled.TextInput`
+  justify-content: center;
+  align-items: flex-start;
+  font-weight: normal;
+  font-size: 16px;
+  border-bottom-width: 1px;
+  border-color: ${({isActivated}) =>
+    isActivated ? colors.main : colors.inActivated};
+`;
+
+export const ErrorText = styled.Text`
+  font-size: 16px;
+  color: #ffffff;
+  margin-left: 10px;
+`;
+export const ErrorBox = styled.View`
+  position: relative;
+  margin-top: 4px;
+  margin-bottom: -28px;
+  background-color: ${colors.warning};
+  border-radius: 3px;
+  width: 288px;
+  align-self: flex-end;
+  height: 24px;
+  opacity: 0.8;
+`;
+
 export const AccordionContentContainer = styled.View`
   width: ${`${SCREENWIDTH}px`};
   height: auto;

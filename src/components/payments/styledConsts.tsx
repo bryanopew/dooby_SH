@@ -1,8 +1,8 @@
-import styled from "styled-components/native";
-import colors from "./colors";
-import { Dimensions } from "react-native";
+import styled from 'styled-components/native';
+import colors from './colors';
+import {Dimensions} from 'react-native';
 
-const { width: SCREENWIDTH } = Dimensions.get("window");
+const {width: SCREENWIDTH} = Dimensions.get('window');
 
 export const AccordionContentContainer = styled.View`
   width: ${`${SCREENWIDTH}px`};
@@ -42,19 +42,19 @@ export const BtnCTA = styled.TouchableOpacity`
   height: 52px;
   width: ${`${SCREENWIDTH - 32}px`};
   border-radius: 4px;
-  background-color: ${({ btnStyle }) =>
-    btnStyle == "activated"
+  background-color: ${({btnStyle}) =>
+    btnStyle == 'activated'
       ? `${colors.main}`
-      : btnStyle == "inactivated"
+      : btnStyle == 'inactivated'
       ? `${colors.inActivated}`
-      : btnStyle == "border"
+      : btnStyle == 'border'
       ? `${colors.white}`
       : `${colors.white}`};
   align-items: center;
   justify-content: center;
-  border-width: ${({ btnStyle }) => (btnStyle == "border" ? "1px" : "0px")};
-  border-color: ${({ btnStyle }) =>
-    btnStyle == "border" ? `${colors.inActivated}` : `${colors.white}`};
+  border-width: ${({btnStyle}) => (btnStyle == 'border' ? '1px' : '0px')};
+  border-color: ${({btnStyle}) =>
+    btnStyle == 'border' ? `${colors.inActivated}` : `${colors.white}`};
 `;
 
 export const BtnText = styled.Text`
@@ -75,6 +75,6 @@ export const HorizontalLine = styled.View`
 
 export const HorizontalSpace = styled.View`
   width: 100%;
-  height: ${(props) => `${props.height}px`};
+  height: ${props => `${props.height}px`};
   background-color: ${colors.white};
 `;
