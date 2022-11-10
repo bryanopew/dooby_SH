@@ -17,7 +17,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useSelector, useDispatch} from 'react-redux';
 
-import {clickFilter, fetchCategoryFilter} from '~/stores/slices/filterSlice';
+import {
+  clickFilter,
+  fetchCategoryFilter,
+  filterOn,
+} from '~/stores/slices/filterSlice';
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
@@ -31,9 +35,11 @@ const styles = StyleSheet.create({
     color: '#590DE1',
   },
   clicked: {
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
   },
-  offClicked: {},
+  offClicked: {
+    backgroundColor: 'green',
+  },
 });
 const CategoryListContainer = styled.View`
   flex-direction: column;
@@ -49,6 +55,13 @@ const CategoryListText = styled.Text`
   margin-top: 12px;
   font-size: 15px;
   font-weight: bold;
+  color: #444444;
+`;
+const ClickedCategoryList = styled.Text`
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #590de1;
 `;
 
 const FilterButtonContainer = styled.View`
@@ -84,41 +97,42 @@ const getRefreshToken = () => {
   return refreshToken;
 };
 
-const CategoryFilter = ({navigation}): JSX.Element => {
+const CategoryList = props => {
+  const {list, clickListener} = props;
+  const [clicked, setClicked] = useState(false);
+  const onClick = () => {
+    setClicked(!clicked);
+    clickListener(list.id);
+  };
+  return (
+    <CategoryListButton
+      onPress={() => {
+        onClick();
+      }}>
+      <CategoryListContainer>
+        {clicked ? (
+          <ClickedCategoryList>{list.text}</ClickedCategoryList>
+        ) : (
+          <CategoryListText>{list.text}</CategoryListText>
+        )}
+      </CategoryListContainer>
+    </CategoryListButton>
+  );
+};
+
+const CategoryFilter = (children): JSX.Element => {
+  const {closeModal} = children;
   const dispatch = useDispatch();
   const content = useSelector((state: RootState) => {
     return state.filter.filterContents;
   });
 
   const [data, setData] = useState([]);
-  const [boxData, setBoxData] = useState([]);
-  const [breastData, setBreastData] = useState([]);
-  const [saladData, setSaladData] = useState([]);
-  const [snackData, setSnackData] = useState([]);
-  const [chipData, setChipData] = useState([]);
-  const [beverageData, setBeverageData] = useState([]);
+
   const toggleFilter = i => {
     return [...category, (category[i].clicked = !category[i].clicked)];
   };
-  const getBoxData = () => {
-    getRefreshToken()
-      .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
-          },
-        ),
-      )
-      .then(res => {
-        setBoxData(res.data);
-      });
-  };
-  useEffect(() => {
-    getBoxData();
-  }, []);
+
   const cntBoxData = async () => {
     await getRefreshToken()
       .then(refreshToken =>
@@ -134,12 +148,6 @@ const CategoryFilter = ({navigation}): JSX.Element => {
       .then(res => setData(res.data));
   };
 
-  //   useEffect(() => {
-  //     const getData = async () => {
-  //       const response = await cntBoxData();
-  //   }
-  //   getData();
-  // }, []);
   useEffect(() => {
     cntBoxData();
   }, []);
@@ -188,28 +196,35 @@ const CategoryFilter = ({navigation}): JSX.Element => {
         return;
     }
   };
+  const clickListener = i => {
+    toggleFilter(i - 1);
+  };
 
   return (
     <ScrollView style={styles.wrapper}>
       {category.map((i, index) => (
-        <CategoryListButton
-          key={i.id}
-          onPress={() => {
-            onPress(i);
-          }}>
-          <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
-            <CategoryListText
-              style={i.clicked ? styles.clicked : styles.offClicked}>
-              {i.text}
-            </CategoryListText>
-          </CategoryListContainer>
-        </CategoryListButton>
+        // <CategoryListButton
+        //   key={i.id}
+        //   onPress={() => {
+        //     onPress(i);
+        //     console.log(i);
+        //   }}>
+        //   <CategoryListContainer style={[index === 0 && {borderTopWidth: 0}]}>
+        //     {i.clicked ? (
+        //       <CategoryListText>{i.text}</CategoryListText>
+        //     ) : (
+        //       <ClickedCategoryList>{i.text}</ClickedCategoryList>
+        //     )}
+        //   </CategoryListContainer>
+        // </CategoryListButton>
+        <CategoryList key={index} list={i} clickListener={clickListener} />
       ))}
       <FilterButtonContainer>
         <StyledButton onPress={() => console.log('category:', category)}>
           <ButtonText>카테고리 초기화</ButtonText>
         </StyledButton>
-        <StyledButton onPress={() => dispatch(clickFilter(category))}>
+        <StyledButton
+          onPress={() => (dispatch(clickFilter(category)), closeModal())}>
           <ButtonText>확인</ButtonText>
         </StyledButton>
       </FilterButtonContainer>

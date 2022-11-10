@@ -22,7 +22,8 @@ import AutoDietFilter from '~/Components/HomeCompo/FilterSubComponent/AutoDietFi
 const Tab = createMaterialTopTabNavigator();
 
 const MenuFilterScreenStack = props => {
-  const {index} = props;
+  const {index, onPress} = props;
+
   const userClick = () => {
     if (index === 0) {
       return '카테고리';
@@ -42,7 +43,12 @@ const MenuFilterScreenStack = props => {
         tabBarIndicatorStyle: false,
       }}
       initialRouteName={userClick()}>
-      <Tab.Screen name="카테고리" component={CategoryFilter} />
+      <Tab.Screen
+        name="카테고리"
+        children={({navigation}) => (
+          <CategoryFilter navigation={navigation} closeModal={onPress} />
+        )}
+      />
       <Tab.Screen name="영양성분" component={NutrientFilter} />
       <Tab.Screen name="가격" component={PriceFilter} />
       <Tab.Screen name="식단구성" component={AutoDietFilter} />

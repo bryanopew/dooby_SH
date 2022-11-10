@@ -94,7 +94,7 @@ const BottomSheet = props => {
               transform: [{translateY: translateY}],
             }}
             {...panResponders.panHandlers}>
-            <MenuFilterScreenStack index={index} />
+            <MenuFilterScreenStack index={index} onPress={closeModal} />
           </Animated.View>
         </View>
       </Modal>

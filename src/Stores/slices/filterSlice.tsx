@@ -35,6 +35,9 @@ const filterSlice = createSlice({
     clickFilter: (state, action) => {
       state.filterList = action.payload;
     },
+    filterOn: (state, action) => {
+      console.log(action.payload);
+    },
   },
   extraReducers: builder => {
     builder
@@ -51,4 +54,4 @@ const filterSlice = createSlice({
 });
 
 export default filterSlice;
-export const {clickFilter} = filterSlice.actions;
+export const {clickFilter, filterOn} = filterSlice.actions;

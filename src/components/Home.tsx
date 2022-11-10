@@ -441,9 +441,7 @@ const Home = ({navigation, route}: Props) => {
     let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
     return refreshToken;
   };
-  const onCategoryFilter = useSelector((state: RootState) => {
-    return state.filter.filterContents;
-  });
+
   const getfilterList = useSelector((state: RootState) => {
     return state.filter.filterList;
   });
