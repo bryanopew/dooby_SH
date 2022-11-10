@@ -28,7 +28,7 @@ const FilterHeaderText = styled.Text`
 `;
 const FilterHeaderButton = styled.TouchableOpacity``;
 const BottomSheet = props => {
-  const {modalVisible, setModalVisible} = props;
+  const {modalVisible, setModalVisible, index} = props;
   const screenHeight = Dimensions.get('screen').height;
   const panY = useRef(new Animated.Value(screenHeight)).current;
   const translateY = panY.interpolate({
@@ -94,7 +94,7 @@ const BottomSheet = props => {
               transform: [{translateY: translateY}],
             }}
             {...panResponders.panHandlers}>
-            <MenuFilterScreenStack />
+            <MenuFilterScreenStack index={index} />
           </Animated.View>
         </View>
       </Modal>
@@ -130,27 +130,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const FilterButton = (list, pressButton) => {
-  // console.log(list);
+const FilterButton = props => {
   return (
-    <TouchableOpacity style={styles.button} onPress={list.onPress}>
-      <Text>{list.list}</Text>
+    <TouchableOpacity style={styles.button} onPress={props.onPress}>
+      <Text>{props.list}</Text>
     </TouchableOpacity>
   );
 };
 
-const MenuFilterModal = filterMenus => {
+const MenuFilterModal = props => {
   const [modalVisible, setModalVisible] = useState(false);
+  const userClickFilter = () => {};
   const pressButton = () => {
     setModalVisible(true);
   };
   return (
     <View style={styles.rootContainer}>
-      {/* <Button title={filterMenus.children} onPress={pressButton} /> */}
-      <FilterButton list={filterMenus.children} onPress={pressButton} />
+      <FilterButton
+        list={props.children}
+        onPress={pressButton}
+        index={props.index}
+      />
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        index={props.index}
       />
     </View>
   );

@@ -17,6 +17,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import {useForm, Controller, useWatch} from 'react-hook-form';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
@@ -246,149 +247,151 @@ const Basic1 = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: '#444444',
-            marginBottom: 15,
-            padding: 15,
-          }}>
-          기본 정보를 {'\n'}입력해주세요.
-        </Text>
-        <GenderSelect control={control} setValue={setValue} />
-        <InputContainer>
-          <Text style={ageValue ? styles.onHeaderText : styles.headerText}>
-            만 나이
+        <TouchableWithoutFeedback onPress={handleSubmit(onSubmit)}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+              color: '#444444',
+              marginBottom: 15,
+              padding: 15,
+            }}>
+            기본 정보를 {'\n'}입력해주세요.
           </Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              maxLength: 3,
-              validate: {
-                positive: v => parseInt(v) >= 10,
-                lessThan: v => parseInt(v) <= 100,
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={ageValue ? styles.onTextInput : styles.textInput}
-                placeholder="만 나이를 입력해주세요"
-                maxLength={3}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-                onSubmitEditing={handleSubmit(onSubmit)}
-              />
+          <GenderSelect control={control} setValue={setValue} />
+          <InputContainer>
+            <Text style={ageValue ? styles.onHeaderText : styles.headerText}>
+              만 나이
+            </Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                maxLength: 3,
+                validate: {
+                  positive: v => parseInt(v) >= 10,
+                  lessThan: v => parseInt(v) <= 100,
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={ageValue ? styles.onTextInput : styles.textInput}
+                  placeholder="만 나이를 입력해주세요"
+                  maxLength={3}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                />
+              )}
+              name="age"
+            />
+            {errors.age && (
+              <ErrorBox>
+                <ErrorText>10~100세 사이 입력</ErrorText>
+              </ErrorBox>
             )}
-            name="age"
-          />
-          {errors.age && (
-            <ErrorBox>
-              <ErrorText>10~100세 사이 입력</ErrorText>
-            </ErrorBox>
-          )}
 
-          <Text style={heightValue ? styles.onHeaderText : styles.headerText}>
-            신장(cm){' '}
-          </Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              maxLength: 3,
-              validate: {
-                positive: v => parseInt(v) >= 100,
-                lessThan: v => parseInt(v) <= 200,
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={heightValue ? styles.onTextInput : styles.textInput}
-                placeholder="신장을 입력해주세요"
-                maxLength={3}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-                onSubmitEditing={handleSubmit(onSubmit)}
-              />
-            )}
-            name="height"
-          />
-          {errors.height && <ErrorText>100~200cm 사이 입력</ErrorText>}
+            <Text style={heightValue ? styles.onHeaderText : styles.headerText}>
+              신장(cm){' '}
+            </Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                maxLength: 3,
+                validate: {
+                  positive: v => parseInt(v) >= 100,
+                  lessThan: v => parseInt(v) <= 200,
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={heightValue ? styles.onTextInput : styles.textInput}
+                  placeholder="신장을 입력해주세요"
+                  maxLength={3}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                />
+              )}
+              name="height"
+            />
+            {errors.height && <ErrorText>100~200cm 사이 입력</ErrorText>}
 
-          <Text style={weightValue ? styles.onHeaderText : styles.headerText}>
-            몸무게(kg)
-          </Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              maxLength: 3,
-              validate: {
-                positive: v => parseInt(v) >= 10,
-                lessThan: v => parseInt(v) <= 150,
-              },
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={weightValue ? styles.onTextInput : styles.textInput}
-                placeholder="몸무게를 입력해주세요"
-                maxLength={3}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-                onSubmitEditing={handleSubmit(onSubmit)}
-              />
-            )}
-            name="weight"
-          />
-          {errors.weight && <ErrorText>10~150kg 사이 입력</ErrorText>}
+            <Text style={weightValue ? styles.onHeaderText : styles.headerText}>
+              몸무게(kg)
+            </Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                maxLength: 3,
+                validate: {
+                  positive: v => parseInt(v) >= 10,
+                  lessThan: v => parseInt(v) <= 150,
+                },
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <TextInput
+                  style={weightValue ? styles.onTextInput : styles.textInput}
+                  placeholder="몸무게를 입력해주세요"
+                  maxLength={3}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                />
+              )}
+              name="weight"
+            />
+            {errors.weight && <ErrorText>10~150kg 사이 입력</ErrorText>}
 
-          <Text style={styles.onHeaderText}>식단의 목적</Text>
-          <Controller
-            control={control}
-            rules={{required: true}}
-            render={({field: {onChange, onBlur, value}}) => (
-              <DropDownPicker
-                dropDownContainerStyle={{
-                  position: 'relative',
-                  marginTop: -40,
-                }}
-                style={{
-                  borderColor: 'white',
-                  marginTop: 7,
-                }}
-                placeholder="식단의 목적"
-                open={open}
-                setOpen={setOpen}
-                value={value}
-                items={items}
-                setValue={onChange}
-                onChangeValue={onChange}
-                textStyle={{fontSize: 15}}
-                listMode="SCROLLVIEW"
-                dropDownDirection="BOTTOM"
-              />
-            )}
-            name="dietPurposecd"
-          />
-          {errors.dietPurposecd && <ErrorText>필수</ErrorText>}
-        </InputContainer>
-        <Pressable
-          disabled={!isValid}
-          style={isValid ? styles.button : styles.disabledButton}
-          onPress={() => {
-            navigation.navigate('Basic2', {
-              item: BMR,
-              weightValue,
-              target,
-              conTarget,
-            });
-          }}>
-          <Text style={{color: 'white'}}>다음</Text>
-        </Pressable>
+            <Text style={styles.onHeaderText}>식단의 목적</Text>
+            <Controller
+              control={control}
+              rules={{required: true}}
+              render={({field: {onChange, onBlur, value}}) => (
+                <DropDownPicker
+                  dropDownContainerStyle={{
+                    position: 'relative',
+                    marginTop: -40,
+                  }}
+                  style={{
+                    borderColor: 'white',
+                    marginTop: 7,
+                  }}
+                  placeholder="식단의 목적"
+                  open={open}
+                  setOpen={setOpen}
+                  value={value}
+                  items={items}
+                  setValue={onChange}
+                  onChangeValue={onChange}
+                  textStyle={{fontSize: 15}}
+                  listMode="SCROLLVIEW"
+                  dropDownDirection="BOTTOM"
+                />
+              )}
+              name="dietPurposecd"
+            />
+            {errors.dietPurposecd && <ErrorText>필수</ErrorText>}
+          </InputContainer>
+          <Pressable
+            disabled={!isValid}
+            style={isValid ? styles.button : styles.disabledButton}
+            onPress={() => {
+              navigation.navigate('Basic2', {
+                item: BMR,
+                weightValue,
+                target,
+                conTarget,
+              });
+            }}>
+            <Text style={{color: 'white'}}>다음</Text>
+          </Pressable>
+        </TouchableWithoutFeedback>
       </ScrollView>
     </SafeAreaView>
   );

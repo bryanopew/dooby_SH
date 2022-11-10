@@ -12,25 +12,36 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Styled from 'styled-components/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
 import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
-import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
 import PriceFilter from '~/Components/HomeCompo/FilterSubComponent/PriceFilter';
 import AutoDietFilter from '~/Components/HomeCompo/FilterSubComponent/AutoDietFilter';
 
 const Tab = createMaterialTopTabNavigator();
-const FilterScreenStack = createStackNavigator();
 
-const MenuFilterScreenStack = ({navigation}) => {
+const MenuFilterScreenStack = props => {
+  const {index} = props;
+  const userClick = () => {
+    if (index === 0) {
+      return '카테고리';
+    } else if (index === 1) {
+      return '영양성분';
+    } else if (index === 2) {
+      return '가격';
+    } else if (index === 3) {
+      return '식단구성';
+    }
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarLabelStyle: [{fontSize: 15}, {fontWeight: 'bold'}],
         tabBarIndicatorStyle: false,
-      }}>
+      }}
+      initialRouteName={userClick()}>
       <Tab.Screen name="카테고리" component={CategoryFilter} />
       <Tab.Screen name="영양성분" component={NutrientFilter} />
       <Tab.Screen name="가격" component={PriceFilter} />

@@ -18,6 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {useSelector, useDispatch} from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import Category from '~/Components/HomeCompo/Category';
@@ -110,10 +112,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
-  iconStyle: {
-    height: 100,
-    width: 200,
-  },
 });
 
 const FoodNoticeContainer = Styled.View`
@@ -186,6 +184,9 @@ const AddDietButtonContainer = Styled.View`
 const AddDietButtonText = Styled.Text`
   font-weight: bold;
   font-size: 20px;
+`;
+const DeleteDietButton = Styled.TouchableOpacity`
+  
 `;
 
 const filterMenus = [
@@ -329,16 +330,11 @@ const AddDietButton = ({onRefresh}) => {
     {
       label: '식단 1',
       value: 1,
-      icon: () => (
-        <Image
-          source={require('~/Assets/Images/24_searchCancel.png')}
-          style={{
-            transform: [{scale: 100}],
-          }}
-        />
-      ),
     },
-    {label: '식단 추가하기', value: 'add'},
+    {
+      label: '식단 추가하기',
+      value: 'add',
+    },
   ]);
   const createCart = () => {
     dispatch(addCart(content));
@@ -365,7 +361,13 @@ const AddDietButton = ({onRefresh}) => {
   };
   const addDiet = () => {
     onIncrease();
-    setItems([...items, {label: `식단 ${state + 1}`, value: state + 1}]);
+    setItems([
+      ...items,
+      {
+        label: `식단 ${state + 1}`,
+        value: state + 1,
+      },
+    ]);
     createCart();
     onRefresh();
     dispatch(removeAll());
@@ -379,9 +381,6 @@ const AddDietButton = ({onRefresh}) => {
   const removediet = () => {};
   return (
     <DropDownPicker
-      listItemLabelStyle={{
-        color: colors.main,
-      }}
       selectedItemContainerStyle={{
         backgroundColor: 'white',
       }}
@@ -410,7 +409,7 @@ const AddDietButton = ({onRefresh}) => {
       }}
       setValue={setValue}
       setItems={setItems}
-      textStyle={{fontSize: 15}}
+      textStyle={{fontSize: 18, color: '#444444'}}
       listMode="SCROLLVIEW"
       dropDownDirection="BOTTOM"
     />
@@ -460,7 +459,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://13.125.244.117:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -927,9 +926,9 @@ const Home = ({navigation, route}: Props) => {
         </RowContainer>
       </FoodNoticeContainer>
       <FilterMenuContainer>
-        {filterMenus.map(i => (
-          <BottomSheetTestScreen key={i.id} list={filterMenus}>
-            {i.text}{' '}
+        {filterMenus.map((i, index) => (
+          <BottomSheetTestScreen key={i.id} list={filterMenus} index={index}>
+            {i.text}
           </BottomSheetTestScreen>
         ))}
       </FilterMenuContainer>

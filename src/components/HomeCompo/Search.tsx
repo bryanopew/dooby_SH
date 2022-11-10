@@ -599,7 +599,13 @@ const SelectDietButton = () => {
   console.log('Search/pageList', pageList);
   let list = [];
   for (let i = 0; i <= pageList; i++) {
-    list.push({label: `식단 ${i + 1}`, value: i + 1});
+    list.push({
+      label: `식단 ${i + 1}`,
+      value: i + 1,
+      icon: () => (
+        <Image source={require('~/Assets/Images/24_searchCancel.png')} />
+      ),
+    });
   }
   console.log('Serach/List', list);
 
