@@ -8,7 +8,7 @@ import {
   useComponentRefContext,
 } from '../context';
 import styled from 'styled-components/native';
-import colors from '../colors';
+import colors from '../../../styles/stylesHS/colors';
 import {deleteUserAddress, modifyUserAddress} from '../pageConsts';
 import {
   BtnCTA,

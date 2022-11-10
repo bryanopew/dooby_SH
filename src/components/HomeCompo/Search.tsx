@@ -22,7 +22,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {useIsFocused} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 
-import NutrientsBar from '~/components/NutrientsBar/NutrientsBar';
+import NutrientsBar from '~/Components/NutrientsBar/NutrientsBar';
 import CheckBoxAndroid from '~/Button/CheckBoxAndroid';
 import BasketFilterModal from '~/Components/ModalComponent/BasketFilterModal';
 import CheckBox from '@react-native-community/checkbox';

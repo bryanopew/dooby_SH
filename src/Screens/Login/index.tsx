@@ -15,26 +15,36 @@ import axios from 'axios';
 import {accessTokenConfig} from '~/utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {KAKAO_TOKEN_CONTROLLER} from '~/constants/constants';
+import {
+  HEIGHT_SCALE,
+  KAKAO_TOKEN_CONTROLLER,
+  WIDTH,
+} from '~/constants/constants';
 import {GET_AUTH} from '~/constants/constants';
 import {GET_USER} from '~/constants/constants';
 import {RE_ISSUE_TOKEN} from '~/constants/constants';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+import {BtnCTA} from '~/styles/stylesHS/styledConsts';
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 4,
-    paddingVertical: 14,
-    backgroundColor: '#FEE500',
-    opacity: 1,
-    height: 52,
-  },
-  buttonText: {
-    color: '#444444',
-    fontWeight: 'bold',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+`;
+
+const TitleText = styled.Text`
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  color: #444444;
+  margin-top: ${HEIGHT_SCALE * 470}px;
+`;
+
+const BtnText = styled.Text`
+  font-size: 16px;
+  color: ${colors.textMain};
+`;
+
 const Login = ({navigation}) => {
   const [result, setResult] = useState<string>('');
 
@@ -112,25 +122,15 @@ const Login = ({navigation}) => {
     navigation.navigate('Basic1');
   }, []);
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 24,
-          marginTop: 300,
-          textAlign: 'center',
-          marginBottom: 20,
-          fontWeight: 'bold',
-          color: '#444444',
-          height: 70,
-        }}>
-        식단 조절은 {'\n'} 두비에게
-      </Text>
-      <TouchableOpacity onPress={() => signInWithKakao()}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>카카오 로그인</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <Container>
+      <TitleText>식단 조절은 {'\n'} 두비에게</TitleText>
+      <BtnCTA
+        btnStyle="activated"
+        style={{backgroundColor: '#FEE500', marginTop: 70}}
+        onPress={() => signInWithKakao()}>
+        <BtnText>카카오 로그인</BtnText>
+      </BtnCTA>
+    </Container>
   );
 };
 

@@ -21,15 +21,35 @@ import {useForm, Controller, useWatch} from 'react-hook-form';
 import {GET_AUTH} from '~/constants/constants';
 import NextButton from '~/Button/NextButton';
 import GenderSelect from '~/Components/BasicInput/BasicInputComponents/GenderSelect';
+import colors from '~/styles/stylesHS/colors';
+import {BtnCTA, BtnText} from '~/styles/stylesHS/styledConsts';
 
 const dimensions = Dimensions.get('window');
 const Height = Math.round(dimensions.width / 3);
 const Width = dimensions.width / 3;
 
-const InputContainer = styled.View`
-  margin-left: 16px;
-  margin-right: 16px;
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${colors.white};
+  padding: 0px 16px 0px 16px;
 `;
+
+const TitleText = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: ${colors.textMain};
+`;
+
+// style={{
+//   fontSize: 24,
+//   fontWeight: 'bold',
+//   color: '#444444',
+//   marginBottom: 15,
+//   padding: 15,
+// }}
+
+const InputContainer = styled.View``;
+
 const ErrorText = styled.Text`
   font-size: 16px;
   color: #ffffff;
@@ -44,35 +64,43 @@ const ErrorBox = styled.View`
   opacity: 1;
 `;
 
+const NextBtn = styled(BtnCTA)`
+  align-self: center;
+  margin-top: -60px;
+  margin-bottom: 8px;
+`;
+
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: 'white',
   },
   textInput: {
-    borderBottomWidth: 0.2,
+    borderBottomWidth: 1,
     borderColor: '#E5E5E5',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
+    fontSize: 16,
   },
   onTextInput: {
     borderBottomWidth: 1,
     borderColor: '#590DE1',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
+    fontSize: 16,
   },
   headerText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     color: 'white',
-    marginTop: 10,
+    marginTop: 24,
   },
   onHeaderText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     color: '#590DE1',
-    marginTop: 10,
+    marginTop: 24,
   },
   button: {
     marginTop: 80,
@@ -149,12 +177,13 @@ const Basic1 = ({navigation}) => {
     setValue,
     formState: {errors, isValid},
   } = useForm({
+    // 나중에 사용자 정보 있으면 초기값으로 넣어줘야함.
     defaultValues: {
-      gender: '',
+      gender: 'M',
       age: '',
       height: '',
       weight: '',
-      dietPurposecd: '',
+      dietPurposecd: 'SP002002',
     },
   });
   const onSubmit = data => console.log(data);
@@ -243,19 +272,11 @@ const Basic1 = ({navigation}) => {
     }
   };
   const BMR = bmrCalcul();
+  console.log('dietPurposeValue: ', dietPurposeValue);
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.wrapper}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: '#444444',
-            marginBottom: 15,
-            padding: 15,
-          }}>
-          기본 정보를 {'\n'}입력해주세요.
-        </Text>
+    <Container>
+      <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+        <TitleText>기본 정보를 {'\n'}입력해주세요.</TitleText>
         <GenderSelect control={control} setValue={setValue} />
         <InputContainer>
           <Text style={ageValue ? styles.onHeaderText : styles.headerText}>
@@ -271,17 +292,21 @@ const Basic1 = ({navigation}) => {
                 lessThan: v => parseInt(v) <= 100,
               },
             }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={ageValue ? styles.onTextInput : styles.textInput}
-                placeholder="만 나이를 입력해주세요"
-                maxLength={3}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-                onSubmitEditing={handleSubmit(onSubmit)}
-              />
-            )}
+            render={({field: {onChange, onBlur, value}}) => {
+              return (
+                <TextInput
+                  style={ageValue ? styles.onTextInput : styles.textInput}
+                  placeholder="만 나이를 입력해주세요"
+                  maxLength={3}
+                  onChangeText={onChange}
+                  value={value}
+                  onBlur={handleSubmit()}
+                  // onBlur={() => handleSubmit()} 이거랑 차이가...?!
+                  keyboardType="numeric"
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                />
+              );
+            }}
             name="age"
           />
           {errors.age && (
@@ -310,6 +335,7 @@ const Basic1 = ({navigation}) => {
                 maxLength={3}
                 onChangeText={onChange}
                 value={value}
+                onBlur={handleSubmit(onSubmit)}
                 keyboardType="numeric"
                 onSubmitEditing={handleSubmit(onSubmit)}
               />
@@ -338,6 +364,7 @@ const Basic1 = ({navigation}) => {
                 maxLength={3}
                 onChangeText={onChange}
                 value={value}
+                onBlur={handleSubmit(onSubmit)}
                 keyboardType="numeric"
                 onSubmitEditing={handleSubmit(onSubmit)}
               />
@@ -354,20 +381,29 @@ const Basic1 = ({navigation}) => {
               <DropDownPicker
                 dropDownContainerStyle={{
                   position: 'relative',
-                  marginTop: -40,
+                  marginTop: -48,
+                  borderRadius: 0,
+                  borderWidth: 0,
+                  borderTopWidth: 1,
+                  borderColor: colors.line,
+                  elevation: 2, // 안드로이드. ios는 적용 다름
                 }}
                 style={{
                   borderColor: 'white',
-                  marginTop: 7,
+                  // marginTop: 7,
                 }}
-                placeholder="식단의 목적"
+                selectedItemContainerStyle={{
+                  backgroundColor: colors.highlight,
+                }}
+                showTickIcon={false}
+                // placeholder={items[1]?.label} // 초기값 있으면 필요없음
                 open={open}
                 setOpen={setOpen}
                 value={value}
                 items={items}
                 setValue={onChange}
                 onChangeValue={onChange}
-                textStyle={{fontSize: 15}}
+                textStyle={{fontSize: 16}}
                 listMode="SCROLLVIEW"
                 dropDownDirection="BOTTOM"
               />
@@ -376,21 +412,21 @@ const Basic1 = ({navigation}) => {
           />
           {errors.dietPurposecd && <ErrorText>필수</ErrorText>}
         </InputContainer>
-        <Pressable
-          disabled={!isValid}
-          style={isValid ? styles.button : styles.disabledButton}
-          onPress={() => {
-            navigation.navigate('Basic2', {
-              item: BMR,
-              weightValue,
-              target,
-              conTarget,
-            });
-          }}>
-          <Text style={{color: 'white'}}>다음</Text>
-        </Pressable>
       </ScrollView>
-    </SafeAreaView>
+      <NextBtn
+        disabled={!isValid}
+        btnStyle={isValid ? 'activated' : 'inactivated'}
+        onPress={() => {
+          navigation.navigate('Basic2', {
+            item: BMR,
+            weightValue,
+            target,
+            conTarget,
+          });
+        }}>
+        <BtnText>다음</BtnText>
+      </NextBtn>
+    </Container>
   );
 };
 

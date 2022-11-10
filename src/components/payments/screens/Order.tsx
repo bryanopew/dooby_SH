@@ -1,7 +1,7 @@
 import {View, Text, FlatList, ScrollView, Animated} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import colors from '../colors';
+import colors from '../../../styles/stylesHS/colors';
 import {numberComma} from '../pageConsts';
 import Accordion from 'react-native-collapsible/Accordion';
 import {

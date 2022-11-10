@@ -5,7 +5,7 @@ import rootReducer from '~/stores/reducers/rootReducer';
 
 import cartSlice from './slices/cartSlice';
 import calorieBarSlice from './slices/calorieBarSlice';
-import basketProductSlice from '../stores/slices/basketSlice';
+import basketProductSlice from './slices/basketSlice';
 import addDietSlice from './slices/addDietSlice';
 import checkBoxSlice from './slices/checkBoxSlice';
 import filterSlice from './slices/filterSlice';

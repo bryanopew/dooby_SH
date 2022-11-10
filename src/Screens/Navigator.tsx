@@ -22,10 +22,19 @@ import {UserContext} from '~/Context/User';
 import CategoryFilter from '~/Components/HomeCompo/FilterSubComponent/CategoryFilter';
 import NutrientFilter from '~/Components/HomeCompo/FilterSubComponent/NutrientFilter';
 import MenuFilterModal from '~/Components/HomeCompo/MenuFilter';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
 
 const Stack = createStackNavigator();
 const FilterScreenStack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
+const Step = styled.Image`
+  width: 36px;
+  height: 36px;
+  margin-right: 16px;
+  /* background-color: ${colors.highlight}; */
+`;
 
 const LoginNavigator = () => {
   return (
@@ -41,10 +50,34 @@ const LoginNavigator = () => {
       <Stack.Screen
         name="Basic1"
         component={Basic1}
-        options={{headerShown: false}}
+        options={{
+          title: '',
+          headerLeft: () => null,
+          headerRight: () => (
+            <Step source={require('~/Assets/Images/36_step1.png')} />
+          ),
+        }}
       />
-      <Stack.Screen name="Basic2" component={Basic2} options={{title: ''}} />
-      <Stack.Screen name="Basic3" component={Basic3} options={{title: ''}} />
+      <Stack.Screen
+        name="Basic2"
+        component={Basic2}
+        options={{
+          title: '',
+          headerRight: () => (
+            <Step source={require('~/Assets/Images/36_step2.png')} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="Basic3"
+        component={Basic3}
+        options={{
+          title: '',
+          headerRight: () => (
+            <Step source={require('~/Assets/Images/36_step3.png')} />
+          ),
+        }}
+      />
       <Stack.Screen
         name="MainTabs"
         component={MainTabs}

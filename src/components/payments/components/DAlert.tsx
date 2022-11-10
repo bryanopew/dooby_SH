@@ -1,6 +1,6 @@
 import { View, Text, Modal, Dimensions } from "react-native";
 import React from "react";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import styled from "styled-components/native";
 import { Row, TextMain } from "../styledConsts";
 

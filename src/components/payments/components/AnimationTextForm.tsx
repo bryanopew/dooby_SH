@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useRef } from "react";
 import styled from "styled-components/native";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import {
   AccordionContentContainer,
   HorizontalLine,

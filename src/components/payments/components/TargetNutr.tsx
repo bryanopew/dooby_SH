@@ -3,7 +3,7 @@ import React from "react";
 // import ProgressBar from "react-native-progress/Bar";
 import styled from "styled-components/native";
 import { Dimensions } from "react-native";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import { useNavigation } from "@react-navigation/native";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");

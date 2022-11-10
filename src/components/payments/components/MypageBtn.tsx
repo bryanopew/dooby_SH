@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import colors from '../colors';
+import colors from '../../../styles/stylesHS/colors';
 import {TextMain, TextSub, Row} from '../styledConsts';
 import {EvilIcons} from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons';

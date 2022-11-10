@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import styled from "styled-components/native";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import { useUserInfoContext } from "../context";
 import { Col, TextMain, TextSub } from "../styledConsts";
 import AnimationTextForm from "./AnimationTextForm";

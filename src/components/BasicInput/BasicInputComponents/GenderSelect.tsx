@@ -17,6 +17,14 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 import {useForm, Controller, useWatch} from 'react-hook-form';
+import {
+  BtnCTA,
+  Row,
+  VerticalLine,
+  VerticalSpace,
+} from '~/styles/stylesHS/styledConsts';
+import {WIDTH} from '~/constants/constants';
+import colors from '~/styles/stylesHS/colors';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -100,6 +108,23 @@ const styles = StyleSheet.create({
   },
 });
 
+const SelectToggle = styled.Pressable`
+  flex: 1;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  /* border-color: ; */
+  border-radius: 4px;
+  border-color: ${({activated}) =>
+    activated ? colors.main : colors.inActivated};
+`;
+
+const ToggleText = styled.Text`
+  font-size: 16px;
+  color: ${({activated}) => (activated ? colors.main : colors.textSub)};
+`;
+
 const GenderSelect = ({control, setValue}) => {
   const genderValue = useWatch({
     control,
@@ -107,30 +132,23 @@ const GenderSelect = ({control, setValue}) => {
   });
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 10,
-        padding: 20,
-      }}>
-      <Pressable
-        style={genderValue === 'M' ? styles.clicked : styles.unClicked}
-        onPress={e => {
-          setValue('gender', 'M');
-        }}>
-        <Text style={genderValue === 'M' ? styles.text : styles.unClickText}>
-          남성
-        </Text>
-      </Pressable>
-      <Pressable
-        style={genderValue === 'F' ? styles.clicked : styles.unClicked}
-        onPress={e => setValue('gender', 'F')}>
-        <Text style={genderValue === 'F' ? styles.text : styles.unClickText}>
-          여성
-        </Text>
-      </Pressable>
-    </View>
+    <Row style={{marginTop: 48}}>
+      <SelectToggle
+        activated={genderValue === 'M' ? true : false}
+        onPress={() => setValue('gender', 'M')}>
+        <ToggleText activated={genderValue === 'M' ? true : false}>
+          남자
+        </ToggleText>
+      </SelectToggle>
+      <VerticalSpace width={8} />
+      <SelectToggle
+        activated={genderValue === 'F' ? true : false}
+        onPress={() => setValue('gender', 'F')}>
+        <ToggleText activated={genderValue === 'F' ? true : false}>
+          여자
+        </ToggleText>
+      </SelectToggle>
+    </Row>
   );
 };
 

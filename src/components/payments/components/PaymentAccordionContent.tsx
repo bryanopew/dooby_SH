@@ -8,7 +8,7 @@ import {
   Row,
   TextMain,
 } from "../styledConsts";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import { useOrderInfoContext, useSetOrderInfoContext } from "../context";
 
 const KakaoPayBtn = styled(BtnCTA)`

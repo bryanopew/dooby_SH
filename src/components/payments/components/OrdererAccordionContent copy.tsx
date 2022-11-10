@@ -1,7 +1,7 @@
 import {View, Text, TextInput, Animated, TouchableOpacity} from 'react-native';
 import React, {useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import colors from '../colors';
+import colors from '../../../styles/stylesHS/colors';
 import {
   AccordionContentContainer,
   HorizontalLine,

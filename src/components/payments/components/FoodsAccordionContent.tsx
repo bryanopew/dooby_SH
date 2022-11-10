@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import colors from '../colors';
+import colors from '../../../styles/stylesHS/colors';
 import {
   HorizontalLine,
   Col,

@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useRef } from "react";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 import { LineChart } from "react-native-gifted-charts";
 import styled from "styled-components/native";
 

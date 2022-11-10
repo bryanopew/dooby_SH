@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import React, { useState } from "react";
 import styled from "styled-components/native";
-import colors from "../colors";
+import colors from "../../../styles/stylesHS/colors";
 
 const Container = styled.View`
   flex: 1;
