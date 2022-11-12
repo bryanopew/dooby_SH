@@ -18,6 +18,7 @@ import ATimePicker from '~/Components/BasicInput/ATimePicker';
 import styled from 'styled-components/native';
 import colors from '~/styles/stylesHS/colors';
 import {
+  BtnBottomCTA,
   BtnCTA,
   BtnText,
   InputHeaderText,
@@ -35,60 +36,6 @@ const TitleText = styled.Text`
   font-weight: bold;
   color: ${colors.textMain};
 `;
-
-const NextBtn = styled(BtnCTA)`
-  align-self: center;
-  margin-top: -60px;
-  margin-bottom: 8px;
-`;
-
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: 'white',
-  },
-  header: {
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-  headerText: {
-    fontSize: 15,
-    color: '#590DE1',
-    marginBottom: 10,
-  },
-  button: {
-    marginTop: 50,
-    alignItems: 'center',
-    backgroundColor: '#590DE1',
-    padding: 20,
-  },
-  disabledButton: {
-    marginTop: 80,
-    alignItems: 'center',
-    backgroundColor: 'grey',
-    padding: 20,
-  },
-  box: {
-    borderRadius: 10,
-    alignItems: 'center',
-    borderColor: '#590DE1',
-    borderWidth: 2,
-    padding: 10,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: '#590DE1',
-    paddingRight: 50,
-    paddingLeft: 50,
-  },
-});
 
 const Basic2 = ({route, navigation}) => {
   const {item, weightValue, target, conTarget} = route.params;
@@ -201,7 +148,7 @@ const Basic2 = ({route, navigation}) => {
         <ATimePicker onChangeValue={okNext} setData={setAData} />
       </ScrollView>
 
-      <NextBtn
+      <BtnBottomCTA
         disabled={disabled}
         btnStyle={disabled ? 'inactivated' : 'activated'}
         onPress={() => {
@@ -212,7 +159,7 @@ const Basic2 = ({route, navigation}) => {
           });
         }}>
         <BtnText>다음</BtnText>
-      </NextBtn>
+      </BtnBottomCTA>
     </Container>
   );
 };

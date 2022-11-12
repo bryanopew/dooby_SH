@@ -70,7 +70,7 @@ export const Seperator = styled.View`
   height: 16px;
 `;
 
-/** props btnStyle -> "activated" | "inactivated" | "border"  */
+/** props btnStyle -> "activated" | "inactivated" | "border" | "borderActivated"  */
 export const BtnCTA = styled.TouchableOpacity`
   height: 52px;
   width: ${`${SCREENWIDTH - 32}px`};
@@ -85,9 +85,21 @@ export const BtnCTA = styled.TouchableOpacity`
       : `${colors.white}`};
   align-items: center;
   justify-content: center;
-  border-width: ${({btnStyle}) => (btnStyle == 'border' ? '1px' : '0px')};
+  border-width: ${({btnStyle}) =>
+    btnStyle == 'border' || btnStyle == 'borderActivated' ? '1px' : '0px'};
   border-color: ${({btnStyle}) =>
-    btnStyle == 'border' ? `${colors.inActivated}` : `${colors.white}`};
+    btnStyle == 'border'
+      ? colors.inActivated
+      : btnStyle == 'borderActivated'
+      ? colors.main
+      : colors.white};
+`;
+
+export const BtnBottomCTA = styled(BtnCTA)`
+  align-self: center;
+  margin-top: -60px;
+  margin-bottom: 8px;
+  elevation: 8;
 `;
 
 export const BtnText = styled.Text`

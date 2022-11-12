@@ -9,64 +9,29 @@ import {
 } from 'react-native';
 import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+import ContentsHeader from '../BasicInput/ContentsHeader';
+import {
+  InputHeaderText,
+  UserInfoTextInput,
+} from '~/styles/stylesHS/styledConsts';
 
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 10,
-    marginBottom: 10,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 20,
-    color: 'grey',
-  },
-  contents: {
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  text: {
-    color: '#590DE1',
-    fontWeight: 'bold',
-  },
-  result: {
-    marginTop: 10,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  clicked: {
-    borderWidth: 1,
-    borderColor: '#590DE1',
-  },
-  unClicked: {
-    borderWidth: 1,
-    borderColor: 'grey',
-  },
-});
+const Container = styled.View`
+  margin-top: -28px;
+`;
 
-const BorderLineContainer = Styled.View`
-  border-bottom-width: 1px;
-  border-color: grey;
-  margin-bottom:10px;
+const ContentsContainer = styled.View`
+  margin-top: 12px;
+  border-width: 1px;
+  border-color: ${colors.main};
+  border-radius: 5px;
+  padding: 12px 16px 12px 16px;
 `;
-const ContentsHeaderText = Styled.Text`
-  font-weight: bold;
-  font-size: 15px;
-  padding-top: 3px;
 
-`;
-const ContentsHeaderContiainer = Styled.View`
-border-width: 1px;
-border-color: grey;
-border-radius: 5px;
-height: 60px;
-width: 112%
-padding: 15px;
-align-items: center;
-margin-top: -30px;
-`;
-const TextInputContainer = Styled.View`
-border-color: #590DE1;
-border-radius: 5px;
-padding: 10px;
+const ResultText = styled.Text`
+  font-size: 12px;
+  color: ${colors.textMain};
 `;
 
 const Contents = props => {
@@ -115,39 +80,39 @@ const Contents = props => {
   storeData();
   return (
     <>
-      <Text style={styles.text}>
-        한끼 탄수화물(g)입력 (추천: {Math.round(carbon)}g)
-      </Text>
-      <TextInput
-        placeholder="0g"
+      <InputHeaderText isActivated={carbonInput}>
+        한끼 탄수화물 입력 (추천: {Math.round(carbon)}g)
+      </InputHeaderText>
+      <UserInfoTextInput
+        isActivated={carbonInput}
+        placeholder={`한끼 탄수화물 입력 (추천: ${Math.round(carbon)}g)`}
         keyboardType="numeric"
         onChangeText={setCarbonInput}
         value={carbonInput}
         onSubmitEditing={() => setCarbonInput(carbonInput)}
       />
-      <BorderLineContainer />
-      <Text style={styles.text}>
-        한끼 단백질(g)입력 (추천: {Math.round(protein)}g)
-      </Text>
-      <TextInput
-        placeholder="0g"
+      <InputHeaderText isActivated={proteinInput}>
+        한끼 단백질 입력 (추천: {Math.round(protein)}g)
+      </InputHeaderText>
+      <UserInfoTextInput
+        isActivated={proteinInput}
+        placeholder={`한끼 단백질 입력 (추천: ${Math.round(protein)}g)`}
         keyboardType="numeric"
         onChangeText={setProteinInput}
         value={proteinInput}
         onSubmitEditing={() => setProteinInput(proteinInput)}
       />
-      <BorderLineContainer />
-      <Text style={styles.text}>
-        한끼 지방(g)입력 (추천: {Math.round(fat)}g)
-      </Text>
-      <TextInput
-        placeholder="0g"
+      <InputHeaderText isActivated={fatInput}>
+        한끼 지방 입력 (추천: {Math.round(fat)}g)
+      </InputHeaderText>
+      <UserInfoTextInput
+        isActivated={fatInput}
+        placeholder={`한끼 지방 입력 (추천: ${Math.round(fat)}g)`}
         keyboardType="numeric"
         onChangeText={setFatInput}
         value={fatInput}
         onSubmitEditing={() => setFatInput(fatInput)}
       />
-      <BorderLineContainer />
       <Result
         info={totalCalorie}
         carbonPortion={carbonPortion}
@@ -161,9 +126,11 @@ const Contents = props => {
 const Result = props => {
   const {info, carbonPortion, proteinPortion, fatPortion} = props;
   return (
-    <Text style={styles.result}>
-      칼로리: {info}kcal ({carbonPortion}: {proteinPortion}: {fatPortion})
-    </Text>
+    <ContentsContainer>
+      <ResultText>
+        칼로리: {info}kcal ({carbonPortion}: {proteinPortion}: {fatPortion})
+      </ResultText>
+    </ContentsContainer>
   );
 };
 
@@ -178,19 +145,16 @@ const Manual = props => {
       manualClicked: !prevState.manualClicked,
     }));
   return (
-    <>
-      <Pressable style={styles.button} onPress={handleClick}>
-        <ContentsHeaderContiainer
-          style={clicked.manualClicked ? styles.clicked : styles.unClicked}>
-          <ContentsHeaderText>
-            각 영양 성분 직접 입력(고수용)
-          </ContentsHeaderText>
-        </ContentsHeaderContiainer>
-      </Pressable>
+    <Container>
+      <ContentsHeader
+        clicked={clicked.manualClicked}
+        handleClick={handleClick}
+        headerText="각 영양 성분 직접 입력(고수용)"
+      />
       {clicked.manualClicked && (
         <Contents info={info} target={target} conTarget={conTarget} />
       )}
-    </>
+    </Container>
   );
 };
 

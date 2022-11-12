@@ -17,37 +17,21 @@ import AutoDo from '~/Components/TargetCal/AutoDo';
 import Calcul from '../TargetCal/Calcul';
 import Manual from '../TargetCal/Manual';
 import {getNutrientInfo} from '../NutrientsBar/NutrientsBar';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+import {BtnBottomCTA, BtnText} from '~/styles/stylesHS/styledConsts';
 
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: 'white',
-  },
-  button: {
-    marginTop: 50,
-    alignItems: 'center',
-    backgroundColor: '#590DE1',
-    padding: 20,
-  },
-  boxUnClicked: {
-    width: '90%',
-    marginBottom: 5,
-    marginLeft: 15,
-  },
-  boxClicked: {
-    width: '90%',
-    marginBottom: 5,
-    marginLeft: 15,
-    borderColor: '#590DE1',
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-  disabledButton: {
-    marginTop: 80,
-    alignItems: 'center',
-    backgroundColor: 'grey',
-    padding: 20,
-  },
-});
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${colors.white};
+  padding: 0px 16px 0px 16px;
+`;
+
+const TitleText = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: ${colors.textMain};
+`;
 
 const Basic3 = ({route, navigation}) => {
   const {info, target, conTarget} = route.params;
@@ -78,57 +62,42 @@ const Basic3 = ({route, navigation}) => {
     }
   };
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.wrapper}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: 'bold',
-            color: '#444444',
-            marginBottom: 15,
-            padding: 15,
-          }}>
-          목표 섭취량을 {'\n'}입력해주세요
-        </Text>
-        <View style={styles.boxUnClicked}>
-          <AutoDo
-            info={info}
-            target={target}
-            conTarget={conTarget}
-            clicked={clicked}
-            setClicked={setClicked}
-          />
-        </View>
-        <View style={styles.boxUnClicked}>
-          <Calcul
-            info={info}
-            conTarget={conTarget}
-            clicked={clicked}
-            setClicked={setClicked}
-          />
-        </View>
-        <View style={styles.boxUnClicked}>
-          <Manual
-            info={info}
-            conTarget={conTarget}
-            clicked={clicked}
-            setClicked={setClicked}
-          />
-        </View>
-        <Pressable
-          disabled={!isValid}
-          style={!isValid ? styles.disabledButton : styles.button}
-          onPress={() => {
-            navigation.reset({
-              routes: [{name: 'MainTabs', params: {info}}],
-            });
-            storeData();
-            getNutrientInfo();
-          }}>
-          <Text style={{color: 'white'}}>완료</Text>
-        </Pressable>
+    <Container>
+      <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+        <TitleText>목표 섭취량을 {'\n'}입력해주세요</TitleText>
+        <AutoDo
+          info={info}
+          target={target}
+          conTarget={conTarget}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
+        <Calcul
+          info={info}
+          conTarget={conTarget}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
+        <Manual
+          info={info}
+          conTarget={conTarget}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
       </ScrollView>
-    </SafeAreaView>
+      <BtnBottomCTA
+        disabled={!isValid}
+        btnStyle={isValid ? 'activated' : 'inactivated'}
+        onPress={() => {
+          navigation.reset({
+            routes: [{name: 'MainTabs', params: {info}}],
+          });
+          storeData();
+          getNutrientInfo();
+        }}>
+        <BtnText>완료</BtnText>
+      </BtnBottomCTA>
+    </Container>
   );
 };
 

@@ -14,67 +14,34 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+import ContentsHeader from '../BasicInput/ContentsHeader';
+import {
+  InputHeaderText,
+  UserInfoTextInput,
+} from '~/styles/stylesHS/styledConsts';
 
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 10,
-    marginBottom: 10,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 20,
-    color: 'grey',
-  },
-  contents: {
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  text: {
-    color: '#590DE1',
-    marginLeft: 10,
-  },
-  emph: {
-    color: 'blue',
-  },
-  clicked: {
-    borderWidth: 1,
-    borderColor: '#590DE1',
-  },
-  unClicked: {
-    borderWidth: 1,
-    borderColor: 'grey',
-  },
-});
+const Container = styled.View`
+  margin-top: -28px;
+`;
+
+const ContentsContainer = styled.View`
+  margin-top: 12px;
+  border-width: 1px;
+  border-color: ${colors.main};
+  border-radius: 5px;
+  padding: 16px;
+`;
 
 const HeaderText = Styled.Text`
   font-weight: bold;
 `;
-const ContentsHeaderText = Styled.Text`
-  font-weight: bold;
-  font-size: 15px;
-  padding-top: 3px;
 
-`;
-const ContentsHeaderContiainer = Styled.View`
-border-width: 1px;
-border-color: grey;
-border-radius: 5px;
-height: 60px;
-width: 112%
-padding: 15px;
-align-items: center;
-margin-top: -30px;
-`;
 const TextInputContainer = Styled.View`
 border-color: grey;
 border-radius: 5px;
 padding: 10px;
-`;
-const ContentsContainer = Styled.View`
-border-width: 1px;
-border-color: grey;
-border-radius: 5px;
-padding: 10px;
-margin-top: -20px;
 `;
 
 const Contents = props => {
@@ -138,7 +105,7 @@ const Contents = props => {
   };
   storeData();
   return (
-    <ContentsContainer style={styles.clicked}>
+    <ContentsContainer>
       <HeaderText>
         {`  칼로리: ${meal} kcal
   탄수화물: ${Math.round(carbon)}g
@@ -152,7 +119,7 @@ const Contents = props => {
 
 const Portion = props => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState('SP005001');
   const [cal, setCal] = useState([
     {label: '55 : 20 : 25(보건복지부 추천)', value: 'SP005001'},
     {label: '20 : 20: 60(저탄고지 식단)', value: 'SP005002'},
@@ -163,25 +130,38 @@ const Portion = props => {
     <>
       <DropDownPicker
         style={{
-          borderColor: '#f0f8ff',
+          borderWidth: 0,
           borderBottomWidth: 1,
+          borderColor: colors.inActivated,
         }}
         dropDownContainerStyle={{
           position: 'relative',
-          marginTop: -40,
+          marginTop: -44,
+          paddingBottom: 4,
+          borderRadius: 0,
+          borderWidth: 1,
+          borderTopWidth: 0,
+          borderColor: colors.inActivated,
+          zIndex: 6000,
+          elevation: 2,
         }}
-        listMode="SCROLLVIEW"
-        placeholder="탄:단:지 비율로 계산하기"
+        selectedItemContainerStyle={{
+          backgroundColor: colors.highlight,
+        }}
+        showTickIcon={false}
+        // placeholder="탄:단:지 비율로 계산하기"
         open={open}
         setOpen={setOpen}
         value={value}
         items={cal}
         setValue={setValue}
         setItems={setCal}
-        textStyle={{fontSize: 15}}
         onChangeValue={() => {
           setData(value);
         }}
+        textStyle={{fontSize: 16}}
+        listMode="SCROLLVIEW"
+        dropDownDirection="BOTTOM"
       />
     </>
   );
@@ -201,31 +181,31 @@ const Calcul = props => {
   let meal = Math.round((parseInt(info) + parseInt(conTarget)) / 3);
 
   return (
-    <>
-      <Pressable style={styles.button} onPress={handleClick}>
-        <ContentsHeaderContiainer
-          style={clicked.calculClicked ? styles.clicked : styles.unClicked}>
-          <ContentsHeaderText>탄:단:지 비율로 계산하기</ContentsHeaderText>
-        </ContentsHeaderContiainer>
-      </Pressable>
+    <Container>
+      <ContentsHeader
+        clicked={clicked.calculClicked}
+        handleClick={handleClick}
+        headerText="탄:단:지 비율로 계산하기"
+      />
       {clicked.calculClicked && (
         <View>
-          <Text style={styles.text}>탄:단:지 비율</Text>
+          <InputHeaderText isActivated={true}>탄:단:지 비율</InputHeaderText>
           <Portion setData={setData} />
-          <Text>한 끼 칼로리(kcal)입력(추천: {meal})</Text>
-          <TextInputContainer>
-            <TextInput
-              placeholder="한 끼 칼로리(kcal)입력"
-              keyboardType="numeric"
-              onChangeText={setText}
-              value={text}
-              onSubmitEditing={() => setText(text)}
-            />
-          </TextInputContainer>
+          <InputHeaderText isActivated={text}>
+            한 끼 칼로리 입력 (추천: {meal} kcal)
+          </InputHeaderText>
+          <UserInfoTextInput
+            isActivated={text}
+            placeholder={`한 끼 칼로리 입력 (추천: ${meal} kcal)`}
+            onChangeText={setText}
+            value={text}
+            keyboardType="numeric"
+            onSubmitEditing={() => setText(text)}
+          />
           <Contents info={text} value={data} />
         </View>
       )}
-    </>
+    </Container>
   );
 };
 

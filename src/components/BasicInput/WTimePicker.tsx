@@ -17,17 +17,21 @@ const WTimePicker = props => {
   return (
     <>
       <DropDownPicker
+        style={{
+          borderWidth: 0,
+          borderBottomWidth: 1,
+          borderColor: colors.inActivated,
+        }}
         dropDownContainerStyle={{
           position: 'relative',
-          marginTop: -48,
+          marginTop: -44,
+          paddingBottom: 4,
           borderRadius: 0,
-          borderWidth: 0,
-          borderTopWidth: 1,
-          borderColor: colors.line,
-          elevation: 2, // 안드로이드. ios는 적용 다름
-        }}
-        style={{
-          borderColor: 'white',
+          borderWidth: 1,
+          borderTopWidth: 0,
+          elevation: 3,
+          borderColor: colors.inActivated,
+          zIndex: 6000,
         }}
         selectedItemContainerStyle={{
           backgroundColor: colors.highlight,

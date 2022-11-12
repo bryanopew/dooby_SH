@@ -23,6 +23,7 @@ import NextButton from '~/Button/NextButton';
 import GenderSelect from '~/Components/BasicInput/BasicInputComponents/GenderSelect';
 import colors from '~/styles/stylesHS/colors';
 import {
+  BtnBottomCTA,
   BtnCTA,
   BtnText,
   ErrorBox,
@@ -48,12 +49,6 @@ const TitleText = styled.Text`
 `;
 
 const InputContainer = styled.View``;
-
-const NextBtn = styled(BtnCTA)`
-  align-self: center;
-  margin-top: -60px;
-  margin-bottom: 8px;
-`;
 
 export interface Props {
   companyCd: string;
@@ -284,18 +279,20 @@ const Basic1 = ({navigation}) => {
             rules={{required: true}}
             render={({field: {onChange, onBlur, value}}) => (
               <DropDownPicker
+                style={{
+                  borderWidth: 0,
+                  borderBottomWidth: 1,
+                  borderColor: colors.inActivated,
+                }}
                 dropDownContainerStyle={{
                   position: 'relative',
-                  marginTop: -48,
+                  marginTop: -44,
                   borderRadius: 0,
-                  borderWidth: 0,
-                  borderTopWidth: 1,
-                  borderColor: colors.line,
-                  elevation: 2, // 안드로이드. ios는 적용 다름
-                }}
-                style={{
-                  borderColor: 'white',
-                  // marginTop: 7,
+                  borderWidth: 1,
+                  borderTopWidth: 0,
+                  elevation: 3,
+                  borderColor: colors.inActivated,
+                  zIndex: 6000,
                 }}
                 selectedItemContainerStyle={{
                   backgroundColor: colors.highlight,
@@ -322,7 +319,7 @@ const Basic1 = ({navigation}) => {
           )}
         </InputContainer>
       </ScrollView>
-      <NextBtn
+      <BtnBottomCTA
         disabled={!isValid}
         btnStyle={isValid ? 'activated' : 'inactivated'}
         onPress={() => {
@@ -334,7 +331,7 @@ const Basic1 = ({navigation}) => {
           });
         }}>
         <BtnText>다음</BtnText>
-      </NextBtn>
+      </BtnBottomCTA>
     </Container>
   );
 };
