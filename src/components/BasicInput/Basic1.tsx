@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -133,6 +133,7 @@ const Basic1 = ({navigation}) => {
     {label: '체중증가(한 달 1~2kg증량) ', value: 'SP002004'},
     {label: '체중증가(한 달 3~4kg증량)', value: 'SP002005'},
   ]);
+  const scrollRef = useRef();
 
   let target: string;
   let conTarget: any;
@@ -171,7 +172,10 @@ const Basic1 = ({navigation}) => {
 
   return (
     <Container>
-      <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 120}}
+        showsVerticalScrollIndicator={false}
+        ref={scrollRef}>
         <TitleText>기본 정보를 {'\n'}입력해주세요.</TitleText>
         <GenderSelect control={control} setValue={setValue} />
         <InputContainer>
@@ -300,7 +304,7 @@ const Basic1 = ({navigation}) => {
                 showTickIcon={false}
                 // placeholder={items[1]?.label} // 초기값 있으면 필요없음
                 open={open}
-                setOpen={setOpen}
+                // setOpen={setOpen}
                 value={value}
                 items={items}
                 setValue={onChange}
@@ -308,6 +312,12 @@ const Basic1 = ({navigation}) => {
                 textStyle={{fontSize: 16}}
                 listMode="SCROLLVIEW"
                 dropDownDirection="BOTTOM"
+                props={{
+                  onPress: () => {
+                    !open && scrollRef.current.scrollToEnd();
+                    setOpen(open => !open);
+                  },
+                }}
               />
             )}
             name="dietPurposecd"

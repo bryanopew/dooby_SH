@@ -19,6 +19,7 @@ import colors from '~/styles/stylesHS/colors';
 import ContentsHeader from '../BasicInput/ContentsHeader';
 import {
   InputHeaderText,
+  TextMain,
   UserInfoTextInput,
 } from '~/styles/stylesHS/styledConsts';
 
@@ -31,17 +32,12 @@ const ContentsContainer = styled.View`
   border-width: 1px;
   border-color: ${colors.main};
   border-radius: 5px;
-  padding: 16px;
+  padding: 12px 16px 12px 16px;
 `;
 
-const HeaderText = Styled.Text`
-  font-weight: bold;
-`;
-
-const TextInputContainer = Styled.View`
-border-color: grey;
-border-radius: 5px;
-padding: 10px;
+const ContentsText = styled(TextMain)`
+  font-size: 12px;
+  margin-bottom: 2px;
 `;
 
 const Contents = props => {
@@ -106,13 +102,21 @@ const Contents = props => {
   storeData();
   return (
     <ContentsContainer>
-      <HeaderText>
+      {/* <ContentsText>
         {`  칼로리: ${meal} kcal
   탄수화물: ${Math.round(carbon)}g
   단백질: ${Math.round(protein)}g
   지방: ${Math.round(fat)}g
       `}
-      </HeaderText>
+      </ContentsText> */}
+      <ContentsText>{`칼로리: ${meal || '  '} kcal`}</ContentsText>
+      <ContentsText>{`탄수화물: ${
+        carbon ? Math.round(carbon) : '  '
+      } g`}</ContentsText>
+      <ContentsText>{`단백질: ${
+        protein ? Math.round(protein) : '  '
+      } g`}</ContentsText>
+      <ContentsText>{`지방: ${fat ? Math.round(fat) : '  '} g`}</ContentsText>
     </ContentsContainer>
   );
 };
@@ -167,17 +171,19 @@ const Portion = props => {
   );
 };
 const Calcul = props => {
-  const {info, target, conTarget, clicked, setClicked} = props;
+  const {info, target, conTarget, clicked, setClicked, scrollRef} = props;
   const [data, setData] = useState();
   const [text, setText] = useState();
 
-  const handleClick = () =>
+  const handleClick = () => {
+    !clicked.calculClicked && scrollRef.current.scrollToEnd();
     setClicked(prevState => ({
       ...prevState,
       autoDoClicked: false,
       calculClicked: !prevState.calculClicked,
       manualClicked: false,
     }));
+  };
   let meal = Math.round((parseInt(info) + parseInt(conTarget)) / 3);
 
   return (

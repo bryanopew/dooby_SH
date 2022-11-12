@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -40,6 +40,7 @@ const Basic3 = ({route, navigation}) => {
     calculClicked: false,
     manualClicked: false,
   });
+  const scrollRef = useRef();
   let isValid;
   const check = () => {
     if (
@@ -63,7 +64,10 @@ const Basic3 = ({route, navigation}) => {
   };
   return (
     <Container>
-      <ScrollView contentContainerStyle={{paddingBottom: 120}}>
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 120}}
+        ref={scrollRef}
+        showsVerticalScrollIndicator={false}>
         <TitleText>목표 섭취량을 {'\n'}입력해주세요</TitleText>
         <AutoDo
           info={info}
@@ -77,12 +81,14 @@ const Basic3 = ({route, navigation}) => {
           conTarget={conTarget}
           clicked={clicked}
           setClicked={setClicked}
+          scrollRef={scrollRef}
         />
         <Manual
           info={info}
           conTarget={conTarget}
           clicked={clicked}
           setClicked={setClicked}
+          scrollRef={scrollRef}
         />
       </ScrollView>
       <BtnBottomCTA

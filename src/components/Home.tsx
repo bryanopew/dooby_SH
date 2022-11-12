@@ -50,6 +50,13 @@ import {
 
 import {StackNavigationProp} from '@react-navigation/stack';
 import {colors} from '~/constants/constants';
+import styled from 'styled-components/native';
+import colorsHs from '~/styles/stylesHS/colors';
+
+const Container = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${colorsHs.white};
+`;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -181,8 +188,9 @@ const Space = Styled.Text`
 const HeaderContainer = Styled.View``;
 
 const AddDietButtonContainer = Styled.View`
-  width: 30%
+  width: 30%;
 `;
+
 const AddDietButtonText = Styled.Text`
   font-weight: bold;
   font-size: 20px;
@@ -900,7 +908,7 @@ const Home = ({navigation, route}: Props) => {
       );
   };
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <Container>
       <HeaderContainer>
         <RowContainer>
           <AddDietButtonContainer>
@@ -935,7 +943,7 @@ const Home = ({navigation, route}: Props) => {
       </FilterMenuContainer>
 
       <RenderItem />
-    </SafeAreaView>
+    </Container>
   );
 };
 

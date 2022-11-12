@@ -128,22 +128,25 @@ const Result = props => {
   return (
     <ContentsContainer>
       <ResultText>
-        칼로리: {info}kcal ({carbonPortion}: {proteinPortion}: {fatPortion})
+        칼로리: {info || '   '}kcal ( {carbonPortion || '  '} :{' '}
+        {proteinPortion || '  '} : {fatPortion || '  '} )
       </ResultText>
     </ContentsContainer>
   );
 };
 
 const Manual = props => {
-  const {info, target, conTarget, clicked, setClicked} = props;
+  const {info, target, conTarget, clicked, setClicked, scrollRef} = props;
 
-  const handleClick = () =>
+  const handleClick = () => {
+    !clicked.manualClicked && scrollRef.current.scrollToEnd();
     setClicked(prevState => ({
       ...prevState,
       autoDoClicked: false,
       calculClicked: false,
       manualClicked: !prevState.manualClicked,
     }));
+  };
   return (
     <Container>
       <ContentsHeader
