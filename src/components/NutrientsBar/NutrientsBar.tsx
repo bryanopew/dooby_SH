@@ -19,10 +19,12 @@ import Cal from './Nutrients/Cal';
 import Carbon from './Nutrients/Carbon';
 import Protein from './Nutrients/Protein';
 import Fat from './Nutrients/Fat';
+import NutrientsProgress from './NutrientsProgress';
 
 const Container = styled.View`
-  background-color: white;
+  height: 70px;
   flex-direction: row;
+  justify-content: space-between;
 `;
 
 let data = {
@@ -171,6 +173,8 @@ const NutrientsBar = () => {
   const newFatArray = selectedCart?.map(e => {
     return e.fat;
   });
+
+  // 카트에 담긴 식품들의 각 영양성분 총합??
   const addCalorie = newCalorieArray?.reduce((a, b) => a + b, 0);
   const addCarb = newCarbArray?.reduce((a, b) => a + b, 0);
   const addProtein = newProteinArray?.reduce((a, b) => a + b, 0);
@@ -190,35 +194,45 @@ const NutrientsBar = () => {
   // );
 
   // console.log('nutrientsBar/add', addCalorie, addCarb, addProtein, addFat);
+
+  // 현재 diet(식단정보 -> 식단1, 2 등)에 들어있는 식품들 데이터를 store에서
+  // 현재 컴포넌트인 NutrientsBar.tsx로 가져와서 progressBar하나씩 return하면 안되나?
+  // 식품 추가하면 store에 저장하고 렌더링 하면서 progressBar에 적용되지 않나
   return (
+    // <Container>
+    //   <Cal
+    //     totalCalorie={data.cal}
+    //     calorieData={addCalorie}
+    //     checkCartPage={checkCartPage}
+    //     lastProduct={basketProduct}
+    //   />
+    //   <Carbon
+    //     totalCarbon={data.carbon}
+    //     addCarb={currentAddCarb}
+    //     carbData={addCarb}
+    //     checkCartPage={checkCartPage}
+    //     lastProduct={basketProduct}
+    //   />
+    //   <Protein
+    //     totalProtein={data.protein}
+    //     addProtein={currentAddProtein}
+    //     proteinData={addProtein}
+    //     checkCartPage={checkCartPage}
+    //     lastProduct={basketProduct}
+    //   />
+    //   <Fat
+    //     totalFat={data.fat}
+    //     addFat={currentAddFat}
+    //     fatData={addFat}
+    //     checkCartPage={checkCartPage}
+    //     lastProduct={basketProduct}
+    //   />
+    // </Container>
     <Container>
-      <Cal
-        totalCalorie={data.cal}
-        calorieData={addCalorie}
-        checkCartPage={checkCartPage}
-        lastProduct={basketProduct}
-      />
-      <Carbon
-        totalCarbon={data.carbon}
-        addCarb={currentAddCarb}
-        carbData={addCarb}
-        checkCartPage={checkCartPage}
-        lastProduct={basketProduct}
-      />
-      <Protein
-        totalProtein={data.protein}
-        addProtein={currentAddProtein}
-        proteinData={addProtein}
-        checkCartPage={checkCartPage}
-        lastProduct={basketProduct}
-      />
-      <Fat
-        totalFat={data.fat}
-        addFat={currentAddFat}
-        fatData={addFat}
-        checkCartPage={checkCartPage}
-        lastProduct={basketProduct}
-      />
+      <NutrientsProgress title="칼로리(g)" numerator={70} denominator={100} />
+      <NutrientsProgress title="탄수화물(g)" numerator={70} denominator={100} />
+      <NutrientsProgress title="단백질(g)" numerator={70} denominator={100} />
+      <NutrientsProgress title="지방(g)" numerator={70} denominator={100} />
     </Container>
   );
 };

@@ -49,13 +49,23 @@ import {
 } from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
-import {colors} from '~/constants/constants';
+import {BASE_URL, colors} from '~/constants/constants';
 import styled from 'styled-components/native';
 import colorsHs from '~/styles/stylesHS/colors';
+import AddDietButton from './HomeCompo/AddDietButton';
+import {Col, Row} from '~/styles/stylesHS/styledConsts';
 
 const Container = styled.SafeAreaView`
   flex: 1;
   background-color: ${colorsHs.white};
+  padding: 0px 16px 0px 16px;
+`;
+
+const HeaderContainer = styled.View`
+  flex-direction: row;
+  width: 100%;
+  height: 48px;
+  align-items: center;
 `;
 
 const styles = StyleSheet.create({
@@ -185,15 +195,15 @@ flex-direction: row;
 `;
 const Space = Styled.Text`
 `;
-const HeaderContainer = Styled.View``;
 
 const AddDietButtonContainer = Styled.View`
   width: 30%;
+  /* background-color: ${colorsHs.highlight}; */
 `;
 
 const AddDietButtonText = Styled.Text`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const filterMenus = [
@@ -312,118 +322,6 @@ const AddProductButton = ({item, data}) => {
   );
 };
 
-const AddDietButton = ({onRefresh}) => {
-  const dispatch = useDispatch();
-  const content = useSelector((state: RootState) => {
-    return state.basketProduct.cart;
-  });
-  const selectedCart = useSelector((state: RootState) => {
-    return state.addDiet.selected;
-  });
-  const dietContent = useSelector((state: RootState) => {
-    return state.addDiet.cartsArray;
-  });
-  const cartPage = useSelector((state: RootState) => {
-    return state.addDiet.selectedCartPage;
-  });
-  console.log('Home/cartPage', cartPage);
-  const picked = useSelector((state: RootState) => {
-    return state.addDiet.pick;
-  });
-  const [value, setValue] = useState();
-  const [open, setOpen] = useState(false);
-  const [state, setState] = useState(1);
-  const [items, setItems] = useState([
-    {
-      label: '식단 1',
-      value: 1,
-      icon: () => (
-        <Image
-          source={require('~/Assets/Images/24_searchCancel.png')}
-          style={{
-            transform: [{scale: 100}],
-          }}
-        />
-      ),
-    },
-    {label: '식단 추가하기', value: 'add'},
-  ]);
-  const createCart = () => {
-    dispatch(addCart(content));
-  };
-  //식단 추가하기 순서 정렬
-  const selectDiet = i => {
-    if (i === undefined) {
-      return [{calorie: 0, carb: 0, protein: 0, fat: 0}];
-    }
-    return console.log('성공', dietContent[i - 1]);
-  };
-  const changeItemOrder = function (list, targetIdx, moveValue) {
-    if (list.length < 0) return;
-    const newPosition = targetIdx + moveValue;
-    if (newPosition < 0 || newPosition >= list.length) return;
-    const tempList = JSON.parse(JSON.stringify(list));
-    const target = tempList.splice(targetIdx, 1)[0];
-    tempList.splice(newPosition, 0, target);
-    return tempList;
-  };
-  const orderedItems = changeItemOrder(items, 1, items.length - 2);
-  const onIncrease = () => {
-    return setState(prev => prev + 1);
-  };
-  const addDiet = () => {
-    onIncrease();
-    setItems([...items, {label: `식단 ${state + 1}`, value: state + 1}]);
-    createCart();
-    onRefresh();
-    dispatch(removeAll());
-    dispatch(cleanCalorieBar());
-    dispatch(selectCart(items.length));
-  };
-  useEffect(() => {
-    setValue(cartPage);
-    onRefresh();
-  }, [cartPage]);
-  const removediet = () => {};
-  return (
-    <DropDownPicker
-      listItemLabelStyle={{
-        color: colors.main,
-      }}
-      selectedItemContainerStyle={{
-        backgroundColor: 'white',
-      }}
-      selectedItemLabelStyle={{
-        fontWeight: 'bold',
-      }}
-      itemSeparator={true}
-      itemSeparatorStyle={{
-        backgroundColor: 'grey',
-      }}
-      style={{
-        borderColor: 'white',
-      }}
-      placeholder="식단1"
-      open={open}
-      setOpen={setOpen}
-      value={value}
-      items={orderedItems}
-      onSelectItem={item => {
-        item.value === 'add'
-          ? addDiet()
-          : (dispatch(selectCart(item.value)), onRefresh());
-      }}
-      onChangeValue={value => {
-        value === 'add' ? setValue(items.length - 1) : setValue(value);
-      }}
-      setValue={setValue}
-      setItems={setItems}
-      textStyle={{fontSize: 15}}
-      listMode="SCROLLVIEW"
-      dropDownDirection="BOTTOM"
-    />
-  );
-};
 const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -468,7 +366,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://13.125.244.117:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=도시락&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -484,7 +382,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=닭가슴살&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=닭가슴살&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -500,7 +398,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=샐러드&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=샐러드&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -516,7 +414,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=영양간식&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=영양간식&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -532,7 +430,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=과자&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=과자&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -548,7 +446,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=음료&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=음료&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -573,7 +471,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -590,7 +488,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -607,7 +505,7 @@ const Home = ({navigation, route}: Props) => {
     getRefreshToken()
       .then(refreshToken =>
         axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
+          `${BASE_URL}/api/member/product/list-product?searchText=도시락&categoryCd=&sort`,
           {
             headers: {
               Authentication: `Bearer ${refreshToken}`,
@@ -771,7 +669,7 @@ const Home = ({navigation, route}: Props) => {
                   }}
                   resizeMode={'contain'}
                   source={{
-                    uri: `http://61.100.16.155:8080${item.att}`,
+                    uri: `${BASE_URL}${item.att}`,
                   }}
                 />
                 <ColumnContainer>
@@ -853,7 +751,7 @@ const Home = ({navigation, route}: Props) => {
                   }}
                   resizeMode={'contain'}
                   source={{
-                    uri: `http://61.100.16.155:8080${item.att}`,
+                    uri: `${BASE_URL}${item.att}`,
                   }}
                 />
                 <ColumnContainer>
@@ -910,12 +808,21 @@ const Home = ({navigation, route}: Props) => {
   return (
     <Container>
       <HeaderContainer>
-        <RowContainer>
-          <AddDietButtonContainer>
-            <AddDietButton onRefresh={onRefresh} />
-          </AddDietButtonContainer>
+        <Col style={{flex: 1.1}}>
+          <AddDietButton onRefresh={onRefresh} />
+        </Col>
+        <Col style={{flex: 3}}>
           <SearchBar />
-        </RowContainer>
+        </Col>
+      </HeaderContainer>
+
+      <NutrientsBar />
+      {/* <Col style={{flex: 1, backgroundColor: colorsHs.warning}}></Col> */}
+      {/* <HeaderContainer>
+        <Row style={{width: '100%'}}>
+          <AddDietButton onRefresh={onRefresh} />
+          <SearchBar />
+        </Row>
       </HeaderContainer>
       <NutrientsBar />
 
@@ -942,7 +849,7 @@ const Home = ({navigation, route}: Props) => {
         ))}
       </FilterMenuContainer>
 
-      <RenderItem />
+      <RenderItem /> */}
     </Container>
   );
 };

@@ -7,6 +7,20 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
+import styled from 'styled-components/native';
+import colors from '~/styles/stylesHS/colors';
+
+const Container = styled.View``;
+
+const SearchInput = styled.TextInput`
+  width: 100%;
+  height: 32px;
+  border-radius: 4px;
+  background-color: ${colors.line};
+  padding: 5px 8px 5px 8px;
+  font-size: 14px;
+  color: ${colors.textSub};
+`;
 
 const SearchBar = () => {
   const [search, setSearch] = useState('');
@@ -78,9 +92,8 @@ const SearchBar = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.textInputStyle}
+    <Container>
+      <SearchInput
         onChangeText={text => searchFilterFunction(text)}
         value={search}
         underlineColorAndroid="transparent"
@@ -92,7 +105,7 @@ const SearchBar = () => {
         ItemSeparatorComponent={ItemSeparatorView}
         renderItem={ItemView}
       />
-    </View>
+    </Container>
   );
 };
 
