@@ -51,10 +51,13 @@ const Login = ({navigation}) => {
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
     setResult(JSON.stringify(token));
-
+    console.log('signInWithKakao: login start');
     const res = await axios.get(
       `${KAKAO_TOKEN_CONTROLLER}/${token.accessToken}`,
     );
+
+    // console.log('login data: ', res.data);
+
     const ACCESS_TOKEN = res.data.accessToken;
     if (res?.status === 200) {
       console.log('access success');
@@ -68,19 +71,7 @@ const Login = ({navigation}) => {
     } else {
       console.log('refresh token fail');
     }
-    const getAuth = await axios.get(`${GET_AUTH}`, {
-      headers: {
-        Authentication: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
-    const getUser = await axios.get(
-      'http://61.100.16.155:8080/api/member/user/get-user',
-      {
-        headers: {
-          Authentication: `Bearer ${ACCESS_TOKEN}`,
-        },
-      },
-    );
+
     try {
       await AsyncStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
     } catch (e) {
@@ -88,6 +79,7 @@ const Login = ({navigation}) => {
     }
     try {
       await AsyncStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
+      console.log('Login: stroageSet refreshToken', REFRESH_TOKEN);
     } catch (e) {
       console.log('REFRESH TOKEN ERROR');
     }

@@ -96,25 +96,27 @@ const AddDietButton = ({onRefresh}) => {
           borderWidth: 0,
           paddingLeft: -10,
         }}
-        textStyle={{fontSize: 16}}
+        // textStyle={{fontSize: 16, color: colorsHs.textMain}}
         labelStyle={{
           fontSize: 20,
           fontWeight: 'bold',
-          backgroundColor: colorsHs.blue,
           marginRight: 10,
+          color: colorsHs.textMain,
         }}
         dropDownContainerStyle={{
           position: 'relative',
-          width: 200,
-          marginTop: -44,
-          borderRadius: 3,
+          width: 150,
+          marginTop: -50,
+          borderRadius: 4,
           borderWidth: 1,
           elevation: 3,
           borderColor: colors.inActivated,
           backgroundColor: colors.white,
         }}
         listItemLabelStyle={{
-          color: colors.main,
+          color: colorsHs.textMain,
+          fontWeight: 'normal',
+          fontSize: 16,
         }}
         selectedItemContainerStyle={{
           backgroundColor: 'white',
@@ -125,7 +127,7 @@ const AddDietButton = ({onRefresh}) => {
         arrowIconStyle={{marginLeft: -10}}
         itemSeparator={true}
         itemSeparatorStyle={{
-          backgroundColor: 'grey',
+          backgroundColor: colorsHs.inActivated,
         }}
         placeholder="식단1"
         open={open}

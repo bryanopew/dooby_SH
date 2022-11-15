@@ -7,7 +7,7 @@ import * as Progress from 'react-native-progress';
 import {Col} from '~/styles/stylesHS/styledConsts';
 
 const Container = styled.View`
-  width: ${(WIDTH - 32 - 8 * 3) / 4};
+  width: ${(WIDTH - 32 - 8 * 3) / 4}px;
   height: 70px;
   justify-content: center;
 `;

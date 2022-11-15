@@ -115,7 +115,7 @@ export const VerticalLine = styled.View`
 export const HorizontalLine = styled.View`
   height: 1px;
   width: 100%;
-  background-color: ${colors.line};
+  background-color: ${colors.inActivated};
 `;
 
 export const HorizontalSpace = styled.View`
