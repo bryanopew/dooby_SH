@@ -19,6 +19,8 @@ export const GET_BASE_LINE = //기본 정보 조회
 export const CREATE_DIET = //식단정보생성
   'http://13.125.244.117:8080/api/member/diet/create-diet';
 export const LIST_DIET = 'http://13.125.244.117:8080/api/member/diet/list-diet'; //식단 정보 목록 조회
+export const PRODUCT_LIST =
+  'http://13.125.244.117:8080/api/member/product/list-product';
 export const DIET_PURPOSE_CD = {
   1: 'SP002001',
   2: 'SP002002',

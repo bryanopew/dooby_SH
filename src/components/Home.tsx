@@ -27,6 +27,7 @@ import Menus from '~/Components/HomeCompo/Menus';
 import BottomSheetTestScreen from '~/Components/HomeCompo/MenuFilter';
 import SortModal from './HomeCompo/SortModal';
 import {clickFilter, fetchCategoryFilter} from '~/stores/slices/filterSlice';
+import * as PATH from '~/constants/constants';
 
 import {RootState} from '~/stores/store';
 import {
@@ -454,16 +455,13 @@ const Home = ({navigation, route}: Props) => {
   });
 
   const getBoxData = () => {
-    getRefreshToken()
-      .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+    getToken()
+      .then(accessToken =>
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=도시락&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${accessToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setBoxData(res.data);
@@ -472,14 +470,11 @@ const Home = ({navigation, route}: Props) => {
   const getBreastData = () => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=닭가슴살&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=닭가슴살&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setBreastData(res.data);
@@ -488,14 +483,11 @@ const Home = ({navigation, route}: Props) => {
   const getSaladData = () => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=샐러드&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=샐러드&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setSaladData(res.data);
@@ -504,14 +496,11 @@ const Home = ({navigation, route}: Props) => {
   const getSnackData = () => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=영양간식&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=영양간식&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setSnackData(res.data);
@@ -520,14 +509,11 @@ const Home = ({navigation, route}: Props) => {
   const getChipData = () => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=과자&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=과자&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setChipData(res.data);
@@ -536,14 +522,11 @@ const Home = ({navigation, route}: Props) => {
   const getBeverageData = () => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=음료&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=음료&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setBeverageData(res.data);
@@ -561,14 +544,11 @@ const Home = ({navigation, route}: Props) => {
   useEffect(() => {
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setData(res.data);
@@ -578,14 +558,11 @@ const Home = ({navigation, route}: Props) => {
     setIsFetching(false);
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setData(res.data);
@@ -595,14 +572,11 @@ const Home = ({navigation, route}: Props) => {
     setIsFetching(false);
     getRefreshToken()
       .then(refreshToken =>
-        axios.get(
-          'http://61.100.16.155:8080/api/member/product/list-product?searchText=도시락&categoryCd=&sort',
-          {
-            headers: {
-              Authentication: `Bearer ${refreshToken}`,
-            },
+        axios.get(`${PATH.PRODUCT_LIST}?searchText=도시락&categoryCd=&sort`, {
+          headers: {
+            Authentication: `Bearer ${refreshToken}`,
           },
-        ),
+        }),
       )
       .then(res => {
         setData(res.data);
@@ -760,7 +734,7 @@ const Home = ({navigation, route}: Props) => {
                   }}
                   resizeMode={'contain'}
                   source={{
-                    uri: `http://61.100.16.155:8080${item.att}`,
+                    uri: `${PATH.BASE_URL}${item.att}`,
                   }}
                 />
                 <ColumnContainer>
@@ -842,7 +816,7 @@ const Home = ({navigation, route}: Props) => {
                   }}
                   resizeMode={'contain'}
                   source={{
-                    uri: `http://61.100.16.155:8080${item.att}`,
+                    uri: `${PATH.BASE_URL}${item.att}`,
                   }}
                 />
                 <ColumnContainer>

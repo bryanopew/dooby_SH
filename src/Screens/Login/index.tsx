@@ -46,42 +46,38 @@ const Login = ({navigation}) => {
       `${KAKAO_TOKEN_CONTROLLER}/${token.accessToken}`,
     );
     const ACCESS_TOKEN = res.data.accessToken;
+    const REFRESH_TOKEN = res.data.refreshToken;
+
+    const getAuth = await axios.get(`${GET_AUTH}`, {
+      headers: {
+        Authentication: `Bearer ${ACCESS_TOKEN}`,
+      },
+    });
+
+    const storeAcessToken = async value => {
+      try {
+        await AsyncStorage.setItem('ACCESS_TOKEN', value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const storeRefreshToken = async value => {
+      try {
+        await AsyncStorage.setItem('REFRESH_TOKEN', value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    storeAcessToken(ACCESS_TOKEN);
+    storeRefreshToken(REFRESH_TOKEN);
     if (res?.status === 200) {
       console.log('access success');
       onMovePage();
     } else {
       console.log('access token fail');
     }
-    const REFRESH_TOKEN = res.data.refreshToken;
-    if (res?.status === 200) {
-      console.log('refresh success');
-    } else {
-      console.log('refresh token fail');
-    }
-    const getAuth = await axios.get(`${GET_AUTH}`, {
-      headers: {
-        Authentication: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
-    const getUser = await axios.get(
-      'http://61.100.16.155:8080/api/member/user/get-user',
-      {
-        headers: {
-          Authentication: `Bearer ${ACCESS_TOKEN}`,
-        },
-      },
-    );
-    try {
-      await AsyncStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
-    } catch (e) {
-      console.log('ACCESS TOKEN ERROR', e);
-    }
-    try {
-      await AsyncStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
-    } catch (e) {
-      console.log('REFRESH TOKEN ERROR');
-    }
   };
+
   // const dispatch = useDispatch();
   // const {navigation} = props;
 

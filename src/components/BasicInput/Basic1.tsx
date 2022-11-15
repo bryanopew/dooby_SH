@@ -169,10 +169,27 @@ const Basic1 = ({navigation}) => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
   };
-  const getRefreshToken = () => {
-    let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
-    return refreshToken;
-  };
+  // const getAllKeys = async () => {
+  //   let keys = [];
+  //   try {
+  //     keys = await AsyncStorage.getAllKeys();
+  //   } catch (e) {
+  //     // read key error
+  //   }
+
+  //   console.log(keys);
+  // };
+  // const removeValue = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem('ACCESS_TOKEN');
+  //   } catch (e) {
+  //     // remove error
+  //   }
+
+  //   console.log('Done.');
+  // };
+  // removeValue();
+
   // useEffect(() => {
   //   getToken()
   //     .then(token =>
