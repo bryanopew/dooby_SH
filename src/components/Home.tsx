@@ -47,6 +47,7 @@ import styled from 'styled-components/native';
 import colorsHs from '~/styles/stylesHS/colors';
 import AddDietButton from './HomeCompo/AddDietButton';
 import {
+  BtnBottomCTA,
   BtnCTA,
   BtnText,
   Col,
@@ -492,15 +493,16 @@ const Home = ({navigation, route}: Props) => {
         ItemSeparatorComponent={() => <HorizontalSpace height={16} />}
         keyExtractor={item => item.productNo}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 80}}
       />
 
-      <BtnCTA
+      <BtnBottomCTA
         btnStyle="activated"
         onPress={() => {
           getTestData();
         }}>
         <BtnText>테스트데이터</BtnText>
-      </BtnCTA>
+      </BtnBottomCTA>
     </Container>
   );
 };
