@@ -21,8 +21,6 @@ import {
   WIDTH,
 } from '~/constants/constants';
 import {GET_AUTH} from '~/constants/constants';
-import {GET_USER} from '~/constants/constants';
-import {RE_ISSUE_TOKEN} from '~/constants/constants';
 import styled from 'styled-components/native';
 import colors from '~/styles/stylesHS/colors';
 import {BtnCTA} from '~/styles/stylesHS/styledConsts';
@@ -47,7 +45,9 @@ const BtnText = styled.Text`
 
 const Login = ({navigation}) => {
   const [result, setResult] = useState<string>('');
-
+  const onMovePage = useCallback(() => {
+    navigation.navigate('Basic1');
+  }, []);
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
     setResult(JSON.stringify(token));
@@ -59,31 +59,41 @@ const Login = ({navigation}) => {
     // console.log('login data: ', res.data);
 
     const ACCESS_TOKEN = res.data.accessToken;
+    const REFRESH_TOKEN = res.data.refreshToken;
+
+    const getAuth = await axios.get(`${GET_AUTH}`, {
+      headers: {
+        Authentication: `Bearer ${ACCESS_TOKEN}`,
+      },
+    });
+
+    const storeAcessToken = async value => {
+      try {
+        await AsyncStorage.setItem('ACCESS_TOKEN', value);
+        console.log('storeAccessToken : ', value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const storeRefreshToken = async value => {
+      try {
+        await AsyncStorage.setItem('REFRESH_TOKEN', value);
+        console.log('storeRefreshToken : ', value);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    storeAcessToken(ACCESS_TOKEN);
+    storeRefreshToken(REFRESH_TOKEN);
     if (res?.status === 200) {
       console.log('access success');
       onMovePage();
     } else {
       console.log('access token fail');
     }
-    const REFRESH_TOKEN = res.data.refreshToken;
-    if (res?.status === 200) {
-      console.log('refresh success');
-    } else {
-      console.log('refresh token fail');
-    }
-
-    try {
-      await AsyncStorage.setItem('ACCESS_TOKEN', ACCESS_TOKEN);
-    } catch (e) {
-      console.log('ACCESS TOKEN ERROR', e);
-    }
-    try {
-      await AsyncStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN);
-      console.log('Login: stroageSet refreshToken', REFRESH_TOKEN);
-    } catch (e) {
-      console.log('REFRESH TOKEN ERROR');
-    }
   };
+
   // const dispatch = useDispatch();
   // const {navigation} = props;
 
@@ -110,9 +120,7 @@ const Login = ({navigation}) => {
   //     }
   //   }
   // }, []);
-  const onMovePage = useCallback(() => {
-    navigation.navigate('Basic1');
-  }, []);
+
   return (
     <Container>
       <TitleText>식단 조절은 {'\n'} 두비에게</TitleText>

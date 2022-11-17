@@ -1,5 +1,11 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Text, Dimensions, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import Styled from 'styled-components/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -36,7 +42,7 @@ import {
 } from '~/stores/slices/addDietSlice';
 
 import {StackNavigationProp} from '@react-navigation/stack';
-import {BASE_URL, colors} from '~/constants/constants';
+import {BASE_URL, colors, PRODUCT_LIST} from '~/constants/constants';
 import styled from 'styled-components/native';
 import colorsHs from '~/styles/stylesHS/colors';
 import AddDietButton from './HomeCompo/AddDietButton';
@@ -45,8 +51,10 @@ import {
   BtnText,
   Col,
   HorizontalLine,
+  HorizontalSpace,
   Row,
 } from '~/styles/stylesHS/styledConsts';
+import FoodList from '~/Components/HomeCompo/FoodList';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -236,24 +244,10 @@ const AddProductButton = ({item, data}) => {
   );
 };
 
-const getTestData = async token => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/api/member/product/list-product?searchText=도시락`,
-      {
-        headers: {Authentication: `Bearer ${token}`},
-      },
-    );
-    console.log('getTestData', response);
-    return response;
-  } catch (e) {
-    console.log('getTestData error: ', e);
-  }
-};
-
 const Home = ({navigation, route}: Props) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [testData, setTestData] = useState([]);
   const [boxData, setBoxData] = useState([]);
   const [breastData, setBreastData] = useState([]);
   const [saladData, setSaladData] = useState([]);
@@ -269,18 +263,32 @@ const Home = ({navigation, route}: Props) => {
   // 단백질(protein) res.data.protein
   // 지방(fat) res.data.fat
   // 사진(mainAttUrl) res.data.mainAttUrl
-  const getToken = () => {
-    let token = AsyncStorage.getItem('ACCESS_TOKEN');
+  const getToken = async () => {
+    let token = await AsyncStorage.getItem('ACCESS_TOKEN');
+    console.log('getToken: ', token);
     return token;
   };
   const getRefreshToken = async () => {
     const refreshToken = await AsyncStorage.getItem('REFRESH_TOKEN');
-    setUserToken(refreshToken);
+    console.log('getToken: ', refreshToken);
+    return refreshToken;
   };
 
-  useEffect(() => {
-    getRefreshToken();
-  }, []);
+  const getTestData = async () => {
+    try {
+      getToken()
+        .then(refreshToken =>
+          axios.get(`${PRODUCT_LIST}?searchText=도시락&categoryCd=&sort`, {
+            headers: {
+              authentication: `Bearer ${refreshToken}`,
+            },
+          }),
+        )
+        .then(res => setTestData(res.data.slice(0, 10)));
+    } catch (e) {
+      console.log('getTestData error: ', e);
+    }
+  };
 
   const onRefresh = () => {
     console.log('onRefresh');
@@ -317,6 +325,8 @@ const Home = ({navigation, route}: Props) => {
         setData(res.data);
       });
   };
+
+  console.log(testData);
   //전체 식품
   const realProduct = data.map(value => {
     let returnObj = {};
@@ -475,11 +485,19 @@ const Home = ({navigation, route}: Props) => {
         ))}
       </FilterMenuContainer>
 
+      <FlatList
+        style={{marginTop: 24}}
+        data={testData}
+        renderItem={item => <FoodList item={item} />}
+        ItemSeparatorComponent={() => <HorizontalSpace height={16} />}
+        keyExtractor={item => item.productNo}
+        showsVerticalScrollIndicator={false}
+      />
+
       <BtnCTA
         btnStyle="activated"
         onPress={() => {
-          console.log(userToken);
-          getTestData(userToken);
+          getTestData();
         }}>
         <BtnText>테스트데이터</BtnText>
       </BtnCTA>

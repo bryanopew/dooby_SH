@@ -93,10 +93,6 @@ const Basic1 = ({navigation}) => {
     let token = AsyncStorage.getItem('ACCESS_TOKEN');
     return token;
   };
-  const getRefreshToken = () => {
-    let refreshToken = AsyncStorage.getItem('REFRESH_TOKEN');
-    return refreshToken;
-  };
   // useEffect(() => {
   //   getToken()
   //     .then(token =>
